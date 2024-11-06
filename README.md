@@ -45,7 +45,7 @@ This project follows **Clean Architecture** principles, splitting concerns acros
 
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/yourusername/DailyPulseSolution.git
+   git clone https://github.com/abdelrahmanalimohamed/DailyPulseSolution.git
    cd DailyPulseSolution
    ```
 
