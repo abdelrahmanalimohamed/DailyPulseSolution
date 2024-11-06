@@ -1,6 +1,6 @@
 # DailyPulse Solution
 
-DailyPulse Solution is a .NET Core 6 application implementing Clean Architecture. It is designed to manage projects, employees, tasks, and locations in a structured and modular way. This repository contains a Web API for backend operations, organized using Clean Architecture principles.
+DailyPulse Solution is a .NET Core 6 application implementing **Clean Architecture** along with **CQRS** and **Mediator** patterns. The project is designed to manage projects, employees, tasks, and locations in a modular and organized way.
 
 ## Table of Contents
 
@@ -20,18 +20,27 @@ DailyPulse Solution is a .NET Core 6 application implementing Clean Architecture
 - **Team Leader Module**: Employee and task assignment, task review, and confirmation.
 - **Employee Module**: Task acceptance, work logging, task updates, and completion.
 - **Self-Referencing Employee Hierarchy**: Employees can have a supervisor (team lead) using a self-referencing relationship.
+- **CQRS and Mediator**: Implements Command and Query responsibilities separated through **MediatR** for improved organization and scalability.
 - **Fluent API Configuration**: Leveraging Entity Framework Core Fluent API for precise model configuration.
 
 ## Architecture
 
-This project follows **Clean Architecture** principles, splitting concerns across multiple layers:
+This project follows **Clean Architecture** principles, CQRS, and Mediator patterns, creating a modular separation of concerns:
 1. **Core**:
    - **Domain**: Contains business entities, enums, and core logic.
-   - **Application**: Contains use cases, business rules, interfaces, and application services.
+   - **Application**: Contains use cases, business rules, commands, queries, and application services.
 2. **Infrastructure**:
    - Manages database access and persistence with Entity Framework Core.
 3. **Presentation**:
    - Web API project, exposing endpoints to interact with the system.
+
+### CQRS and Mediator
+
+The **CQRS** (Command Query Responsibility Segregation) pattern is applied by separating read and write operations, improving scalability and clarity:
+- **Commands**: Used for actions that change data (create, update, delete).
+- **Queries**: Used for retrieving data without altering it.
+
+The **Mediator** pattern, implemented with **MediatR**, enables decoupling of command/query handlers from controllers, promoting a single entry point for each request.
 
 ## Technologies
 
@@ -40,6 +49,7 @@ This project follows **Clean Architecture** principles, splitting concerns acros
 - **MySQL**
 - **Fluent API for configuration**
 - **Clean Architecture**
+- **CQRS with MediatR**
 
 ## Installation
 
@@ -90,8 +100,10 @@ The API will be accessible at `http://localhost:5000` or `https://localhost:5001
 ```
 DailyPulseSolution
 ├── DailyPulse.Domain             # Contains core domain entities and enums
-├── DailyPulse.Application        # Application layer for business logic and interfaces
-├── DailyPulse.Infrastructure     # Infrastructure layer for EF Core configurations
+├── DailyPulse.Application        # Application layer with CQRS command/query handlers
+│   ├── Commands                  # Command handlers for creating, updating, and deleting data
+│   └── Queries                   # Query handlers for reading data
+├── DailyPulse.Infrastructure     # Infrastructure layer for EF Core configurations and MediatR
 └── DailyPulse.WebAPI             # Presentation layer, exposes the Web API
 ```
 
@@ -100,6 +112,17 @@ DailyPulseSolution
 - **Employee**: Represents an employee with properties like `Role`, `IsAdmin`, `IsTeamLeader`, and `ReportTo`.
 - **Project**: Represents a project with navigation properties for `ScopeOfWork`, `Region`, `Location`, and `TeamLead`.
 - **Task**: Represents a task, assigned to employees, with support for task logs and updates.
+
+### CQRS Commands and Queries
+
+- **Commands**:
+  - `CreateEmployeeCommand`
+  - `UpdateProjectCommand`
+  - `DeleteTaskCommand`
+- **Queries**:
+  - `GetEmployeeDetailsQuery`
+  - `GetProjectListQuery`
+  - `GetTaskByIdQuery`
 
 ### Database Migrations
 
@@ -119,10 +142,6 @@ To add or remove migrations, use the following commands:
 
 Feel free to submit issues, fork the repository, and make pull requests. For major changes, please open an issue first to discuss what you would like to change.
 
-## License
-
-This project is licensed under the MIT License.
-
 ---
 
-Replace `yourusername` with your GitHub username if you plan to host it publicly. Let me know if you’d like further customization!
+Let me know if you'd like any further customization.
