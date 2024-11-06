@@ -2,7 +2,7 @@
 
 namespace DailyPulse.Application.DTO
 {
-    public class LocationDTO : BaseDTO
+    public class ScopeOfWorkDTO : BaseDTO
     {
     }
 }

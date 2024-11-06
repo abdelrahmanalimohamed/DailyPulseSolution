@@ -1,8 +1,8 @@
-﻿namespace DailyPulse.Application.DTO
+﻿using DailyPulse.Application.DTO.Base;
+
+namespace DailyPulse.Application.DTO
 {
-    public class RegionsDTO
+    public class RegionsDTO : BaseDTO
     {
-        public Guid Id { get; set; }
-        public string Name { get; set; }
     }
 }

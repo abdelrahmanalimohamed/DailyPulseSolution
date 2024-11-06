@@ -6,11 +6,11 @@ using MediatR;
 
 namespace DailyPulse.Application.CQRS.QueriesHandler.RegionHandlers
 {
-    public class GerRegionsHandler : IRequestHandler<GetRegionsQuery, IEnumerable<RegionsDTO>>
+    public class GetRegionsHandler : IRequestHandler<GetRegionsQuery, IEnumerable<RegionsDTO>>
     {
         private readonly IGenericRepository<Region> _repository;
 
-        public GerRegionsHandler(IGenericRepository<Region> _repository)
+        public GetRegionsHandler(IGenericRepository<Region> _repository)
         {
            this._repository = _repository;
         }

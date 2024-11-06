@@ -1,10 +1,7 @@
-﻿using DailyPulse.Application.CQRS.Commands.Locations;
-using DailyPulse.Application.CQRS.Commands.Projects;
+﻿using DailyPulse.Application.CQRS.Commands.Projects;
 using DailyPulse.Application.CQRS.Queries.Projects;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace DailyPluse.WebAPI.Controllers
 {
