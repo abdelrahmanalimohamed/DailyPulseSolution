@@ -35,7 +35,7 @@ This project follows **Clean Architecture** principles, splitting concerns acros
 
 ## Technologies
 
-- **.NET Core 5**
+- **.NET Core 6**
 - **Entity Framework Core**
 - **MySQL**
 - **Fluent API for configuration**
