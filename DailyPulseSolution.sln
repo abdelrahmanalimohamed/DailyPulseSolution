@@ -1,0 +1,62 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35312.102
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{14F3F7E3-15A8-47CB-82B0-599F298EF699}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{3A708315-A5D2-4CC5-9DB4-27535AAF22FD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{87691E2B-26E5-4E62-A585-0A120B3E33D8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DailyPulse.Domain", "DailyPulse.Domain\DailyPulse.Domain.csproj", "{B1CA4A42-CE7F-4553-9422-86EA351CEA06}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DailyPulse.Application", "DailyPulse.Application\DailyPulse.Application.csproj", "{A291A4F0-D5F5-4E6B-929B-873A6E43F64D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DailyPulse.Infrastructure", "DailyPulse.Infrastructure\DailyPulse.Infrastructure.csproj", "{0F55F38A-D818-40F4-9626-739D3191EAF3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DailyPluse.WebAPI", "DailyPluse.WebAPI\DailyPluse.WebAPI.csproj", "{E6F36651-917B-40BC-95B3-28BD45138352}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DailyPulse.Application.Test", "DailyPulse.Application.Test\DailyPulse.Application.Test.csproj", "{E32A0DBC-AC70-4417-8E41-7B628388339D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B1CA4A42-CE7F-4553-9422-86EA351CEA06}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1CA4A42-CE7F-4553-9422-86EA351CEA06}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1CA4A42-CE7F-4553-9422-86EA351CEA06}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1CA4A42-CE7F-4553-9422-86EA351CEA06}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A291A4F0-D5F5-4E6B-929B-873A6E43F64D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A291A4F0-D5F5-4E6B-929B-873A6E43F64D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A291A4F0-D5F5-4E6B-929B-873A6E43F64D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A291A4F0-D5F5-4E6B-929B-873A6E43F64D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F55F38A-D818-40F4-9626-739D3191EAF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F55F38A-D818-40F4-9626-739D3191EAF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F55F38A-D818-40F4-9626-739D3191EAF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F55F38A-D818-40F4-9626-739D3191EAF3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6F36651-917B-40BC-95B3-28BD45138352}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6F36651-917B-40BC-95B3-28BD45138352}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6F36651-917B-40BC-95B3-28BD45138352}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6F36651-917B-40BC-95B3-28BD45138352}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E32A0DBC-AC70-4417-8E41-7B628388339D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E32A0DBC-AC70-4417-8E41-7B628388339D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E32A0DBC-AC70-4417-8E41-7B628388339D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E32A0DBC-AC70-4417-8E41-7B628388339D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B1CA4A42-CE7F-4553-9422-86EA351CEA06} = {14F3F7E3-15A8-47CB-82B0-599F298EF699}
+		{A291A4F0-D5F5-4E6B-929B-873A6E43F64D} = {14F3F7E3-15A8-47CB-82B0-599F298EF699}
+		{0F55F38A-D818-40F4-9626-739D3191EAF3} = {3A708315-A5D2-4CC5-9DB4-27535AAF22FD}
+		{E6F36651-917B-40BC-95B3-28BD45138352} = {87691E2B-26E5-4E62-A585-0A120B3E33D8}
+		{E32A0DBC-AC70-4417-8E41-7B628388339D} = {14F3F7E3-15A8-47CB-82B0-599F298EF699}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A244329B-16C1-43C7-A407-3075623731EB}
+	EndGlobalSection
+EndGlobal
