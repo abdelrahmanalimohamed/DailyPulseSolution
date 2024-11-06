@@ -12,7 +12,6 @@ DailyPulse Solution is a .NET Core 6 application implementing **Clean Architectu
 - [Project Structure](#project-structure)
 - [Database Migrations](#database-migrations)
 - [Contributing](#contributing)
-- [License](#license)
 
 ## Features
 
