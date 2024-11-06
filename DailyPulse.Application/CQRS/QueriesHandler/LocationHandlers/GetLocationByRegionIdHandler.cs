@@ -1,11 +1,12 @@
 ﻿using DailyPulse.Application.Abstraction;
 using DailyPulse.Application.CQRS.Queries.Locations;
+using DailyPulse.Application.DTO;
 using DailyPulse.Domain.Entities;
 using MediatR;
 
 namespace DailyPulse.Application.CQRS.QueriesHandler.LocationHandlers
 {
-    public class GetLocationByRegionIdHandler : IRequestHandler<GetLocationsByRegionIdQuery, IEnumerable<Location>>
+    public class GetLocationByRegionIdHandler : IRequestHandler<GetLocationsByRegionIdQuery, IEnumerable<LocationDTO>>
     {
         private readonly IGenericRepository<Location> _repository;
 
@@ -13,9 +14,18 @@ namespace DailyPulse.Application.CQRS.QueriesHandler.LocationHandlers
         {
             this._repository = _repository;
         }
-        public async Task<IEnumerable<Location>> Handle(GetLocationsByRegionIdQuery request, CancellationToken cancellationToken)
+
+        public async Task<IEnumerable<LocationDTO>> Handle(GetLocationsByRegionIdQuery request, CancellationToken cancellationToken)
         {
-            return await _repository.FindAsync(x=> x.RegionId == request.RegionId);
+            var locations = await _repository.FindAsync(x => x.RegionId == request.RegionId, cancellationToken);
+
+            var locationDTOs = locations.Select(location => new LocationDTO
+            {
+                Id = location.Id,
+                Name = location.Name
+            });
+
+            return locationDTOs;
         }
     }
 }

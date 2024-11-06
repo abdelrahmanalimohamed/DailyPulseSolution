@@ -24,9 +24,7 @@ namespace DailyPluse.WebAPI.Controllers
             var query = new GetLocationsQuery();
             var locations = await _mediator.Send(query);
 
-            var x = locations.Select(a => new { a.Id, a.Name });
-
-            return Ok(x);
+            return Ok(locations);
         }
 
         [HttpGet("by-locationid/{id}")]
@@ -43,13 +41,7 @@ namespace DailyPluse.WebAPI.Controllers
             var query = new GetLocationsByRegionIdQuery { RegionId = regionId };
             var locations = await _mediator.Send(query);
 
-            var selectedLocations = locations.Select(location => new
-            {
-                location.Id,
-                location.Name
-            });
-
-            return Ok(selectedLocations);
+            return Ok(locations);
         }
 
         [HttpPost]
