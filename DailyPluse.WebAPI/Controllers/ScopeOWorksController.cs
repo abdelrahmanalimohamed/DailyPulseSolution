@@ -1,6 +1,5 @@
 ﻿using DailyPulse.Application.CQRS.Queries.ScopeOfWorks;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DailyPluse.WebAPI.Controllers

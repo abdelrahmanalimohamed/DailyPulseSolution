@@ -25,7 +25,6 @@ namespace DailyPulse.Application.Test.Commands
             var command = new CreateProjectCommand {
                 Name = "New Project", 
                 RegionId = Guid.NewGuid() , 
-                Drawings = "Drawing Test " ,
                 LocationId = Guid.NewGuid()  ,
                 Description = "Description Test",
                 ScopeOfWorkId = Guid.NewGuid() , 
@@ -45,7 +44,6 @@ namespace DailyPulse.Application.Test.Commands
             _mockRepository.Verify(repo => repo.AddAsync(It.Is<Project>(
                 proj => proj.Name == command.Name && 
                 proj.RegionId == command.RegionId &&
-                proj.Drawings == command.Drawings &&
                 proj.LocationId == command.LocationId && 
                 proj.Description == command.Description
             ), It.IsAny<CancellationToken>()), Times.Once);

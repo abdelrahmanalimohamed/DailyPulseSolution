@@ -19,7 +19,6 @@ namespace DailyPulse.Application.CQRS.CommandHandler.ProjectsHandlers
             var project = new Project
             {
                 Description = request.Description,
-                Drawings = request.Drawings,
                 LocationId = request.LocationId,
                 Name = request.Name,
                 RegionId = request.RegionId,

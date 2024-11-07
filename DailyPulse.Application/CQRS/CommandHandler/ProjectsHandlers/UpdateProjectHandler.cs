@@ -24,7 +24,6 @@ namespace DailyPulse.Application.CQRS.CommandHandler.ProjectsHandlers
             project.Name = request.Name;
             project.RegionId = request.RegionId;
             project.Description = request.Description;
-            project.Drawings = request.Drawings;
             project.LocationId = request.LocationId;
             project.TeamLeadId = request.TeamLeadId;
 
