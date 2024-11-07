@@ -24,9 +24,10 @@ namespace DailyPulse.Application.CQRS.CommandHandler.EmployeesHandlers
                 Title = request.Title,
                 username = request.Email,
                 password = hashedPassword,
-                Role = request.Role,
+                Role = Enum.TryParse(request.Jobgrade, true, out EmployeeRole role)
+                     ? role : throw new ArgumentException($"Invalid job grade: {request.Jobgrade}"),
                 ReportToId = request.ReportTo,
-                IsAdmin = request.Role == EmployeeRole.Admin 
+                IsAdmin = false 
             };
 
             await _repository.AddAsync(employee, cancellationToken);
