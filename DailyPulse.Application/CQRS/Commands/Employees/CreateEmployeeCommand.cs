@@ -1,9 +1,8 @@
-﻿using DailyPulse.Domain.Enums;
-using MediatR;
+﻿using MediatR;
 
 namespace DailyPulse.Application.CQRS.Commands.Employees
 {
-    public class CreateEmployeeCommand : IRequest<Unit>
+    public class CreateEmployeeCommand : IRequest
     {
         public string Name { get; set; }
         public string Title { get; set; }

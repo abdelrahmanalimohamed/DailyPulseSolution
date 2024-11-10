@@ -2,10 +2,11 @@
 using DailyPulse.Application.CQRS.Commands.Projects;
 using DailyPulse.Domain.Entities;
 using MediatR;
+using Task = System.Threading.Tasks.Task;
 
 namespace DailyPulse.Application.CQRS.CommandHandler.ProjectsHandlers
 {
-    public class CreateProjectHandler : IRequestHandler<CreateProjectCommand, Unit>
+    public class CreateProjectHandler : IRequestHandler<CreateProjectCommand>
     {
         private readonly IGenericRepository<Project> _repository;
 
@@ -14,7 +15,7 @@ namespace DailyPulse.Application.CQRS.CommandHandler.ProjectsHandlers
             this._repository = _repository;
         }
 
-        public async Task<Unit> Handle(CreateProjectCommand request, CancellationToken cancellationToken)
+        public async Task Handle(CreateProjectCommand request, CancellationToken cancellationToken)
         {
             var project = new Project
             {
@@ -27,7 +28,6 @@ namespace DailyPulse.Application.CQRS.CommandHandler.ProjectsHandlers
             };
 
             await _repository.AddAsync(project , cancellationToken);
-            return Unit.Value;
         }
     }
 }

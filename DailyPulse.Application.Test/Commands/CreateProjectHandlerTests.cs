@@ -36,10 +36,9 @@ namespace DailyPulse.Application.Test.Commands
                 .Returns(Task.CompletedTask);
 
             // Act
-            var result = await _handler.Handle(command, CancellationToken.None);
+             await _handler.Handle(command, CancellationToken.None);
 
             // Assert
-            Assert.Equal(Unit.Value, result);
 
             _mockRepository.Verify(repo => repo.AddAsync(It.Is<Project>(
                 proj => proj.Name == command.Name && 

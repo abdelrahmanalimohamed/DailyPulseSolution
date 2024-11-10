@@ -2,10 +2,11 @@
 using DailyPulse.Application.CQRS.Commands.Employees;
 using DailyPulse.Domain.Entities;
 using MediatR;
+using Task = System.Threading.Tasks.Task;
 
 namespace DailyPulse.Application.CQRS.CommandHandler.EmployeesHandlers
 {
-    public class UpdateEmployeeHandler : IRequestHandler<UpdateEmployeeCommand, Unit>
+    public class UpdateEmployeeHandler : IRequestHandler<UpdateEmployeeCommand>
     {
         private readonly IGenericRepository<Employee> _repository;
 
@@ -13,7 +14,7 @@ namespace DailyPulse.Application.CQRS.CommandHandler.EmployeesHandlers
         {
             this._repository = _repository;
         }
-        public async Task<Unit> Handle(UpdateEmployeeCommand request, CancellationToken cancellationToken)
+        public async Task Handle(UpdateEmployeeCommand request, CancellationToken cancellationToken)
         {
             // Retrieve the employee to update
             var employee = await _repository.GetByIdAsync(request.EmployeeId, cancellationToken);
@@ -34,7 +35,6 @@ namespace DailyPulse.Application.CQRS.CommandHandler.EmployeesHandlers
             }
 
             await _repository.UpdateAsync(employee, cancellationToken);
-            return Unit.Value;
         }
     }
 }

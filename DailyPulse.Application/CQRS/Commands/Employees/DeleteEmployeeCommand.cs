@@ -2,7 +2,7 @@
 
 namespace DailyPulse.Application.CQRS.Commands.Employees
 {
-    public class DeleteEmployeeCommand : IRequest<Unit>
+    public class DeleteEmployeeCommand : IRequest
     {
         public Guid EmployeeId { get; set; }
     }
