@@ -3,7 +3,7 @@ using MediatR;
 
 namespace DailyPulse.Application.CQRS.Commands.Employees
 {
-    public class UpdateEmployeeCommand : IRequest<Unit>
+    public class UpdateEmployeeCommand : IRequest
     {
         public Guid EmployeeId { get; set; }
         public string Name { get; set; }

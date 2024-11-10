@@ -2,7 +2,7 @@
 
 namespace DailyPulse.Application.CQRS.Commands.Projects
 {
-    public class UpdateProjectCommand : IRequest<Unit>
+    public class UpdateProjectCommand : IRequest
     {
         public Guid ProjectId { get; set; }
         public string Name { get; set; }

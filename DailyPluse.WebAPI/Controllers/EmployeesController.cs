@@ -18,7 +18,7 @@ namespace DailyPluse.WebAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateEmployee([FromBody] CreateEmployeeCommand employeeCommand)
         {
-            var command = await _mediator.Send(employeeCommand);
+            await _mediator.Send(employeeCommand);
             return StatusCode(201);
         }
     }

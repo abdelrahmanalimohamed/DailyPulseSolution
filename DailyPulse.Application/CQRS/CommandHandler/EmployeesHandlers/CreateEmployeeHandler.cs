@@ -3,10 +3,11 @@ using DailyPulse.Application.CQRS.Commands.Employees;
 using DailyPulse.Domain.Entities;
 using DailyPulse.Domain.Enums;
 using MediatR;
+using Task = System.Threading.Tasks.Task;
 
 namespace DailyPulse.Application.CQRS.CommandHandler.EmployeesHandlers
 {
-    public class CreateEmployeeHandler : IRequestHandler<CreateEmployeeCommand, Unit>
+    public class CreateEmployeeHandler : IRequestHandler<CreateEmployeeCommand>
     {
         private readonly IGenericRepository<Employee> _repository;
 
@@ -14,7 +15,7 @@ namespace DailyPulse.Application.CQRS.CommandHandler.EmployeesHandlers
         {
             this._repository = _repository;
         }
-        public async Task<Unit> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
+        public async Task Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
         {
             var hashedPassword = BCrypt.Net.BCrypt.HashPassword(request.Password);
 
@@ -31,7 +32,6 @@ namespace DailyPulse.Application.CQRS.CommandHandler.EmployeesHandlers
             };
 
             await _repository.AddAsync(employee, cancellationToken);
-            return Unit.Value;
         }
     }
 }

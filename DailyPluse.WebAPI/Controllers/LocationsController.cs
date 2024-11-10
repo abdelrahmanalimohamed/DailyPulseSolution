@@ -11,12 +11,10 @@ namespace DailyPluse.WebAPI.Controllers
     public class LocationsController : ControllerBase
     {
         private readonly IMediator _mediator;
-
         public LocationsController(IMediator mediator , ApplicationDbContext applicationDbContext)
         {
             _mediator = mediator;
         }
-
 
         [HttpGet]
         public async Task<IActionResult> GetAllLocations()
