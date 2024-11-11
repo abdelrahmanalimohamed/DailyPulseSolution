@@ -102,6 +102,10 @@ namespace DailyPulse.Infrastructure.Persistence
                    .IsRequired()
                    .HasMaxLength(500);
 
+                entity.Property(p => p.Area)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
                 entity.Property(p => p.DrawingId)
                    .IsRequired()
                    .HasMaxLength(500);

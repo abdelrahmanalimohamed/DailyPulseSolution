@@ -1,4 +1,5 @@
 ﻿using DailyPulse.Application.CQRS.Commands.Tasks;
+using DailyPulse.Application.CQRS.Queries.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,6 +22,22 @@ namespace DailyPluse.WebAPI.Controllers
             await _mediator.Send(createTaskCommand);
 
             return StatusCode(201);
+        }
+
+        [HttpGet("getbyTasksEmployeeId")]
+        public async Task<IActionResult> GetTasksByEmployeeId(Guid empId)
+        {
+            var getTasksByEmployeeIdQuery = new GetTasksByEmployeeIdQuery { EmployeeId = empId };
+            var tasks = await _mediator.Send(getTasksByEmployeeIdQuery);
+            return Ok(tasks);
+        }
+
+        [HttpGet("getbyTaskId")]
+        public async Task<IActionResult> GetTasksById(Guid taskId)
+        {
+            var getTaskByIdQuery = new GetTaskByIdQuery { TaskId = taskId };
+            var tasks = await _mediator.Send(getTaskByIdQuery);
+            return Ok(tasks);
         }
     }
 }
