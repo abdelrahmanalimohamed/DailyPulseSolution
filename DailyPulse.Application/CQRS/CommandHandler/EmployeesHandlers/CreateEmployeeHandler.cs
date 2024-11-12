@@ -1,4 +1,5 @@
-﻿using DailyPulse.Application.Abstraction;
+﻿using System.Text.RegularExpressions;
+using DailyPulse.Application.Abstraction;
 using DailyPulse.Application.CQRS.Commands.Employees;
 using DailyPulse.Domain.Entities;
 using DailyPulse.Domain.Enums;
@@ -19,13 +20,15 @@ namespace DailyPulse.Application.CQRS.CommandHandler.EmployeesHandlers
         {
             var hashedPassword = BCrypt.Net.BCrypt.HashPassword(request.Password);
 
+            string grade = Regex.Replace(request.Jobgrade, @"\s+", "");
+
             var employee = new Employee
             {
                 Name = request.Name,
                 Title = request.Title,
                 username = request.Email,
                 password = hashedPassword,
-                Role = Enum.TryParse(request.Jobgrade, true, out EmployeeRole role)
+                Role = Enum.TryParse(grade, true, out EmployeeRole role)
                      ? role : throw new ArgumentException($"Invalid job grade: {request.Jobgrade}"),
                 ReportToId = request.ReportTo,
                 IsAdmin = false 

@@ -5,6 +5,6 @@
         New = 1,
         InProgress = 2,
         Rejected = 3,
-        Closed = 4
+        Completed = 4
     }
 }

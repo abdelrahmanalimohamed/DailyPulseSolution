@@ -2,7 +2,7 @@
 
 namespace DailyPulse.Application.ViewModel
 {
-    public class TaskHeaderViewModel : ViewModelBase
+    public class EmployeeViewModel : ViewModelBase
     {
     }
 }
