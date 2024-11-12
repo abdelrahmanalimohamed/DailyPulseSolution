@@ -29,6 +29,25 @@ namespace DailyPulse.Infrastructure.Repository
             return await _context.Set<T>().Where(predicate).ToListAsync(cancellationToken);
         }
 
+        public async Task<IEnumerable<T>> FindWithIncludeAsync(
+           Expression<Func<T, bool>> predicate,
+           List<Expression<Func<T, object>>> includes,
+           CancellationToken cancellationToken = default)
+        {
+
+            IQueryable<T> query = _context.Set<T>().Where(predicate);
+
+            if (includes != null)
+            {
+                foreach (var include in includes)
+                {
+                    query = query.Include(include);
+                }
+            }
+
+            return await query.ToListAsync(cancellationToken);
+        }
+
         public async Task AddAsync(T entity, CancellationToken cancellationToken = default)
         {
             await _context.Set<T>().AddAsync(entity, cancellationToken);
@@ -46,5 +65,7 @@ namespace DailyPulse.Infrastructure.Repository
             _context.Set<T>().Remove(entity);
             await _context.SaveChangesAsync(cancellationToken);
         }
+
+       
     }
 }
