@@ -21,6 +21,7 @@ namespace DailyPulse.Application.CQRS.CommandHandler.TasksHandlers
             var task = new DailyPulse.Domain.Entities.Task
             {
                 Name = request.TaskName,
+                Area = request.Area,
                 DateFrom = request.DateFrom,
                 DateTo = request.DateTo,
                 DrawingId = request.DrawingNo,
