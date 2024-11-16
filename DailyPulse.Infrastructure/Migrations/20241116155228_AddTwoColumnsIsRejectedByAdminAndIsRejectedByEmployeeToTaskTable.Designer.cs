@@ -3,6 +3,7 @@ using System;
 using DailyPulse.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DailyPulse.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241116155228_AddTwoColumnsIsRejectedByAdminAndIsRejectedByEmployeeToTaskTable")]
+    partial class AddTwoColumnsIsRejectedByAdminAndIsRejectedByEmployeeToTaskTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -306,6 +308,9 @@ namespace DailyPulse.Infrastructure.Migrations
                         .HasColumnType("datetime(6)")
                         .HasDefaultValueSql("current_timestamp()");
 
+                    b.Property<Guid?>("EmployeeId")
+                        .HasColumnType("char(36)");
+
                     b.Property<string>("LogDesc")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -320,6 +325,8 @@ namespace DailyPulse.Infrastructure.Migrations
                         .HasColumnType("char(36)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
 
                     b.HasIndex("TaskId");
 
@@ -439,6 +446,10 @@ namespace DailyPulse.Infrastructure.Migrations
 
             modelBuilder.Entity("DailyPulse.Domain.Entities.TaskDetail", b =>
                 {
+                    b.HasOne("DailyPulse.Domain.Entities.Employee", null)
+                        .WithMany("TaskDetails")
+                        .HasForeignKey("EmployeeId");
+
                     b.HasOne("DailyPulse.Domain.Entities.Task", "Task")
                         .WithMany("TaskDetails")
                         .HasForeignKey("TaskId")
@@ -455,6 +466,8 @@ namespace DailyPulse.Infrastructure.Migrations
                     b.Navigation("Projects");
 
                     b.Navigation("ReAssigns");
+
+                    b.Navigation("TaskDetails");
 
                     b.Navigation("Tasks");
                 });

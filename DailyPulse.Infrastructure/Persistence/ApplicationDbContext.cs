@@ -106,6 +106,12 @@ namespace DailyPulse.Infrastructure.Persistence
                     .IsRequired()
                     .HasMaxLength(50);
 
+                entity.Property(p => p.IsRejectedByAdmin)
+                .HasDefaultValue(false);
+
+                entity.Property(p => p.IsRejectedByEmployee)
+                .HasDefaultValue(false);
+
                 entity.Property(p => p.DrawingId)
                    .IsRequired()
                    .HasMaxLength(500);

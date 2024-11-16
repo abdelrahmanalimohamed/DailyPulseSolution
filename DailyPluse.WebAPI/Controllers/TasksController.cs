@@ -17,11 +17,33 @@ namespace DailyPluse.WebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateTask(CreateTaskCommand createTaskCommand)
+        public async Task<IActionResult> CreateTask([FromBody] CreateTaskCommand createTaskCommand)
         {
             await _mediator.Send(createTaskCommand);
 
             return StatusCode(201);
+        }
+
+        [HttpPut("updatetaskstatus")]
+        public async Task<IActionResult> UpdateTaskStatusByAdmin([FromBody] UpdateTaskStatusByAdminCommand updateTaskStatusByAdminCommand)
+        {
+            await _mediator.Send(updateTaskStatusByAdminCommand);
+            return StatusCode(201);
+        }
+
+        [HttpPut("updatetaskstatusbyemployee")]
+        public async Task<IActionResult> UpdateTaskStatusByEmployee([FromBody] UpdateTaskStatusByEmployeeCommand updateTaskStatusByEmployeeCommand)
+        {
+            await _mediator.Send(updateTaskStatusByEmployeeCommand);
+            return StatusCode(201);
+        }
+
+        [HttpGet("getalltasks")]
+        public async Task<IActionResult> GetAllTasks()
+        {
+            var getTasksQuery = new GetTasksQuery();
+            var tasks = await _mediator.Send(getTasksQuery);
+            return Ok(tasks);
         }
 
         [HttpGet("getbyTasksEmployeeId")]
