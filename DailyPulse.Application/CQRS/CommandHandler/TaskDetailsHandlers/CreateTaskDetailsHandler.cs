@@ -1,10 +1,10 @@
 ﻿using DailyPulse.Application.Abstraction;
-using DailyPulse.Application.CQRS.Commands.Tasks;
+using DailyPulse.Application.CQRS.Commands.TaskDetails;
 using DailyPulse.Domain.Entities;
 using MediatR;
 using Task = System.Threading.Tasks.Task;
 
-namespace DailyPulse.Application.CQRS.CommandHandler.TasksHandlers
+namespace DailyPulse.Application.CQRS.CommandHandler.TaskDetailsHandlers
 {
     public class CreateTaskDetailsHandler : IRequestHandler<CreateTaskDetailsCommand>
     {

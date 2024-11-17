@@ -49,7 +49,7 @@ namespace DailyPluse.WebAPI.Controllers
         [HttpGet("getbyTasksEmployeeId")]
         public async Task<IActionResult> GetTasksByEmployeeId(Guid empId)
         {
-            var getTasksByEmployeeIdQuery = new GetTasksByEmployeeIdQuery { EmployeeId = empId };
+            var getTasksByEmployeeIdQuery = new GetAllTasksByEmployeeIdQuery { EmployeeId = empId };
             var tasks = await _mediator.Send(getTasksByEmployeeIdQuery);
             return Ok(tasks);
         }
@@ -60,6 +60,14 @@ namespace DailyPluse.WebAPI.Controllers
             var getTaskByIdQuery = new GetTaskByIdQuery { TaskId = taskId };
             var tasks = await _mediator.Send(getTaskByIdQuery);
             return Ok(tasks);
+        }
+
+        [HttpGet("getworkedtasks")]
+        public async Task<IActionResult> GetWorkedTasks(Guid empId)
+        {
+            var getWorkedTasksByEmployeeIdQuery = new GetWorkedTasksByEmployeeIdQuery { EmployeeId = empId };
+            var workedTasks = await _mediator.Send(getWorkedTasksByEmployeeIdQuery);
+            return Ok(workedTasks);
         }
     }
 }

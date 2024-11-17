@@ -159,6 +159,8 @@ namespace DailyPulse.Infrastructure.Persistence
                 entity.HasKey(k => k.Id);
                 entity.Property(x => x.CreatedDate).HasDefaultValueSql("current_timestamp()");
 
+                entity.Property(x => x.EndTime).HasDefaultValue(null);
+
                 entity.HasOne(p => p.Task)
                     .WithMany(r => r.TaskDetails)
                     .HasForeignKey(x => x.TaskId)

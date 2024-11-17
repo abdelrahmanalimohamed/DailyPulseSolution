@@ -7,16 +7,16 @@ using Task = DailyPulse.Domain.Entities.Task;
 
 namespace DailyPulse.Application.CQRS.QueriesHandler.TaskHandlers
 {
-    public class GetTasksByEmployeeIdHandler : IRequestHandler<GetTasksByEmployeeIdQuery, IEnumerable<TaskHeaderViewModel>>
+    public class GetAllTasksByEmployeeIdHandler : IRequestHandler<GetAllTasksByEmployeeIdQuery, IEnumerable<TaskHeaderViewModel>>
     {
         private readonly IGenericRepository<Task> _repository;
 
-        public GetTasksByEmployeeIdHandler(IGenericRepository<Task> _repository)
+        public GetAllTasksByEmployeeIdHandler(IGenericRepository<Task> _repository)
         {
             this._repository = _repository;
         }
 
-        public async Task<IEnumerable<TaskHeaderViewModel>> Handle(GetTasksByEmployeeIdQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<TaskHeaderViewModel>> Handle(GetAllTasksByEmployeeIdQuery request, CancellationToken cancellationToken)
         {
             var tasks = await _repository.FindAsync(
                                   x => x.EmpId == request.EmployeeId &&
