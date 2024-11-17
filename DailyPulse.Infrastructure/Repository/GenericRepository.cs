@@ -30,12 +30,16 @@ namespace DailyPulse.Infrastructure.Repository
         }
 
         public async Task<IEnumerable<T>> FindWithIncludeAsync(
-           Expression<Func<T, bool>> predicate,
-           List<Expression<Func<T, object>>> includes,
+           Expression<Func<T, bool>> predicate = null,
+           List<Expression<Func<T, object>>> includes = null,
            CancellationToken cancellationToken = default)
         {
+            IQueryable<T> query = _context.Set<T>();
 
-            IQueryable<T> query = _context.Set<T>().Where(predicate);
+            if (predicate != null)
+            {
+                query = query.Where(predicate);
+            }
 
             if (includes != null)
             {

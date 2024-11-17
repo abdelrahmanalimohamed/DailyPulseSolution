@@ -1,6 +1,5 @@
 ﻿using DailyPulse.Application.Abstraction;
 using DailyPulse.Application.CQRS.Commands.Tasks;
-using DailyPulse.Domain.Entities;
 using DailyPulse.Domain.Enums;
 using MediatR;
 using Task = System.Threading.Tasks.Task;
@@ -21,6 +20,7 @@ namespace DailyPulse.Application.CQRS.CommandHandler.TasksHandlers
             var task = new DailyPulse.Domain.Entities.Task
             {
                 Name = request.TaskName,
+                Area = request.Area,
                 DateFrom = request.DateFrom,
                 DateTo = request.DateTo,
                 DrawingId = request.DrawingNo,

@@ -106,6 +106,12 @@ namespace DailyPulse.Infrastructure.Persistence
                     .IsRequired()
                     .HasMaxLength(50);
 
+                entity.Property(p => p.IsRejectedByAdmin)
+                .HasDefaultValue(false);
+
+                entity.Property(p => p.IsRejectedByEmployee)
+                .HasDefaultValue(false);
+
                 entity.Property(p => p.DrawingId)
                    .IsRequired()
                    .HasMaxLength(500);
@@ -152,6 +158,8 @@ namespace DailyPulse.Infrastructure.Persistence
             {
                 entity.HasKey(k => k.Id);
                 entity.Property(x => x.CreatedDate).HasDefaultValueSql("current_timestamp()");
+
+                entity.Property(x => x.EndTime).HasDefaultValue(null);
 
                 entity.HasOne(p => p.Task)
                     .WithMany(r => r.TaskDetails)

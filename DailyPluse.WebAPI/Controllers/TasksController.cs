@@ -17,17 +17,39 @@ namespace DailyPluse.WebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateTask(CreateTaskCommand createTaskCommand)
+        public async Task<IActionResult> CreateTask([FromBody] CreateTaskCommand createTaskCommand)
         {
             await _mediator.Send(createTaskCommand);
 
             return StatusCode(201);
         }
 
+        [HttpPut("updatetaskstatus")]
+        public async Task<IActionResult> UpdateTaskStatusByAdmin([FromBody] UpdateTaskStatusByAdminCommand updateTaskStatusByAdminCommand)
+        {
+            await _mediator.Send(updateTaskStatusByAdminCommand);
+            return StatusCode(201);
+        }
+
+        [HttpPut("updatetaskstatusbyemployee")]
+        public async Task<IActionResult> UpdateTaskStatusByEmployee([FromBody] UpdateTaskStatusByEmployeeCommand updateTaskStatusByEmployeeCommand)
+        {
+            await _mediator.Send(updateTaskStatusByEmployeeCommand);
+            return StatusCode(201);
+        }
+
+        [HttpGet("getalltasks")]
+        public async Task<IActionResult> GetAllTasks()
+        {
+            var getTasksQuery = new GetTasksQuery();
+            var tasks = await _mediator.Send(getTasksQuery);
+            return Ok(tasks);
+        }
+
         [HttpGet("getbyTasksEmployeeId")]
         public async Task<IActionResult> GetTasksByEmployeeId(Guid empId)
         {
-            var getTasksByEmployeeIdQuery = new GetTasksByEmployeeIdQuery { EmployeeId = empId };
+            var getTasksByEmployeeIdQuery = new GetAllTasksByEmployeeIdQuery { EmployeeId = empId };
             var tasks = await _mediator.Send(getTasksByEmployeeIdQuery);
             return Ok(tasks);
         }
@@ -38,6 +60,14 @@ namespace DailyPluse.WebAPI.Controllers
             var getTaskByIdQuery = new GetTaskByIdQuery { TaskId = taskId };
             var tasks = await _mediator.Send(getTaskByIdQuery);
             return Ok(tasks);
+        }
+
+        [HttpGet("getworkedtasks")]
+        public async Task<IActionResult> GetWorkedTasks(Guid empId)
+        {
+            var getWorkedTasksByEmployeeIdQuery = new GetWorkedTasksByEmployeeIdQuery { EmployeeId = empId };
+            var workedTasks = await _mediator.Send(getWorkedTasksByEmployeeIdQuery);
+            return Ok(workedTasks);
         }
     }
 }

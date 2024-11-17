@@ -3,6 +3,7 @@ using System;
 using DailyPulse.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DailyPulse.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241113001858_DropLocationIdColumnFromTasksTable")]
+    partial class DropLocationIdColumnFromTasksTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -254,16 +256,6 @@ namespace DailyPulse.Infrastructure.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("varchar(500)");
 
-                    b.Property<bool>("IsRejectedByAdmin")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("tinyint(1)")
-                        .HasDefaultValue(false);
-
-                    b.Property<bool>("IsRejectedByEmployee")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("tinyint(1)")
-                        .HasDefaultValue(false);
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(500)
@@ -306,8 +298,8 @@ namespace DailyPulse.Infrastructure.Migrations
                         .HasColumnType("datetime(6)")
                         .HasDefaultValueSql("current_timestamp()");
 
-                    b.Property<DateTime?>("EndTime")
-                        .HasColumnType("datetime(6)");
+                    b.Property<Guid?>("EmployeeId")
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("LogDesc")
                         .IsRequired()
@@ -323,6 +315,8 @@ namespace DailyPulse.Infrastructure.Migrations
                         .HasColumnType("char(36)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
 
                     b.HasIndex("TaskId");
 
@@ -442,6 +436,10 @@ namespace DailyPulse.Infrastructure.Migrations
 
             modelBuilder.Entity("DailyPulse.Domain.Entities.TaskDetail", b =>
                 {
+                    b.HasOne("DailyPulse.Domain.Entities.Employee", null)
+                        .WithMany("TaskDetails")
+                        .HasForeignKey("EmployeeId");
+
                     b.HasOne("DailyPulse.Domain.Entities.Task", "Task")
                         .WithMany("TaskDetails")
                         .HasForeignKey("TaskId")
@@ -458,6 +456,8 @@ namespace DailyPulse.Infrastructure.Migrations
                     b.Navigation("Projects");
 
                     b.Navigation("ReAssigns");
+
+                    b.Navigation("TaskDetails");
 
                     b.Navigation("Tasks");
                 });
