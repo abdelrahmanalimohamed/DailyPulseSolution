@@ -57,6 +57,12 @@ namespace DailyPulse.Infrastructure.Repository
             await _context.Set<T>().AddAsync(entity, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
         }
+        public async Task<T> AddAsyncWithReturnEntity(T entity, CancellationToken cancellationToken = default)
+        {
+            await _context.Set<T>().AddAsync(entity, cancellationToken);
+            await _context.SaveChangesAsync(cancellationToken);
+            return entity;
+        }
 
         public async Task UpdateAsync(T entity, CancellationToken cancellationToken = default)
         {
@@ -69,7 +75,5 @@ namespace DailyPulse.Infrastructure.Repository
             _context.Set<T>().Remove(entity);
             await _context.SaveChangesAsync(cancellationToken);
         }
-
-       
     }
 }

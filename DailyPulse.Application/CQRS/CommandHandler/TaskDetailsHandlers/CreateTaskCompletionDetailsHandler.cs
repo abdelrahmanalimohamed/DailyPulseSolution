@@ -37,7 +37,6 @@ namespace DailyPulse.Application.CQRS.CommandHandler.TaskDetailsHandlers
 
         private async Task UpdateTaskStatusAsync(Guid taskId, CancellationToken cancellationToken)
         {
-            // Retrieve the Task to update its status
             var task = await _taskRepository.GetByIdAsync(taskId, cancellationToken);
 
             if (task == null)
@@ -45,7 +44,7 @@ namespace DailyPulse.Application.CQRS.CommandHandler.TaskDetailsHandlers
                 throw new KeyNotFoundException($"Task with ID {taskId} not found.");
             }
 
-            task.Status = Status.Completed;
+            task.Status = Status.PendingAdminApproval;
 
             await _taskRepository.UpdateAsync(task, cancellationToken);
         }

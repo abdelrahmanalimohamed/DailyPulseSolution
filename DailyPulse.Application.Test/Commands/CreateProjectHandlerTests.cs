@@ -11,11 +11,13 @@ namespace DailyPulse.Application.Test.Commands
     public class CreateProjectHandlerTests
     {
         private readonly Mock<IGenericRepository<Project>> _mockRepository;
+        private readonly Mock<IGenericRepository<ProjectsScopes>> _mock;
         private readonly CreateProjectHandler _handler;
         public CreateProjectHandlerTests()
         {
             _mockRepository = new Mock<IGenericRepository<Project>>();
-            _handler = new CreateProjectHandler(_mockRepository.Object);
+            _mock = new Mock<IGenericRepository<ProjectsScopes>>();
+            _handler = new CreateProjectHandler(_mockRepository.Object , _mock.Object);
         }
 
         [Fact]
@@ -27,8 +29,8 @@ namespace DailyPulse.Application.Test.Commands
                 RegionId = Guid.NewGuid() , 
                 LocationId = Guid.NewGuid()  ,
                 Description = "Description Test",
-                ScopeOfWorkId = Guid.NewGuid() , 
-                TeamLeadId = Guid.NewGuid() 
+                //ScopeOfWorkId = Guid.NewGuid() , 
+                //TeamLeadId = Guid.NewGuid() 
             };
 
             _mockRepository

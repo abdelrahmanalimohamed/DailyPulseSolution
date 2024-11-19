@@ -35,8 +35,8 @@ namespace DailyPulse.Application.CQRS.QueriesHandler.TaskHandlers
                 DrawingNo = task.DrawingId,
                 Id = task.Id,
                 Attachement = task.FilePath,
-                StartDate = task.StartTime,
-                EndDate = task.EndTime,
+                StartDate = task.DateFrom,
+                EndDate = task.DateTo,
                 DrawingTitle = task.DrawingTitle,
                 Name = task.Name,
                 Priority = Enum.IsDefined(typeof(Priority), task.Priority)

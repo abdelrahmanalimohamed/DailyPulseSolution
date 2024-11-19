@@ -15,8 +15,8 @@ namespace DailyPulse.Domain.Entities
         public Priority Priority { get; set; }
         public DateTime DateFrom { get; set; }
         public DateTime DateTo { get; set; }
-        public DateTime StartTime { get; set; }
-        public DateTime EndTime { get; set; }
+        public DateTime? StartTime { get; set; }
+        public DateTime? EndTime { get; set; }
         public Guid EmpId { get; set; } // Foreign key to Employee
         public Guid ScopeId { get; set; }  // Foreign key to Scope
         public Guid ProjectId { get; set; }  // Foreign key to Scope

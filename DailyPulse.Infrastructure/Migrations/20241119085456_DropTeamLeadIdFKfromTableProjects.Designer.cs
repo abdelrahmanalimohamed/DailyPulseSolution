@@ -3,6 +3,7 @@ using System;
 using DailyPulse.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DailyPulse.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241119085456_DropTeamLeadIdFKfromTableProjects")]
+    partial class DropTeamLeadIdFKfromTableProjects
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -119,28 +121,18 @@ namespace DailyPulse.Infrastructure.Migrations
                     b.Property<Guid>("RegionId")
                         .HasColumnType("char(36)");
 
+                    b.Property<Guid>("ScopeOfWorkId")
+                        .HasColumnType("char(36)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("LocationId");
 
                     b.HasIndex("RegionId");
 
-                    b.ToTable("Projects");
-                });
-
-            modelBuilder.Entity("DailyPulse.Domain.Entities.ProjectsScopes", b =>
-                {
-                    b.Property<Guid>("ProjectId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid>("ScopeOfWorkId")
-                        .HasColumnType("char(36)");
-
-                    b.HasKey("ProjectId", "ScopeOfWorkId");
-
                     b.HasIndex("ScopeOfWorkId");
 
-                    b.ToTable("ProjectsScopes");
+                    b.ToTable("Projects");
                 });
 
             modelBuilder.Entity("DailyPulse.Domain.Entities.ReAssign", b =>
@@ -251,7 +243,7 @@ namespace DailyPulse.Infrastructure.Migrations
                     b.Property<Guid>("EmpId")
                         .HasColumnType("char(36)");
 
-                    b.Property<DateTime?>("EndTime")
+                    b.Property<DateTime>("EndTime")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("FilePath")
@@ -283,7 +275,7 @@ namespace DailyPulse.Infrastructure.Migrations
                     b.Property<Guid>("ScopeId")
                         .HasColumnType("char(36)");
 
-                    b.Property<DateTime?>("StartTime")
+                    b.Property<DateTime>("StartTime")
                         .HasColumnType("datetime(6)");
 
                     b.Property<int>("Status")
@@ -370,26 +362,15 @@ namespace DailyPulse.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("DailyPulse.Domain.Entities.ScopeOfWork", "ScopeOfWork")
+                        .WithMany("Projects")
+                        .HasForeignKey("ScopeOfWorkId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.Navigation("Location");
 
                     b.Navigation("Region");
-                });
-
-            modelBuilder.Entity("DailyPulse.Domain.Entities.ProjectsScopes", b =>
-                {
-                    b.HasOne("DailyPulse.Domain.Entities.Project", "Project")
-                        .WithMany("ProjectsScopes")
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DailyPulse.Domain.Entities.ScopeOfWork", "ScopeOfWork")
-                        .WithMany("ProjectsScopes")
-                        .HasForeignKey("ScopeOfWorkId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Project");
 
                     b.Navigation("ScopeOfWork");
                 });
@@ -475,8 +456,6 @@ namespace DailyPulse.Infrastructure.Migrations
 
             modelBuilder.Entity("DailyPulse.Domain.Entities.Project", b =>
                 {
-                    b.Navigation("ProjectsScopes");
-
                     b.Navigation("Tasks");
                 });
 
@@ -489,7 +468,7 @@ namespace DailyPulse.Infrastructure.Migrations
 
             modelBuilder.Entity("DailyPulse.Domain.Entities.ScopeOfWork", b =>
                 {
-                    b.Navigation("ProjectsScopes");
+                    b.Navigation("Projects");
 
                     b.Navigation("Tasks");
                 });

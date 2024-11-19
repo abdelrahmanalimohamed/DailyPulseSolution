@@ -43,11 +43,6 @@ namespace DailyPulse.Infrastructure.Persistence
                     .HasForeignKey(e => e.ReportToId)
                     .OnDelete(DeleteBehavior.Restrict);
 
-                // 1:* Relationship with Projects
-                entity.HasMany(e => e.Projects)
-                    .WithOne(p => p.TeamLead)
-                    .HasForeignKey(p => p.TeamLeadId)
-                    .OnDelete(DeleteBehavior.Restrict);
 
                 entity.HasMany(e => e.Tasks)
                    .WithOne(p => p.Employee)
@@ -69,12 +64,6 @@ namespace DailyPulse.Infrastructure.Persistence
                     .IsRequired()
                     .HasMaxLength(500);
 
-                // Foreign Key Relationships
-                entity.HasOne(p => p.ScopeOfWork)
-                    .WithMany(s => s.Projects) // Updated to reference Projects
-                    .HasForeignKey(p => p.ScopeOfWorkId)
-                    .OnDelete(DeleteBehavior.Restrict);
-
                 entity.HasOne(p => p.Region)
                     .WithMany(s => s.Projects)
                     .HasForeignKey(p => p.RegionId)
@@ -86,10 +75,10 @@ namespace DailyPulse.Infrastructure.Persistence
                     .OnDelete(DeleteBehavior.Restrict);
 
                 // Foreign Key for Team Lead
-                entity.HasOne(p => p.TeamLead)
-                    .WithMany(e => e.Projects)
-                    .HasForeignKey(p => p.TeamLeadId)
-                    .OnDelete(DeleteBehavior.Restrict);
+                //entity.HasOne(p => p.TeamLead)
+                //    .WithMany(e => e.Projects)
+                //    .HasForeignKey(p => p.TeamLeadId)
+                //    .OnDelete(DeleteBehavior.Restrict);
             });
 
             // Tasks Entity Configuration
@@ -208,10 +197,6 @@ namespace DailyPulse.Infrastructure.Persistence
                     .HasMaxLength(100);
 
                 // 1:* Relationship with Projects
-                entity.HasMany(s => s.Projects)
-                    .WithOne(p => p.ScopeOfWork)
-                    .HasForeignKey(p => p.ScopeOfWorkId)
-                    .OnDelete(DeleteBehavior.Restrict);
             });
 
             modelBuilder.Entity<ReAssign>(entity =>
@@ -233,6 +218,21 @@ namespace DailyPulse.Infrastructure.Persistence
                     .WithMany(t => t.ReAssigns)
                     .HasForeignKey(r => r.TaskId)
                     .OnDelete(DeleteBehavior.Cascade); // Adjust as necessary
+            });
+
+
+            modelBuilder.Entity<ProjectsScopes>(entity =>
+            {
+                entity.HasKey(bc => new { bc.ProjectId, bc.ScopeOfWorkId });
+
+                entity.HasOne(sc => sc.Project)
+                        .WithMany(s => s.ProjectsScopes)
+                        .HasForeignKey(sc => sc.ProjectId);
+
+                entity.HasOne(sc => sc.ScopeOfWork)
+                       .WithMany(s => s.ProjectsScopes)
+                       .HasForeignKey(sc => sc.ScopeOfWorkId);
+
             });
 
             base.OnModelCreating(modelBuilder);

@@ -5,6 +5,7 @@
         New = 1,
         InProgress = 2,
         Rejected = 3,
-        Completed = 4
+        Completed = 4 , 
+        PendingAdminApproval = 5
     }
 }
