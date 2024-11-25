@@ -19,7 +19,7 @@ namespace DailyPulse.Application.CQRS.CommandHandler.TasksHandlers
             var task = await _repository.GetByIdAsync(request.TaskId)
            ?? throw new KeyNotFoundException("Task not found");
 
-            task.Status = request.Action == "Accepted" ? Status.InProgress : Status.Rejected;
+            task.Status = request.Action == "Accepted" ? Status.InProgress : Status.Canceled;
 
             task.IsRejectedByAdmin = task.Status == Status.Rejected;
 

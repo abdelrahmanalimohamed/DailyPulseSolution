@@ -38,6 +38,22 @@ namespace DailyPluse.WebAPI.Controllers
             return StatusCode(201);
         }
 
+
+        [HttpPut("update-updatetask")]
+        public async Task<IActionResult> UpdateTask([FromBody] UpdateTaskCommand updateTaskCommand)
+        {
+            await _mediator.Send(updateTaskCommand);
+            return StatusCode(200);
+        }
+
+        [HttpPost("reject-rejectTask")]
+        public async Task<IActionResult> RejectTaskByEmployee([FromBody] UpdateTaskRejectionByEmployeeCommand updateTaskRejectionByEmployeeCommand)
+        {
+            await _mediator.Send(updateTaskRejectionByEmployeeCommand);
+            return StatusCode(201);
+
+        }
+
         [HttpGet("getalltasks")]
         public async Task<IActionResult> GetAllTasks()
         {

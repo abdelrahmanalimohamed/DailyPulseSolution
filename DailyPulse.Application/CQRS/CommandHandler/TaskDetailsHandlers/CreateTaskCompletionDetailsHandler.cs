@@ -44,7 +44,7 @@ namespace DailyPulse.Application.CQRS.CommandHandler.TaskDetailsHandlers
                 throw new KeyNotFoundException($"Task with ID {taskId} not found.");
             }
 
-            task.Status = Status.PendingAdminApproval;
+            task.Status = Status.Pending_Approval ;
 
             await _taskRepository.UpdateAsync(task, cancellationToken);
         }

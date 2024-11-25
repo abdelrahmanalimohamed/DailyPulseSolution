@@ -32,15 +32,6 @@ namespace DailyPluse.WebAPI.Controllers
             return Ok(project);
         }
 
-
-        [HttpGet("{projectId}/scopes")]
-        public async Task<IActionResult> GetRelatedScopes(Guid projectId)
-        {
-            var query = new GetRelatedProjectScopesQuery { ProjectId = projectId };
-            var scopes = await _mediator.Send(query);
-            return Ok(scopes);
-        }
-
         [HttpPost]
         public async Task<IActionResult> AddProject([FromBody] CreateProjectCommand createProjectCommand)
         {

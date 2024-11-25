@@ -20,5 +20,7 @@ namespace DailyPulse.Domain.Entities
         public ICollection<Task> Tasks { get; set; } = new List<Task>();
        // public ICollection<TaskDetail> TaskDetails { get; set; } = new List<TaskDetail>();
         public ICollection<ReAssign> ReAssigns { get; set; } = new List<ReAssign>();
+
+        public ICollection<RejectedTasks> RejectedTasks { get; set; } = new List<RejectedTasks>();
     }
 }

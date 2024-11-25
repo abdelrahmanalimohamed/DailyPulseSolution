@@ -18,6 +18,11 @@ namespace DailyPulse.Infrastructure.Persistence
         public DbSet<Location> Locations { get; set; }
         public DbSet<Task> Tasks { get; set; }
         public DbSet<ReAssign> ReAssigns { get; set; }
+      //  public DbSet<ProjectsScopes> ProjectsScopes { get; set; }
+
+        public DbSet<RejectedTasks> RejectedTasks { get; set; }
+
+        public DbSet<TaskNewRequirements> TaskNewRequirements { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -56,9 +61,13 @@ namespace DailyPulse.Infrastructure.Persistence
                 entity.HasKey(k => k.Id);
 
                 entity.Property(x => x.CreatedDate).HasDefaultValueSql("current_timestamp()");
+
                 entity.Property(p => p.Name)
                    .IsRequired()
                    .HasMaxLength(500);
+
+                entity.Property(e => e.Trade)
+                    .IsRequired();
 
                 entity.Property(p => p.Description)
                     .IsRequired()
@@ -195,8 +204,6 @@ namespace DailyPulse.Infrastructure.Persistence
                 entity.Property(s => s.Name)
                     .IsRequired()
                     .HasMaxLength(100);
-
-                // 1:* Relationship with Projects
             });
 
             modelBuilder.Entity<ReAssign>(entity =>
@@ -218,21 +225,54 @@ namespace DailyPulse.Infrastructure.Persistence
                     .WithMany(t => t.ReAssigns)
                     .HasForeignKey(r => r.TaskId)
                     .OnDelete(DeleteBehavior.Cascade); // Adjust as necessary
+
+                entity.HasIndex(r => r.TaskId);
             });
 
 
-            modelBuilder.Entity<ProjectsScopes>(entity =>
+            //modelBuilder.Entity<ProjectsScopes>(entity =>
+            //{
+            //    entity.HasKey(bc => new { bc.ProjectId, bc.ScopeOfWorkId });
+
+            //    entity.HasOne(sc => sc.Project)
+            //            .WithMany(s => s.ProjectsScopes)
+            //            .HasForeignKey(sc => sc.ProjectId);
+
+            //    entity.HasOne(sc => sc.ScopeOfWork)
+            //           .WithMany(s => s.ProjectsScopes)
+            //           .HasForeignKey(sc => sc.ScopeOfWorkId);
+
+            //});
+
+            modelBuilder.Entity<RejectedTasks>(entity =>
             {
-                entity.HasKey(bc => new { bc.ProjectId, bc.ScopeOfWorkId });
+                entity.HasKey(k => k.Id);
+                entity.Property(x => x.CreatedDate).HasDefaultValueSql("current_timestamp()");
 
-                entity.HasOne(sc => sc.Project)
-                        .WithMany(s => s.ProjectsScopes)
-                        .HasForeignKey(sc => sc.ProjectId);
+                entity.HasOne(r => r.Employee)
+                      .WithMany(e => e.RejectedTasks)
+                      .HasForeignKey(r => r.EmpId)
+                      .OnDelete(DeleteBehavior.Restrict); // Prevent cascading deletes
 
-                entity.HasOne(sc => sc.ScopeOfWork)
-                       .WithMany(s => s.ProjectsScopes)
-                       .HasForeignKey(sc => sc.ScopeOfWorkId);
+                entity.HasOne(r => r.Task)
+                    .WithMany(t => t.RejectedTasks)
+                    .HasForeignKey(r => r.TaskId)
+                    .OnDelete(DeleteBehavior.Cascade); // Adjust as necessary
 
+                entity.HasIndex(r => r.TaskId);
+            });
+
+            modelBuilder.Entity<TaskNewRequirements>(entity =>
+            {
+                entity.HasKey(k => k.Id);
+                entity.Property(x => x.CreatedDate).HasDefaultValueSql("current_timestamp()");
+
+                entity.HasOne(r => r.Task)
+                    .WithMany(t => t.TaskNewRequirements)
+                    .HasForeignKey(r => r.TaskId)
+                    .OnDelete(DeleteBehavior.Cascade); // Adjust as necessary
+
+                entity.HasIndex(r => r.TaskId);
             });
 
             base.OnModelCreating(modelBuilder);

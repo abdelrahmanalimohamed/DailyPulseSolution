@@ -15,5 +15,7 @@ namespace DailyPulse.Application.ViewModel
         public string Priority { get; set; }
 
         public string Overdue { get; set; }
+
+        public string ProjectName { get; set; }
     }
 }

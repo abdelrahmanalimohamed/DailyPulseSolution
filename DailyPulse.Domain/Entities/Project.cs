@@ -1,4 +1,5 @@
 ﻿using DailyPulse.Domain.Base;
+using DailyPulse.Domain.Enums;
 
 namespace DailyPulse.Domain.Entities
 {
@@ -12,9 +13,9 @@ namespace DailyPulse.Domain.Entities
         // Navigation properties
         public Region Region { get; set; }
         public Location Location { get; set; }
+        public Trades Trade { get; set; }
        // public Employee TeamLead { get; set; }
         public ICollection<Task> Tasks { get; set; } = new List<Task>();
-
-        public ICollection<ProjectsScopes> ProjectsScopes { get; set; }
+       // public ICollection<ProjectsScopes> ProjectsScopes { get; set; }
     }
 }

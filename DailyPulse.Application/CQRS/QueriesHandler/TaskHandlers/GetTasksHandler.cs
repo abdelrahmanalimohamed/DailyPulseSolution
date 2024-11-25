@@ -19,7 +19,8 @@ namespace DailyPulse.Application.CQRS.QueriesHandler.TaskHandlers
         {
             var includes = new List<Expression<Func<Task, object>>>
                  {
-                     task => task.Employee
+                     task => task.Employee, 
+                     task => task.Project
                  };
 
             var tasks = await _repository.FindWithIncludeAsync(null , includes, cancellationToken);
@@ -35,6 +36,7 @@ namespace DailyPulse.Application.CQRS.QueriesHandler.TaskHandlers
                 StartDate = task.DateFrom ,
                 EndDate = task.DateTo,
                 Priority = task.Priority.ToString(),
+                ProjectName = task.Project.Name ,
                 Overdue = todayDate > task.DateTo && task.Status.ToString() == Status.InProgress.ToString()
                   ? $"{(todayDate - task.DateTo).Days} Days"
                   : ""

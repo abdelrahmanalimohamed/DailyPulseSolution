@@ -5,9 +5,10 @@ namespace DailyPulse.Application.CQRS.Commands.Projects
     public class CreateProjectCommand : IRequest
     {
         public string Name { get; set; }
+
         public string Description { get; set; }
 
-        public List<Guid> ScopeOfWorksSelections { get; set; }
+        public string TradeId { get; set; }
 
         public Guid LocationId { get; set; }
 

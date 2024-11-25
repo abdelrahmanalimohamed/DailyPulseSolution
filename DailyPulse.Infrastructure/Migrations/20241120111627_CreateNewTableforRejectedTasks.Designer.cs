@@ -3,6 +3,7 @@ using System;
 using DailyPulse.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DailyPulse.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241120111627_CreateNewTableforRejectedTasks")]
+    partial class CreateNewTableforRejectedTasks
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -119,9 +121,6 @@ namespace DailyPulse.Infrastructure.Migrations
                     b.Property<Guid>("RegionId")
                         .HasColumnType("char(36)");
 
-                    b.Property<int>("Trade")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("LocationId");
@@ -129,6 +128,21 @@ namespace DailyPulse.Infrastructure.Migrations
                     b.HasIndex("RegionId");
 
                     b.ToTable("Projects");
+                });
+
+            modelBuilder.Entity("DailyPulse.Domain.Entities.ProjectsScopes", b =>
+                {
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("ScopeOfWorkId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("ProjectId", "ScopeOfWorkId");
+
+                    b.HasIndex("ScopeOfWorkId");
+
+                    b.ToTable("ProjectsScopes");
                 });
 
             modelBuilder.Entity("DailyPulse.Domain.Entities.ReAssign", b =>
@@ -352,35 +366,6 @@ namespace DailyPulse.Infrastructure.Migrations
                     b.ToTable("TaskDetails");
                 });
 
-            modelBuilder.Entity("DailyPulse.Domain.Entities.TaskNewRequirements", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime(6)")
-                        .HasDefaultValueSql("current_timestamp()");
-
-                    b.Property<string>("EstimatedWorkingHours")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("RequirementsDetails")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<Guid>("TaskId")
-                        .HasColumnType("char(36)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TaskId");
-
-                    b.ToTable("TaskNewRequirements");
-                });
-
             modelBuilder.Entity("DailyPulse.Domain.Entities.Employee", b =>
                 {
                     b.HasOne("DailyPulse.Domain.Entities.Employee", "ReportTo")
@@ -420,6 +405,25 @@ namespace DailyPulse.Infrastructure.Migrations
                     b.Navigation("Location");
 
                     b.Navigation("Region");
+                });
+
+            modelBuilder.Entity("DailyPulse.Domain.Entities.ProjectsScopes", b =>
+                {
+                    b.HasOne("DailyPulse.Domain.Entities.Project", "Project")
+                        .WithMany("ProjectsScopes")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DailyPulse.Domain.Entities.ScopeOfWork", "ScopeOfWork")
+                        .WithMany("ProjectsScopes")
+                        .HasForeignKey("ScopeOfWorkId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Project");
+
+                    b.Navigation("ScopeOfWork");
                 });
 
             modelBuilder.Entity("DailyPulse.Domain.Entities.ReAssign", b =>
@@ -506,17 +510,6 @@ namespace DailyPulse.Infrastructure.Migrations
                     b.Navigation("Task");
                 });
 
-            modelBuilder.Entity("DailyPulse.Domain.Entities.TaskNewRequirements", b =>
-                {
-                    b.HasOne("DailyPulse.Domain.Entities.Task", "Task")
-                        .WithMany("TaskNewRequirements")
-                        .HasForeignKey("TaskId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Task");
-                });
-
             modelBuilder.Entity("DailyPulse.Domain.Entities.Employee", b =>
                 {
                     b.Navigation("DirectReports");
@@ -535,6 +528,8 @@ namespace DailyPulse.Infrastructure.Migrations
 
             modelBuilder.Entity("DailyPulse.Domain.Entities.Project", b =>
                 {
+                    b.Navigation("ProjectsScopes");
+
                     b.Navigation("Tasks");
                 });
 
@@ -547,6 +542,8 @@ namespace DailyPulse.Infrastructure.Migrations
 
             modelBuilder.Entity("DailyPulse.Domain.Entities.ScopeOfWork", b =>
                 {
+                    b.Navigation("ProjectsScopes");
+
                     b.Navigation("Tasks");
                 });
 
@@ -557,8 +554,6 @@ namespace DailyPulse.Infrastructure.Migrations
                     b.Navigation("RejectedTasks");
 
                     b.Navigation("TaskDetails");
-
-                    b.Navigation("TaskNewRequirements");
                 });
 #pragma warning restore 612, 618
         }

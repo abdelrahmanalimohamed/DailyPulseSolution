@@ -2,7 +2,6 @@
 using DailyPulse.Application.Abstraction;
 using DailyPulse.Application.CQRS.Queries.Tasks;
 using DailyPulse.Application.ViewModel;
-using DailyPulse.Domain.Enums;
 using MediatR;
 using Task = DailyPulse.Domain.Entities.Task;
 
@@ -39,12 +38,12 @@ namespace DailyPulse.Application.CQRS.QueriesHandler.TaskHandlers
                 EndDate = task.DateTo,
                 DrawingTitle = task.DrawingTitle,
                 Name = task.Name,
-                Priority = Enum.IsDefined(typeof(Priority), task.Priority)
-                ? ((Priority)task.Priority).ToString()
-                : "Unknown",
+                Priority = task.Priority.ToString(),
+                Status = task.Status.ToString(),
                 Area = task.Area,
                 ProjectName = task.Project.Name,
-                ScopeOfWork = task.Scope.Name
+                ScopeOfWork = task.Scope.Name , 
+
             });
 
             return taskViewModel;
