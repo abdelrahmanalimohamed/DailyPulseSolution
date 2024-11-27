@@ -8,15 +8,15 @@ namespace DailyPulse.Application.CQRS.CommandHandler.TaskDetailsHandlers
 {
     public class CreateTaskDetailsHandler : IRequestHandler<CreateTaskDetailsCommand>
     {
-        private readonly IGenericRepository<TaskDetail> _repository;
+        private readonly IGenericRepository<TaskWorkLog> _repository;
 
-        public CreateTaskDetailsHandler(IGenericRepository<TaskDetail> _repository)
+        public CreateTaskDetailsHandler(IGenericRepository<TaskWorkLog> _repository)
         {
             this._repository = _repository;
         }
         public async Task Handle(CreateTaskDetailsCommand request, CancellationToken cancellationToken)
         {
-            var taskDetails = new TaskDetail
+            var taskDetails = new TaskWorkLog
             {
                 TaskId = request.TaskId,
                 StartTime = request.StartTime,

@@ -24,6 +24,13 @@ namespace DailyPluse.WebAPI.Controllers
             return StatusCode(201);
         }
 
+        [HttpPost("reject-rejectTask")]
+        public async Task<IActionResult> RejectTaskByEmployee([FromBody] UpdateTaskRejectionByEmployeeCommand updateTaskRejectionByEmployeeCommand)
+        {
+            await _mediator.Send(updateTaskRejectionByEmployeeCommand);
+            return StatusCode(201);
+        }
+
         [HttpPut("updatetaskstatus")]
         public async Task<IActionResult> UpdateTaskStatusByAdmin([FromBody] UpdateTaskStatusByAdminCommand updateTaskStatusByAdminCommand)
         {
@@ -38,7 +45,6 @@ namespace DailyPluse.WebAPI.Controllers
             return StatusCode(201);
         }
 
-
         [HttpPut("update-updatetask")]
         public async Task<IActionResult> UpdateTask([FromBody] UpdateTaskCommand updateTaskCommand)
         {
@@ -46,12 +52,11 @@ namespace DailyPluse.WebAPI.Controllers
             return StatusCode(200);
         }
 
-        [HttpPost("reject-rejectTask")]
-        public async Task<IActionResult> RejectTaskByEmployee([FromBody] UpdateTaskRejectionByEmployeeCommand updateTaskRejectionByEmployeeCommand)
+        [HttpPut("closeorcompletetask")]
+        public async Task<IActionResult> CloseOrCompleteTaskByAdmin([FromBody] CloseTaskCommand closeTaskCommand)
         {
-            await _mediator.Send(updateTaskRejectionByEmployeeCommand);
+            await _mediator.Send(closeTaskCommand);
             return StatusCode(201);
-
         }
 
         [HttpGet("getalltasks")]

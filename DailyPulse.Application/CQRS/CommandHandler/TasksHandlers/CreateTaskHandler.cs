@@ -21,9 +21,10 @@ namespace DailyPulse.Application.CQRS.CommandHandler.TasksHandlers
             {
                 Name = request.TaskName,
                 Area = request.Area,
-                DateFrom = request.DateFrom,
-                DateTo = request.DateTo,
+                DateFrom = request.FromDate,
+                DateTo = request.ToDate,
                 DrawingId = request.DrawingNo,
+                EstimatedWorkingHours = request.EstimatedHours,
                 EmpId = request.EmployeeId,
                 FilePath = request.file,
                 ProjectId = request.ProjectId,

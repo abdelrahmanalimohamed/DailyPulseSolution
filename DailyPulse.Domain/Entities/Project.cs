@@ -13,7 +13,7 @@ namespace DailyPulse.Domain.Entities
         // Navigation properties
         public Region Region { get; set; }
         public Location Location { get; set; }
-        public Trades Trade { get; set; }
+        public Treats Trade { get; set; }
        // public Employee TeamLead { get; set; }
         public ICollection<Task> Tasks { get; set; } = new List<Task>();
        // public ICollection<ProjectsScopes> ProjectsScopes { get; set; }

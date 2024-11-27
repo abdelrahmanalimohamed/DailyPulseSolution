@@ -29,7 +29,7 @@ namespace DailyPulse.Application.CQRS.CommandHandler.TasksHandlers
             var task = await _repository.GetByIdAsync(request.TaskId)
             ?? throw new KeyNotFoundException("Task not found");
 
-            task.Status =  Status.Rejected;
+            task.Status =  Status.RequestToReAssign;
 
             task.IsRejectedByEmployee = true;
 

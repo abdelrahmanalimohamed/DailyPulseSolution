@@ -3,6 +3,7 @@ using System;
 using DailyPulse.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DailyPulse.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241127143137_CreateTaskLogsTableForLogging")]
+    partial class CreateTaskLogsTableForLogging
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -323,6 +325,40 @@ namespace DailyPulse.Infrastructure.Migrations
                     b.ToTable("Tasks");
                 });
 
+            modelBuilder.Entity("DailyPulse.Domain.Entities.TaskDetail", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime(6)")
+                        .HasDefaultValueSql("current_timestamp()");
+
+                    b.Property<DateTime?>("EndTime")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("LogDesc")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("PauseTime")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("StartTime")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<Guid>("TaskId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TaskId");
+
+                    b.ToTable("TaskDetails");
+                });
+
             modelBuilder.Entity("DailyPulse.Domain.Entities.TaskLogs", b =>
                 {
                     b.Property<Guid>("Id")
@@ -330,6 +366,7 @@ namespace DailyPulse.Infrastructure.Migrations
                         .HasColumnType("char(36)");
 
                     b.Property<string>("ClosedComments")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<DateTime>("CreatedDate")
@@ -341,12 +378,14 @@ namespace DailyPulse.Infrastructure.Migrations
                         .HasColumnType("char(36)");
 
                     b.Property<string>("NewRequirements")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<Guid>("OldAssignedEmp")
                         .HasColumnType("char(36)");
 
                     b.Property<string>("RejectReasons")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<int>("Status")
@@ -392,40 +431,6 @@ namespace DailyPulse.Infrastructure.Migrations
                     b.HasIndex("TaskId");
 
                     b.ToTable("TaskNewRequirements");
-                });
-
-            modelBuilder.Entity("DailyPulse.Domain.Entities.TaskWorkLog", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime(6)")
-                        .HasDefaultValueSql("current_timestamp()");
-
-                    b.Property<DateTime?>("EndTime")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("LogDesc")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime>("PauseTime")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<DateTime>("StartTime")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<Guid>("TaskId")
-                        .HasColumnType("char(36)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TaskId");
-
-                    b.ToTable("TaskDetails");
                 });
 
             modelBuilder.Entity("DailyPulse.Domain.Entities.Employee", b =>
@@ -542,6 +547,17 @@ namespace DailyPulse.Infrastructure.Migrations
                     b.Navigation("Scope");
                 });
 
+            modelBuilder.Entity("DailyPulse.Domain.Entities.TaskDetail", b =>
+                {
+                    b.HasOne("DailyPulse.Domain.Entities.Task", "Task")
+                        .WithMany("TaskDetails")
+                        .HasForeignKey("TaskId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Task");
+                });
+
             modelBuilder.Entity("DailyPulse.Domain.Entities.TaskLogs", b =>
                 {
                     b.HasOne("DailyPulse.Domain.Entities.Employee", "NewEmployee")
@@ -573,17 +589,6 @@ namespace DailyPulse.Infrastructure.Migrations
                 {
                     b.HasOne("DailyPulse.Domain.Entities.Task", "Task")
                         .WithMany("TaskNewRequirements")
-                        .HasForeignKey("TaskId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Task");
-                });
-
-            modelBuilder.Entity("DailyPulse.Domain.Entities.TaskWorkLog", b =>
-                {
-                    b.HasOne("DailyPulse.Domain.Entities.Task", "Task")
-                        .WithMany("TaskDetails")
                         .HasForeignKey("TaskId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

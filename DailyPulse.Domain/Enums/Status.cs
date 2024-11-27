@@ -4,9 +4,10 @@
     {
         New = 1,
         InProgress = 2,
-        Rejected = 3,
-        Completed = 4 , 
-        Pending_Approval = 5 ,
-        Canceled = 6
+        Completed = 3 , 
+        Pending_Approval = 4 ,
+        Canceled = 5 , 
+        RequestToReAssign = 6 , 
+        Closed = 7
     }
 }

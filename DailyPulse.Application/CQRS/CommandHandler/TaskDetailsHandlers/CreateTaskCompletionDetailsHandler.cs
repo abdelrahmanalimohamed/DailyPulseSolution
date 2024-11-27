@@ -9,11 +9,11 @@ namespace DailyPulse.Application.CQRS.CommandHandler.TaskDetailsHandlers
 {
     public class CreateTaskCompletionDetailsHandler : IRequestHandler<CreateTaskCompletionDetailsCommand>
     {
-        private readonly IGenericRepository<TaskDetail> _repository;
+        private readonly IGenericRepository<TaskWorkLog> _repository;
 
         private readonly IGenericRepository<DailyPulse.Domain.Entities.Task> _taskRepository;
         public CreateTaskCompletionDetailsHandler(
-            IGenericRepository<TaskDetail> _repository ,
+            IGenericRepository<TaskWorkLog> _repository ,
             IGenericRepository<DailyPulse.Domain.Entities.Task> _taskRepository)
         {
             this._repository = _repository;
@@ -21,7 +21,7 @@ namespace DailyPulse.Application.CQRS.CommandHandler.TaskDetailsHandlers
         }
         public async Task Handle(CreateTaskCompletionDetailsCommand request, CancellationToken cancellationToken)
         {
-            var taskDetails = new TaskDetail
+            var taskDetails = new TaskWorkLog
             {
                 TaskId = request.TaskId,
                 StartTime = request.StartTime,

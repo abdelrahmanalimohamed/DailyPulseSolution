@@ -9,6 +9,7 @@ namespace DailyPulse.Domain.Entities
         public string DrawingTitle { get; set; }
         public string FilePath { get; set; }
         public string Area { get; set; }
+        public string EstimatedWorkingHours { get; set; }
         public bool IsRejectedByAdmin { get; set; }
         public bool IsRejectedByEmployee { get; set; }
         public Status Status { get; set; }
@@ -23,10 +24,12 @@ namespace DailyPulse.Domain.Entities
         public Employee Employee { get; set; }
         public ScopeOfWork Scope { get; set; }
         public Project Project { get; set; }
-        public ICollection<TaskDetail> TaskDetails { get; set; } = new List<TaskDetail>();
+        public ICollection<TaskWorkLog> TaskDetails { get; set; } = new List<TaskWorkLog>();
         public ICollection<ReAssign> ReAssigns { get; set; } = new List<ReAssign>();
         public ICollection<RejectedTasks> RejectedTasks { get; set; } = new List<RejectedTasks>();
 
         public ICollection<TaskNewRequirements> TaskNewRequirements = new List<TaskNewRequirements>();
+
+        public ICollection<TaskLogs> TaskLogs = new List<TaskLogs>();
     }
 }

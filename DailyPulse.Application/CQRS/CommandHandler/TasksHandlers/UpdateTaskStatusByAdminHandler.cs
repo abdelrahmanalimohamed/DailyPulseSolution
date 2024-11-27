@@ -21,7 +21,7 @@ namespace DailyPulse.Application.CQRS.CommandHandler.TasksHandlers
 
             task.Status = request.Action == "Accepted" ? Status.InProgress : Status.Canceled;
 
-            task.IsRejectedByAdmin = task.Status == Status.Rejected;
+            task.IsRejectedByAdmin = task.Status == Status.Canceled;
 
             await _repository.UpdateAsync(task, cancellationToken);
         }

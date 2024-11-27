@@ -28,7 +28,7 @@ namespace DailyPulse.Application.CQRS.CommandHandler.ProjectsHandlers
             {
                 Description = request.Description,
                 LocationId = request.LocationId,
-                Trade = Enum.TryParse(trade, true, out Trades role)
+                Trade = Enum.TryParse(trade, true, out Treats role)
                      ? role : throw new ArgumentException($"Invalid trade: {request.TradeId}"),
                 Name = request.Name,
                 RegionId = request.RegionId

@@ -7,6 +7,6 @@ namespace DailyPulse.Domain.Entities
         public Guid TaskId { get; set; }
         public Task Task { get; set; }
         public string RequirementsDetails { get; set; }
-        public string EstimatedWorkingHours { get; set; }
+        public string? EstimatedWorkingHours { get; set; }
     }
 }

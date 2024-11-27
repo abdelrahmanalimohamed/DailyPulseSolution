@@ -12,7 +12,7 @@ namespace DailyPulse.Infrastructure.Persistence
         }
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Project> Projects { get; set; }
-        public DbSet<TaskDetail> TaskDetails { get; set; }
+        public DbSet<TaskWorkLog> TaskDetails { get; set; }
         public DbSet<ScopeOfWork> ScopeOfWorks { get; set; }
         public DbSet<Region> Regions { get; set; }
         public DbSet<Location> Locations { get; set; }
@@ -23,6 +23,8 @@ namespace DailyPulse.Infrastructure.Persistence
         public DbSet<RejectedTasks> RejectedTasks { get; set; }
 
         public DbSet<TaskNewRequirements> TaskNewRequirements { get; set; }
+
+        public DbSet<TaskLogs> TaskLogs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -100,6 +102,10 @@ namespace DailyPulse.Infrastructure.Persistence
                    .IsRequired()
                    .HasMaxLength(500);
 
+                entity.Property(p => p.EstimatedWorkingHours)
+                   .IsRequired()
+                   .HasMaxLength(50);
+
                 entity.Property(p => p.Area)
                     .IsRequired()
                     .HasMaxLength(50);
@@ -152,7 +158,7 @@ namespace DailyPulse.Infrastructure.Persistence
                       .OnDelete(DeleteBehavior.Cascade);
             });
 
-            modelBuilder.Entity<TaskDetail>(entity =>
+            modelBuilder.Entity<TaskWorkLog>(entity =>
             {
                 entity.HasKey(k => k.Id);
                 entity.Property(x => x.CreatedDate).HasDefaultValueSql("current_timestamp()");
@@ -271,6 +277,29 @@ namespace DailyPulse.Infrastructure.Persistence
                     .WithMany(t => t.TaskNewRequirements)
                     .HasForeignKey(r => r.TaskId)
                     .OnDelete(DeleteBehavior.Cascade); // Adjust as necessary
+
+                entity.HasIndex(r => r.TaskId);
+            });
+
+            modelBuilder.Entity<TaskLogs>(entity =>
+            {
+                entity.HasKey(k => k.Id);
+                entity.Property(x => x.CreatedDate).HasDefaultValueSql("current_timestamp()");
+
+                entity.HasOne(r => r.Task)
+                    .WithMany(t => t.TaskLogs)
+                    .HasForeignKey(r => r.TaskId)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne(r => r.NewEmployee)
+                 .WithMany(t => t.NewAssignedTasks)
+                 .HasForeignKey(r => r.NewAssignedEmp)
+                 .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne(r => r.OldEmployee)
+                 .WithMany(t => t.OldAssignedTasks)
+                 .HasForeignKey(r => r.OldAssignedEmp)
+                 .OnDelete(DeleteBehavior.Cascade);
 
                 entity.HasIndex(r => r.TaskId);
             });
