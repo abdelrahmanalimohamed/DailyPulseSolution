@@ -3,6 +3,7 @@ using System;
 using DailyPulse.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DailyPulse.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241128132810_RenameTaskDetailsTableToTaskWorkLog")]
+    partial class RenameTaskDetailsTableToTaskWorkLog
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -337,13 +339,13 @@ namespace DailyPulse.Infrastructure.Migrations
                         .HasColumnType("datetime(6)")
                         .HasDefaultValueSql("current_timestamp()");
 
-                    b.Property<Guid?>("NewAssignedEmp")
+                    b.Property<Guid>("NewAssignedEmp")
                         .HasColumnType("char(36)");
 
                     b.Property<string>("NewRequirements")
                         .HasColumnType("longtext");
 
-                    b.Property<Guid?>("OldAssignedEmp")
+                    b.Property<Guid>("OldAssignedEmp")
                         .HasColumnType("char(36)");
 
                     b.Property<string>("RejectReasons")
@@ -547,12 +549,14 @@ namespace DailyPulse.Infrastructure.Migrations
                     b.HasOne("DailyPulse.Domain.Entities.Employee", "NewEmployee")
                         .WithMany("NewAssignedTasks")
                         .HasForeignKey("NewAssignedEmp")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("DailyPulse.Domain.Entities.Employee", "OldEmployee")
                         .WithMany("OldAssignedTasks")
                         .HasForeignKey("OldAssignedEmp")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("DailyPulse.Domain.Entities.Task", "Task")
                         .WithMany("TaskLogs")

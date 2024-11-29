@@ -1,9 +1,9 @@
 ﻿using DailyPulse.Application.Abstraction;
-using DailyPulse.Application.CQRS.Commands.TaskDetails;
 using DailyPulse.Domain.Entities;
 using DailyPulse.Domain.Enums;
 using MediatR;
 using Task = System.Threading.Tasks.Task;
+using DailyPulse.Application.CQRS.Commands.TaskWorkLog;
 
 namespace DailyPulse.Application.CQRS.CommandHandler.TaskDetailsHandlers
 {

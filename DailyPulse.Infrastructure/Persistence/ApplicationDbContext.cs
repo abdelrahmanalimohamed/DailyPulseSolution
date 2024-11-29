@@ -12,18 +12,15 @@ namespace DailyPulse.Infrastructure.Persistence
         }
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Project> Projects { get; set; }
-        public DbSet<TaskWorkLog> TaskDetails { get; set; }
+        public DbSet<TaskWorkLog> TaskWorkLogs { get; set; }
         public DbSet<ScopeOfWork> ScopeOfWorks { get; set; }
         public DbSet<Region> Regions { get; set; }
         public DbSet<Location> Locations { get; set; }
         public DbSet<Task> Tasks { get; set; }
         public DbSet<ReAssign> ReAssigns { get; set; }
       //  public DbSet<ProjectsScopes> ProjectsScopes { get; set; }
-
         public DbSet<RejectedTasks> RejectedTasks { get; set; }
-
         public DbSet<TaskNewRequirements> TaskNewRequirements { get; set; }
-
         public DbSet<TaskLogs> TaskLogs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

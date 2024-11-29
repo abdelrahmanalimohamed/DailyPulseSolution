@@ -26,7 +26,9 @@ namespace DailyPluse.WebAPI
 
             var defaultConnectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
-            builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseMySql(defaultConnectionString, ServerVersion.AutoDetect(defaultConnectionString)));
+            builder.Services.AddDbContext<ApplicationDbContext>(
+                options => options.UseMySql(defaultConnectionString, 
+                ServerVersion.AutoDetect(defaultConnectionString)));
 
             builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
