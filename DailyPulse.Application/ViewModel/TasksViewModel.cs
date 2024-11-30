@@ -4,6 +4,10 @@ namespace DailyPulse.Application.ViewModel
 {
     public class TasksViewModel : ViewModelBase
     {
+        public Guid ProjectId { get; set; }
+
+        public Guid EmpId { get; set; }
+
         public string ProjectName { get; set; }
 
         public string Priority { get; set; }
