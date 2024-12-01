@@ -13,5 +13,6 @@ namespace DailyPulse.Application.Abstraction
         Task<T> AddAsyncWithReturnEntity (T entity, CancellationToken cancellationToken = default);
         Task UpdateAsync(T entity, CancellationToken cancellationToken = default);
         Task DeleteAsync(T entity, CancellationToken cancellationToken = default);
+        Task<IEnumerable<T>> CallStoredProc(string storedProcName, object[] parameters, CancellationToken cancellationToken = default);
     }
 }

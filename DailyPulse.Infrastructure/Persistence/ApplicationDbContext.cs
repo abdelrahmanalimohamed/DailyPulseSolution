@@ -1,4 +1,5 @@
-﻿using DailyPulse.Domain.Entities;
+﻿using DailyPulse.Application.DTO;
+using DailyPulse.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Task = DailyPulse.Domain.Entities.Task;
 
@@ -22,6 +23,10 @@ namespace DailyPulse.Infrastructure.Persistence
         public DbSet<RejectedTasks> RejectedTasks { get; set; }
         public DbSet<TaskNewRequirements> TaskNewRequirements { get; set; }
         public DbSet<TaskLogs> TaskLogs { get; set; }
+
+        public DbSet<TaskStatusLogs> TaskStatusLogs { get; set; }
+
+        public DbSet<TaskReportDTO> TaskReportDTO { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -299,6 +304,26 @@ namespace DailyPulse.Infrastructure.Persistence
                  .OnDelete(DeleteBehavior.Cascade);
 
                 entity.HasIndex(r => r.TaskId);
+            });
+
+
+
+            modelBuilder.Entity<TaskStatusLogs>(entity =>
+            {
+                entity.HasKey(k => k.Id);
+                entity.Property(x => x.CreatedDate).HasDefaultValueSql("current_timestamp()");
+
+                entity.HasOne(r => r.Task)
+                    .WithMany(t => t.TaskStatusLogs)
+                    .HasForeignKey(r => r.TaskId)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasIndex(r => r.TaskId);
+            });
+
+            modelBuilder.Entity<TaskReportDTO>(entity =>
+            {
+                entity.HasNoKey();
             });
 
             base.OnModelCreating(modelBuilder);

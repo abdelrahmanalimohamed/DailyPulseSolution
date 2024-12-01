@@ -13,12 +13,16 @@ namespace DailyPulse.Application.CQRS.CommandHandler.ReassignHandlers
 
         private readonly IGenericRepository<DailyPulse.Domain.Entities.Task> _taskRepository;
 
+        private readonly IGenericRepository<TaskStatusLogs> _taskstatusLogsrepo;
+
         public CreateReAssignationHandler(
             IGenericRepository<ReAssign> _repository, 
-            IGenericRepository<Domain.Entities.Task> taskRepository)
+            IGenericRepository<Domain.Entities.Task> taskRepository,
+            IGenericRepository<TaskStatusLogs> taskstatusLogsrepo)
         {
             this._repository = _repository;
             _taskRepository = taskRepository;
+            _taskstatusLogsrepo = taskstatusLogsrepo;
         }
         public async Task Handle(CreateReAssignationCommand request, CancellationToken cancellationToken)
         {
@@ -37,9 +41,27 @@ namespace DailyPulse.Application.CQRS.CommandHandler.ReassignHandlers
         private async Task UpdateAssignation(Guid TaskId, Guid EmpId, CancellationToken cancellationToken) 
         {
             var task = await _taskRepository.GetByIdAsync(TaskId , cancellationToken);
+
+            var oldStatus = task.Status;
             task.EmpId = EmpId;
             task.Status = Status.New;
             await _taskRepository.UpdateAsync(task, cancellationToken);
+            await SaveTaskStatusLog(task.Id , oldStatus , task.Status , cancellationToken);
+        }
+
+        private async Task SaveTaskStatusLog(
+            Guid taskId,
+            Status OldStatus,
+            Status NewStatus, CancellationToken cancellationToken)
+        {
+            var taskStatusLogs = new TaskStatusLogs
+            {
+                TaskId = taskId,
+                OldStatus = OldStatus,
+                NewStatus = NewStatus
+            };
+
+            await _taskstatusLogsrepo.AddAsync(taskStatusLogs, cancellationToken);
         }
 
     }

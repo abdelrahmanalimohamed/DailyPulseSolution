@@ -90,5 +90,15 @@ namespace DailyPluse.WebAPI.Controllers
             var workedTasks = await _mediator.Send(getWorkedTasksByEmployeeIdQuery);
             return Ok(workedTasks);
         }
+
+        [HttpGet("gettaskreport")]
+        public async Task<IActionResult> GetTaskReport(Guid taskId)
+        {
+            var getTaskReportQuery = new GetTaskReportQuery { TaskId = taskId };
+
+            var report = await _mediator.Send(getTaskReportQuery);
+
+            return Ok(report);
+        }
     }
 }

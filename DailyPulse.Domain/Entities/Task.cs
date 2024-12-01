@@ -31,5 +31,7 @@ namespace DailyPulse.Domain.Entities
         public ICollection<TaskNewRequirements> TaskNewRequirements = new List<TaskNewRequirements>();
 
         public ICollection<TaskLogs> TaskLogs = new List<TaskLogs>();
+
+        public ICollection<TaskStatusLogs> TaskStatusLogs = new List<TaskStatusLogs>();
     }
 }
