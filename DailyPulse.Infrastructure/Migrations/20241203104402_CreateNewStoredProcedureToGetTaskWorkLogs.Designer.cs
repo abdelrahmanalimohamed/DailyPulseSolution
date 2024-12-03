@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DailyPulse.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241201144017_CreateNewStoredProcedureToGetTaskReport")]
-    partial class CreateNewStoredProcedureToGetTaskReport
+    [Migration("20241203104402_CreateNewStoredProcedureToGetTaskWorkLogs")]
+    partial class CreateNewStoredProcedureToGetTaskWorkLogs
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,34 @@ namespace DailyPulse.Infrastructure.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "6.0.35")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
+
+            modelBuilder.Entity("DailyPulse.Application.DTO.TaskWorkLogDTO", b =>
+                {
+                    b.Property<string>("LogDesc")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Pause_DateTime")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Start_DateTime")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("TaskWorkLogID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Total_Working_Hours")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("WorkLogDuration")
+                        .HasColumnType("longtext");
+
+                    b.ToTable("TaskWorkLogDTO", null, t => t.ExcludeFromMigrations());
+                });
 
             modelBuilder.Entity("DailyPulse.Domain.Entities.Employee", b =>
                 {

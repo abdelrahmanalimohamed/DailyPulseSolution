@@ -91,10 +91,10 @@ namespace DailyPluse.WebAPI.Controllers
             return Ok(workedTasks);
         }
 
-        [HttpGet("gettaskreport")]
-        public async Task<IActionResult> GetTaskReport(Guid taskId)
+        [HttpGet("gettaskworklog")]
+        public async Task<IActionResult> GetTaskWorkLog(Guid taskId)
         {
-            var getTaskReportQuery = new GetTaskReportQuery { TaskId = taskId };
+            var getTaskReportQuery = new GetTaskWorkLogQuery { TaskId = taskId };
 
             var report = await _mediator.Send(getTaskReportQuery);
 

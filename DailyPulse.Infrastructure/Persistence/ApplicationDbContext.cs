@@ -26,7 +26,7 @@ namespace DailyPulse.Infrastructure.Persistence
 
         public DbSet<TaskStatusLogs> TaskStatusLogs { get; set; }
 
-        public DbSet<TaskReportDTO> TaskReportDTO { get; set; }
+        public DbSet<TaskWorkLogDTO> TaskWorkLogDTO { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -321,9 +321,10 @@ namespace DailyPulse.Infrastructure.Persistence
                 entity.HasIndex(r => r.TaskId);
             });
 
-            modelBuilder.Entity<TaskReportDTO>(entity =>
+            modelBuilder.Entity<TaskWorkLogDTO>(entity =>
             {
                 entity.HasNoKey();
+                entity.ToTable(nameof(TaskWorkLogDTO), t => t.ExcludeFromMigrations());
             });
 
             base.OnModelCreating(modelBuilder);
