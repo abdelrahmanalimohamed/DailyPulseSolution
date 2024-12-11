@@ -100,5 +100,15 @@ namespace DailyPluse.WebAPI.Controllers
 
             return Ok(report);
         }
+
+        [HttpGet("gettaskhistory")]
+        public async Task<IActionResult> GetTaskHistory(Guid taskId)
+        {
+            var getTaskHistoryQuery = new GetTaskHistoryQuery { TaskId = taskId };
+
+            var report = await _mediator.Send(getTaskHistoryQuery);
+
+            return Ok(report);
+        }
     }
 }

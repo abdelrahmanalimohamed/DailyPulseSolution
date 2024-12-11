@@ -21,7 +21,7 @@ namespace DailyPulse.Application.CQRS.QueriesHandler.TaskHandlers
             var includes = new List<Expression<Func<Task, object>>>
                  {
                      task => task.Project ,
-                     task => task.Scope 
+                    // task => task.Scope 
                  };
 
             var tasks = await _repository.FindWithIncludeAsync(
@@ -42,7 +42,7 @@ namespace DailyPulse.Application.CQRS.QueriesHandler.TaskHandlers
                 Status = task.Status.ToString(),
                 Area = task.Area,
                 ProjectName = task.Project.Name,
-                ScopeOfWork = task.Scope.Name , 
+               // ScopeOfWork = task.Scope.Name , 
                 ProjectId = task.ProjectId ,
                 EmpId = task.EmpId ,
             });

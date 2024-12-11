@@ -137,10 +137,10 @@ namespace DailyPulse.Infrastructure.Persistence
                      .IsRequired();
 
                 // Foreign Key Relationships
-                entity.HasOne(p => p.Scope)
-                    .WithMany(s => s.Tasks) // Updated to reference Projects
-                    .HasForeignKey(p => p.ScopeId)
-                    .OnDelete(DeleteBehavior.Restrict);
+                //entity.HasOne(p => p.Scope)
+                //    .WithMany(s => s.Tasks) // Updated to reference Projects
+                //    .HasForeignKey(p => p.ScopeId)
+                //    .OnDelete(DeleteBehavior.Restrict);
 
                 entity.HasOne(p => p.Project)
                     .WithMany(s => s.Tasks)

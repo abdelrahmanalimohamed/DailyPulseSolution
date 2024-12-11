@@ -29,7 +29,7 @@ namespace DailyPulse.Application.CQRS.CommandHandler.TasksHandlers
                 FilePath = request.file,
                 ProjectId = request.ProjectId,
                 Status = Status.New,
-                ScopeId = request.ScopeId,
+                //ScopeId = request.ScopeId,
                 Priority = Enum.TryParse(request.Priority, true, out Priority role)
                      ? role : throw new ArgumentException($"Invalid priority: {request.Priority}"),
                 DrawingTitle = request.DrawingTitle,

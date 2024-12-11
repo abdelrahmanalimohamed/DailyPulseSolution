@@ -19,10 +19,10 @@ namespace DailyPulse.Domain.Entities
         public DateTime? StartTime { get; set; }
         public DateTime? EndTime { get; set; }
         public Guid EmpId { get; set; } // Foreign key to Employee
-        public Guid ScopeId { get; set; }  // Foreign key to Scope
+       // public Guid ScopeId { get; set; }  // Foreign key to Scope
         public Guid ProjectId { get; set; }  // Foreign key to Scope
         public Employee Employee { get; set; }
-        public ScopeOfWork Scope { get; set; }
+       // public ScopeOfWork Scope { get; set; }
         public Project Project { get; set; }
         public ICollection<TaskWorkLog> TaskDetails { get; set; } = new List<TaskWorkLog>();
         public ICollection<ReAssign> ReAssigns { get; set; } = new List<ReAssign>();

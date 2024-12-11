@@ -26,6 +26,6 @@ namespace DailyPulse.Application.CQRS.Commands.Tasks
 
         public Guid EmployeeId { get; set; }
 
-        public Guid ScopeId { get; set; }
+       // public Guid ScopeId { get; set; }
     }
 }

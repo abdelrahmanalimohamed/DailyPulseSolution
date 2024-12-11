@@ -6,6 +6,6 @@ namespace DailyPulse.Domain.Entities
     {
         //public ICollection<ProjectsScopes> ProjectsScopes { get; set; } = new List<ProjectsScopes>();
 
-        public ICollection<Task> Tasks { get; set; } = new List<Task>();
+       // public ICollection<Task> Tasks { get; set; } = new List<Task>();
     }
 }
