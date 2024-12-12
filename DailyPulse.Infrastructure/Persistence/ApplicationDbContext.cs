@@ -26,10 +26,6 @@ namespace DailyPulse.Infrastructure.Persistence
 
         public DbSet<TaskStatusLogs> TaskStatusLogs { get; set; }
 
-        public DbSet<TaskWorkLogDTO> TaskWorkLogDTO { get; set; }
-
-        public DbSet<TaskHistoryDTO> TaskHistoryDTO { get; set; }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Employee>(entity =>
@@ -308,8 +304,6 @@ namespace DailyPulse.Infrastructure.Persistence
                 entity.HasIndex(r => r.TaskId);
             });
 
-
-
             modelBuilder.Entity<TaskStatusLogs>(entity =>
             {
                 entity.HasKey(k => k.Id);
@@ -321,18 +315,6 @@ namespace DailyPulse.Infrastructure.Persistence
                     .OnDelete(DeleteBehavior.Cascade);
 
                 entity.HasIndex(r => r.TaskId);
-            });
-
-            modelBuilder.Entity<TaskWorkLogDTO>(entity =>
-            {
-                entity.HasNoKey();
-                entity.ToTable(nameof(TaskWorkLogDTO), t => t.ExcludeFromMigrations());
-            });
-
-            modelBuilder.Entity<TaskHistoryDTO>(entity =>
-            {
-                entity.HasNoKey();
-                entity.ToTable(nameof(TaskHistoryDTO), t => t.ExcludeFromMigrations());
             });
 
             base.OnModelCreating(modelBuilder);
