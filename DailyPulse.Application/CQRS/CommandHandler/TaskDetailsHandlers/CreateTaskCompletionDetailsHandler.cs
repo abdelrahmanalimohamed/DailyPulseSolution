@@ -12,12 +12,16 @@ namespace DailyPulse.Application.CQRS.CommandHandler.TaskDetailsHandlers
         private readonly IGenericRepository<TaskWorkLog> _repository;
 
         private readonly IGenericRepository<DailyPulse.Domain.Entities.Task> _taskRepository;
+
+        private readonly IGenericRepository<TaskStatusLogs> _taskStatusLogsRepository;
         public CreateTaskCompletionDetailsHandler(
             IGenericRepository<TaskWorkLog> _repository ,
-            IGenericRepository<DailyPulse.Domain.Entities.Task> _taskRepository)
+            IGenericRepository<DailyPulse.Domain.Entities.Task> _taskRepository,
+            IGenericRepository<TaskStatusLogs> _taskStatusLogsRepository)
         {
             this._repository = _repository;
             this._taskRepository = _taskRepository;
+            this._taskStatusLogsRepository = _taskStatusLogsRepository;
         }
         public async Task Handle(CreateTaskCompletionDetailsCommand request, CancellationToken cancellationToken)
         {
@@ -44,9 +48,26 @@ namespace DailyPulse.Application.CQRS.CommandHandler.TaskDetailsHandlers
                 throw new KeyNotFoundException($"Task with ID {taskId} not found.");
             }
 
-            task.Status = Status.Pending_Approval ;
+            await SaveTaskStatusLog(taskId, task.Status, Status.Pending_Approval, cancellationToken);
 
+            task.Status = Status.Pending_Approval ;
             await _taskRepository.UpdateAsync(task, cancellationToken);
+        }
+
+        private async Task SaveTaskStatusLog(
+          Guid taskId,
+          Status OldStatus,
+          Status NewStatus,
+          CancellationToken cancellationToken)
+        {
+            var taskStatusLogs = new TaskStatusLogs
+            {
+                TaskId = taskId,
+                OldStatus = OldStatus,
+                NewStatus = NewStatus
+            };
+
+            await _taskStatusLogsRepository.AddAsync(taskStatusLogs, cancellationToken);
         }
     }
 }

@@ -5,6 +5,9 @@
         public string DateAndTime { get; set; }
         public string OldValue { get; set; }
         public string NewValue { get; set; }
-        public string Text { get; set; }
+        public string BackToAdminReasons { get; set; }
+        public string BackToAdminTime { get; set; }
+        public string AdminClosingReasons { get; set; }
+        public string AdminClosingTime { get; set; }
     }
 }

@@ -10,9 +10,14 @@ namespace DailyPulse.Application.CQRS.CommandHandler.TaskDetailsHandlers
     {
         private readonly IGenericRepository<TaskWorkLog> _repository;
 
-        public CreateTaskDetailsHandler(IGenericRepository<TaskWorkLog> _repository)
+        private readonly IGenericRepository<TaskStatusLogs> _statusLogsRepository;
+
+        public CreateTaskDetailsHandler(
+            IGenericRepository<TaskWorkLog> _repository, 
+            IGenericRepository<TaskStatusLogs> _statusLogsRepository)
         {
             this._repository = _repository;
+            this._statusLogsRepository = _statusLogsRepository;
         }
         public async Task Handle(CreateTaskWorkLogCommand request, CancellationToken cancellationToken)
         {

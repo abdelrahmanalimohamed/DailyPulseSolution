@@ -39,7 +39,9 @@ namespace DailyPulse.Application.CQRS.CommandHandler.TasksHandlers
         private async Task SaveTaskStatusLog(
             Guid taskId, 
             Status OldStatus, 
-            Status NewStatus , CancellationToken cancellationToken) {
+            Status NewStatus , 
+            CancellationToken cancellationToken) 
+        {
             var taskStatusLogs = new TaskStatusLogs
             {
                 TaskId = taskId,

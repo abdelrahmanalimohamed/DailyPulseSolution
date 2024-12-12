@@ -28,6 +28,8 @@ namespace DailyPulse.Infrastructure.Persistence
 
         public DbSet<TaskWorkLogDTO> TaskWorkLogDTO { get; set; }
 
+        public DbSet<TaskHistoryDTO> TaskHistoryDTO { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Employee>(entity =>
@@ -325,6 +327,12 @@ namespace DailyPulse.Infrastructure.Persistence
             {
                 entity.HasNoKey();
                 entity.ToTable(nameof(TaskWorkLogDTO), t => t.ExcludeFromMigrations());
+            });
+
+            modelBuilder.Entity<TaskHistoryDTO>(entity =>
+            {
+                entity.HasNoKey();
+                entity.ToTable(nameof(TaskHistoryDTO), t => t.ExcludeFromMigrations());
             });
 
             base.OnModelCreating(modelBuilder);

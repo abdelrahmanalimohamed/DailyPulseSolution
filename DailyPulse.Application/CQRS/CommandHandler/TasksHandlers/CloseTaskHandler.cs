@@ -16,13 +16,13 @@ namespace DailyPulse.Application.CQRS.CommandHandler.TasksHandlers
         private readonly IGenericRepository<TaskStatusLogs> _taskstatusLogsrepo;
 
         public CloseTaskHandler(
-            IGenericRepository<DailyPulse.Domain.Entities.Task> _repository ,
-            IGenericRepository<TaskLogs> logsrepo,
-            IGenericRepository<TaskStatusLogs> taskstatusLogsrepo)
+            IGenericRepository<DailyPulse.Domain.Entities.Task> _taskrepository,
+            IGenericRepository<TaskLogs> _tasklogsrepo,
+            IGenericRepository<TaskStatusLogs> _taskstatusLogsrepo)
         {
-            this._taskrepository = _repository;
-            this._tasklogsrepo = logsrepo;
-            _taskstatusLogsrepo = taskstatusLogsrepo;
+            this._taskrepository = _taskrepository;
+            this._tasklogsrepo = _tasklogsrepo;
+            this._taskstatusLogsrepo = _taskstatusLogsrepo;
         }
         public async Task<Unit> Handle(CloseTaskCommand request, CancellationToken cancellationToken)
         {
@@ -55,7 +55,8 @@ namespace DailyPulse.Application.CQRS.CommandHandler.TasksHandlers
         private async Task SaveTaskStatusLog(
             Guid taskId,
             Status OldStatus,
-            Status NewStatus, CancellationToken cancellationToken)
+            Status NewStatus, 
+            CancellationToken cancellationToken)
         {
             var taskStatusLogs = new TaskStatusLogs
             {

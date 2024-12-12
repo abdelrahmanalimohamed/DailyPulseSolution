@@ -1,6 +1,4 @@
-﻿using DailyPulse.Domain.Enums;
-
-namespace DailyPulse.Application.DTO
+﻿namespace DailyPulse.Application.DTO
 {
     public class TaskWorkLogDTO
     {
