@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace DailyPulse.Application.CQRS.Commands.TaskDetails
+namespace DailyPulse.Application.CQRS.Commands.TaskWorkLog
 {
     public class CreateTaskCompletionDetailsCommand : IRequest
     {

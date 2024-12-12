@@ -1,5 +1,7 @@
+using AutoMapper;
 using DailyPulse.Application.Abstraction;
 using DailyPulse.Application.DependenyInjectionServices;
+using DailyPulse.Application.Mapper;
 using DailyPulse.Infrastructure.DependencyInjectionService;
 using DailyPulse.Infrastructure.Persistence;
 using DailyPulse.Infrastructure.Repository;
@@ -26,7 +28,9 @@ namespace DailyPluse.WebAPI
 
             var defaultConnectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
-            builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseMySql(defaultConnectionString, ServerVersion.AutoDetect(defaultConnectionString)));
+            builder.Services.AddDbContext<ApplicationDbContext>(
+                options => options.UseMySql(defaultConnectionString, 
+                ServerVersion.AutoDetect(defaultConnectionString)));
 
             builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
@@ -34,6 +38,8 @@ namespace DailyPluse.WebAPI
             {
                 options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
             });
+
+            builder.Services.AddAutoMapper(typeof(MappingProfile));
 
             var app = builder.Build();
 

@@ -1,6 +1,8 @@
-﻿using DailyPulse.Application.Abstraction;
+﻿using System.Text.RegularExpressions;
+using DailyPulse.Application.Abstraction;
 using DailyPulse.Application.CQRS.Commands.Projects;
 using DailyPulse.Domain.Entities;
+using DailyPulse.Domain.Enums;
 using MediatR;
 using Task = System.Threading.Tasks.Task;
 
@@ -10,24 +12,32 @@ namespace DailyPulse.Application.CQRS.CommandHandler.ProjectsHandlers
     {
         private readonly IGenericRepository<Project> _repository;
 
-        public CreateProjectHandler(IGenericRepository<Project> _repository)
+       // private readonly IGenericRepository<ProjectsScopes> _projectScopeAssignmentsRepository;
+
+        public CreateProjectHandler(IGenericRepository<Project> _repository )
         {
             this._repository = _repository;
+           // this._projectScopeAssignmentsRepository = _projectScopeAssignmentsRepository;
         }
 
         public async Task Handle(CreateProjectCommand request, CancellationToken cancellationToken)
         {
+            string trade = Regex.Replace(request.TradeId, @"\s+", "");
+
             var project = new Project
             {
                 Description = request.Description,
                 LocationId = request.LocationId,
+                Trade = Enum.TryParse(trade, true, out Treats role)
+                     ? role : throw new ArgumentException($"Invalid trade: {request.TradeId}"),
                 Name = request.Name,
-                RegionId = request.RegionId,
-                ScopeOfWorkId = request.ScopeOfWorkId,
-                TeamLeadId = request.TeamLeadId
+                RegionId = request.RegionId
             };
 
-            await _repository.AddAsync(project , cancellationToken);
+            var insertedProject = await _repository.AddAsyncWithReturnEntity(project, cancellationToken);
+
+          //  await InsertProjectScopes(insertedProject, request.ScopeOfWorksSelections , cancellationToken);
+
         }
     }
 }

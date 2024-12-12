@@ -12,18 +12,20 @@ namespace DailyPulse.Application.CQRS.Commands.Tasks
 
         public string DrawingTitle { get; set; }
 
+        public string EstimatedHours { get; set; }
+
         public string file { get; set; }
 
         public string Priority { get; set; }
         
-        public DateTime DateFrom { get; set; }
+        public DateTime FromDate { get; set; }
 
-        public DateTime DateTo { get; set; }
+        public DateTime ToDate { get; set; }
 
         public Guid ProjectId { get; set; }
 
         public Guid EmployeeId { get; set; }
 
-        public Guid ScopeId { get; set; }
+       // public Guid ScopeId { get; set; }
     }
 }

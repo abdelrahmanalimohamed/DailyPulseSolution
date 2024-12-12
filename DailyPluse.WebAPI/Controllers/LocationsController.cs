@@ -42,7 +42,7 @@ namespace DailyPluse.WebAPI.Controllers
             return Ok(locations);
         }
 
-        [HttpPost]
+        [HttpPost("CreateNewLocation")]
         public async Task<IActionResult> CreateLocation([FromBody] CreateLocationCommand command)
         {
             await _mediator.Send(command);

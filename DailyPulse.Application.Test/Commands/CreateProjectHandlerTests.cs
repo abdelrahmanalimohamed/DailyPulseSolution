@@ -27,8 +27,8 @@ namespace DailyPulse.Application.Test.Commands
                 RegionId = Guid.NewGuid() , 
                 LocationId = Guid.NewGuid()  ,
                 Description = "Description Test",
-                ScopeOfWorkId = Guid.NewGuid() , 
-                TeamLeadId = Guid.NewGuid() 
+                //ScopeOfWorkId = Guid.NewGuid() , 
+                //TeamLeadId = Guid.NewGuid() 
             };
 
             _mockRepository

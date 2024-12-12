@@ -2,6 +2,7 @@
 using DailyPulse.Application.Abstraction;
 using DailyPulse.Application.CQRS.Queries.Tasks;
 using DailyPulse.Application.ViewModel;
+using DailyPulse.Domain.Enums;
 using MediatR;
 using Task = DailyPulse.Domain.Entities.Task;
 
@@ -18,19 +19,27 @@ namespace DailyPulse.Application.CQRS.QueriesHandler.TaskHandlers
         {
             var includes = new List<Expression<Func<Task, object>>>
                  {
-                     task => task.Employee
+                     task => task.Employee, 
+                     task => task.Project
                  };
 
             var tasks = await _repository.FindWithIncludeAsync(null , includes, cancellationToken);
 
-            //var tasks = await _repository.GetAllAsync(cancellationToken);
+            var todayDate = DateTime.Now;
 
             var taskHeaderViewModel = tasks.Select(task => new TaskHeaderViewModel
             {
                 Id = task.Id,
                 Name = task.Name,
                 Status = task.Status.ToString(),
-                EmployeeName = task.Employee.Name
+                EmployeeName = task.Employee.Name ,
+                StartDate = task.DateFrom ,
+                EndDate = task.DateTo,
+                Priority = task.Priority.ToString(),
+                ProjectName = null ,
+                Overdue = todayDate > task.DateTo && task.Status.ToString() == Status.InProgress.ToString()
+                  ? $"{(todayDate - task.DateTo).Days} Days"
+                  : ""
             });
 
             return taskHeaderViewModel;

@@ -1,7 +1,7 @@
-﻿using DailyPulse.Application.CQRS.Commands.TaskDetails;
-using DailyPulse.Application.CQRS.Queries.TaskDetails;
+﻿using DailyPulse.Application.CQRS.Queries.TaskDetails;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using DailyPulse.Application.CQRS.Commands.TaskWorkLog;
 
 namespace DailyPluse.WebAPI.Controllers
 {
@@ -17,7 +17,7 @@ namespace DailyPluse.WebAPI.Controllers
         }
 
         [HttpPost("createtaskdetails")]
-        public async Task<IActionResult> CreateTaskDetails([FromBody] CreateTaskDetailsCommand createTaskDetailsCommand)
+        public async Task<IActionResult> CreateTaskDetails([FromBody] CreateTaskWorkLogCommand createTaskDetailsCommand)
         {
             await _mediator.Send(createTaskDetailsCommand);
             return StatusCode(201);

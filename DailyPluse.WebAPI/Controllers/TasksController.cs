@@ -24,6 +24,13 @@ namespace DailyPluse.WebAPI.Controllers
             return StatusCode(201);
         }
 
+        [HttpPost("reject-rejectTask")]
+        public async Task<IActionResult> RejectTaskByEmployee([FromBody] UpdateTaskRejectionByEmployeeCommand updateTaskRejectionByEmployeeCommand)
+        {
+            await _mediator.Send(updateTaskRejectionByEmployeeCommand);
+            return StatusCode(201);
+        }
+
         [HttpPut("updatetaskstatus")]
         public async Task<IActionResult> UpdateTaskStatusByAdmin([FromBody] UpdateTaskStatusByAdminCommand updateTaskStatusByAdminCommand)
         {
@@ -35,6 +42,20 @@ namespace DailyPluse.WebAPI.Controllers
         public async Task<IActionResult> UpdateTaskStatusByEmployee([FromBody] UpdateTaskStatusByEmployeeCommand updateTaskStatusByEmployeeCommand)
         {
             await _mediator.Send(updateTaskStatusByEmployeeCommand);
+            return StatusCode(201);
+        }
+
+        [HttpPut("update-updatetask")]
+        public async Task<IActionResult> UpdateTask([FromBody] UpdateTaskCommand updateTaskCommand)
+        {
+            await _mediator.Send(updateTaskCommand);
+            return StatusCode(200);
+        }
+
+        [HttpPut("closeorcompletetask")]
+        public async Task<IActionResult> CloseOrCompleteTaskByAdmin([FromBody] CloseTaskCommand closeTaskCommand)
+        {
+            await _mediator.Send(closeTaskCommand);
             return StatusCode(201);
         }
 
@@ -68,6 +89,26 @@ namespace DailyPluse.WebAPI.Controllers
             var getWorkedTasksByEmployeeIdQuery = new GetWorkedTasksByEmployeeIdQuery { EmployeeId = empId };
             var workedTasks = await _mediator.Send(getWorkedTasksByEmployeeIdQuery);
             return Ok(workedTasks);
+        }
+
+        [HttpGet("gettaskworklog")]
+        public async Task<IActionResult> GetTaskWorkLog(Guid taskId)
+        {
+            var getTaskReportQuery = new GetTaskWorkLogQuery { TaskId = taskId };
+
+            var report = await _mediator.Send(getTaskReportQuery);
+
+            return Ok(report);
+        }
+
+        [HttpGet("gettaskhistory")]
+        public async Task<IActionResult> GetTaskHistory(Guid taskId)
+        {
+            var getTaskHistoryQuery = new GetTaskHistoryQuery { TaskId = taskId };
+
+            var report = await _mediator.Send(getTaskHistoryQuery);
+
+            return Ok(report);
         }
     }
 }

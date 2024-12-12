@@ -8,9 +8,9 @@ namespace DailyPulse.Application.CQRS.QueriesHandler.TaskDetailsHandlers
 {
     public class GetTaskDetailsHandler : IRequestHandler<GetTaskDetailsQuery, IEnumerable<TaskDetailsViewModel>>
     {
-        private readonly IGenericRepository<TaskDetail> _repository;
+        private readonly IGenericRepository<TaskWorkLog> _repository;
 
-        public GetTaskDetailsHandler(IGenericRepository<TaskDetail> _repository)
+        public GetTaskDetailsHandler(IGenericRepository<TaskWorkLog> _repository)
         {
             this._repository = _repository;
         }

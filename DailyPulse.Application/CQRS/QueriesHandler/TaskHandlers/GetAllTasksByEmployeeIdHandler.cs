@@ -21,7 +21,7 @@ namespace DailyPulse.Application.CQRS.QueriesHandler.TaskHandlers
             var tasks = await _repository.FindAsync(
                                   x => x.EmpId == request.EmployeeId &&
                                  !x.IsRejectedByAdmin &&
-                                 (x.Status == Status.New || x.Status == Status.Rejected),
+                                 (x.Status == Status.New || x.Status == Status.RequestToReAssign),
                             cancellationToken);
 
             var taskHeaderViewModel = tasks.Select(task => new TaskHeaderViewModel

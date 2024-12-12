@@ -4,8 +4,8 @@ namespace DailyPulse.Domain.Entities
 {
     public class ScopeOfWork : BaseEntityWithName
     {
-        public ICollection<Project> Projects { get; set; } = new List<Project>();
+        //public ICollection<ProjectsScopes> ProjectsScopes { get; set; } = new List<ProjectsScopes>();
 
-        public ICollection<Task> Tasks { get; set; } = new List<Task>();
+       // public ICollection<Task> Tasks { get; set; } = new List<Task>();
     }
 }

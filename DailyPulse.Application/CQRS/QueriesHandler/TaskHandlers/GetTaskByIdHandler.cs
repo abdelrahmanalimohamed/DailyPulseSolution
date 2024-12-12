@@ -2,7 +2,6 @@
 using DailyPulse.Application.Abstraction;
 using DailyPulse.Application.CQRS.Queries.Tasks;
 using DailyPulse.Application.ViewModel;
-using DailyPulse.Domain.Enums;
 using MediatR;
 using Task = DailyPulse.Domain.Entities.Task;
 
@@ -22,7 +21,7 @@ namespace DailyPulse.Application.CQRS.QueriesHandler.TaskHandlers
             var includes = new List<Expression<Func<Task, object>>>
                  {
                      task => task.Project ,
-                     task => task.Scope
+                    // task => task.Scope 
                  };
 
             var tasks = await _repository.FindWithIncludeAsync(
@@ -35,16 +34,17 @@ namespace DailyPulse.Application.CQRS.QueriesHandler.TaskHandlers
                 DrawingNo = task.DrawingId,
                 Id = task.Id,
                 Attachement = task.FilePath,
-                StartDate = task.StartTime,
-                EndDate = task.EndTime,
+                StartDate = task.DateFrom,
+                EndDate = task.DateTo,
                 DrawingTitle = task.DrawingTitle,
                 Name = task.Name,
-                Priority = Enum.IsDefined(typeof(Priority), task.Priority)
-                ? ((Priority)task.Priority).ToString()
-                : "Unknown",
+                Priority = task.Priority.ToString(),
+                Status = task.Status.ToString(),
                 Area = task.Area,
                 ProjectName = task.Project.Name,
-                ScopeOfWork = task.Scope.Name
+               // ScopeOfWork = task.Scope.Name , 
+                ProjectId = task.ProjectId ,
+                EmpId = task.EmpId ,
             });
 
             return taskViewModel;

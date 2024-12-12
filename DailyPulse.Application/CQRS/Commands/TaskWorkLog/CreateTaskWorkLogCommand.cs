@@ -1,8 +1,8 @@
 ﻿using MediatR;
 
-namespace DailyPulse.Application.CQRS.Commands.TaskDetails
+namespace DailyPulse.Application.CQRS.Commands.TaskWorkLog
 {
-    public class CreateTaskDetailsCommand : IRequest
+    public class CreateTaskWorkLogCommand : IRequest
     {
         public Guid TaskId { get; set; }
         public DateTime StartTime { get; set; }
