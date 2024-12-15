@@ -17,14 +17,23 @@ namespace DailyPulse.Application.CQRS.QueriesHandler.LoginHanlders
         }
         public async Task<LoginResponseDTO> Handle(LoginQuery request, CancellationToken cancellationToken)
         {
-            //string passwordHash = BCrypt.Net.BCrypt.HashPassword(request.password);
-
             var employee = await _repository.GetFirstOrDefault(
-                x => x.username == request.username &&
-                x.password == request.password , 
-                cancellationToken);
+                            x => x.username == request.username,
+                            cancellationToken);
 
-           var token =  _jwtTokenGenerator.GenerateToken(employee.Id, employee.Role);
+            if (employee == null || !BCrypt.Net.BCrypt.Verify(request.password, employee.password))
+            {
+                // Return a response indicating invalid credentials
+                return new LoginResponseDTO
+                {
+                    IsSuccess = false,
+                    Role = null,
+                    Token = null,
+                    UserId = null,
+                };
+            }
+
+            var token = _jwtTokenGenerator.GenerateToken(employee.Id, employee.Role);
 
             var loginResponse = new LoginResponseDTO
             {
@@ -35,7 +44,6 @@ namespace DailyPulse.Application.CQRS.QueriesHandler.LoginHanlders
             };
 
             return loginResponse;
-
         }
     }
 }

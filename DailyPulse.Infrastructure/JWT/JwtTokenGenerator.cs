@@ -12,10 +12,10 @@ namespace DailyPulse.Infrastructure.JWT
         private readonly string _key;
         private readonly string _issuer;
 
-        public JwtTokenGenerator(string key, string issuer)
+        public JwtTokenGenerator(string _key, string _issuer)
         {
-            this._key = key;
-            this._issuer = issuer;
+            this._key = _key;
+            this._issuer = _issuer;
         }
         public string GenerateToken(Guid userId, EmployeeRole role)
         {

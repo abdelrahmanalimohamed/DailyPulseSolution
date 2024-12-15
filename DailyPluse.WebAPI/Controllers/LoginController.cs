@@ -1,5 +1,6 @@
 ﻿using DailyPulse.Application.CQRS.Queries.Login;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DailyPluse.WebAPI.Controllers
@@ -15,6 +16,7 @@ namespace DailyPluse.WebAPI.Controllers
         }
 
         [HttpPost("loginemployee")]
+        [AllowAnonymous]
         public async Task<IActionResult> Login([FromBody] LoginQuery loginQuery) 
         { 
             var loginResponse = await mediator.Send(loginQuery);
