@@ -1,10 +1,9 @@
-﻿using System.Linq.Expressions;
-using System.Runtime.CompilerServices;
-using DailyPulse.Application.Abstraction;
+﻿using DailyPulse.Application.Abstraction;
 using DailyPulse.Infrastructure.Persistence;
 using Dapper;
 using Microsoft.EntityFrameworkCore;
 using MySqlConnector;
+using System.Linq.Expressions;
 
 namespace DailyPulse.Infrastructure.Repository
 {
@@ -88,28 +87,6 @@ namespace DailyPulse.Infrastructure.Repository
         {
             _context.Set<T>().Remove(entity);
             await _context.SaveChangesAsync(cancellationToken);
-        }
-        //private formattablestring createinterpolatedsql(string storedprocname, object[] parameters)
-        //{
-        //    var paramplaceholders = string.join(", ", parameters.select((_, index) => $"{{{index}}}"));
-        //    return formattablestringfactory.create($"call {storedprocname}({paramplaceholders})", parameters);
-        //}
-
-
-        private (FormattableString, object[]) CreateInterpolatedSql(string storedProcName, object parameters)
-        {
-            var parametersDictionary = new Dictionary<string, object>();
-            if (parameters != null)
-            {
-                foreach (var property in parameters.GetType().GetProperties())
-                {
-                    parametersDictionary.Add(property.Name, property.GetValue(parameters));
-                }
-            }
-
-            var paramPlaceholders = string.Join(", ", parametersDictionary.Select((_, index) => $"{{{index}}}"));
-            var sql = FormattableStringFactory.Create($"EXEC {storedProcName} {paramPlaceholders}", parametersDictionary.Values.ToArray());
-            return (sql, parametersDictionary.Values.ToArray());
         }
     }
 }

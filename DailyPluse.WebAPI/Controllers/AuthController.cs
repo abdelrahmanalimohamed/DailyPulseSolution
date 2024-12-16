@@ -7,10 +7,10 @@ namespace DailyPluse.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class LoginController : ControllerBase
+    public class AuthController : ControllerBase
     {
         private readonly IMediator mediator;
-        public LoginController(IMediator mediator)
+        public AuthController(IMediator mediator)
         {
             this.mediator = mediator;
         }
