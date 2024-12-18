@@ -23,7 +23,6 @@ namespace DailyPulse.Infrastructure.Persistence
         public DbSet<RejectedTasks> RejectedTasks { get; set; }
         public DbSet<TaskNewRequirements> TaskNewRequirements { get; set; }
         public DbSet<TaskLogs> TaskLogs { get; set; }
-
         public DbSet<TaskStatusLogs> TaskStatusLogs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -106,9 +105,9 @@ namespace DailyPulse.Infrastructure.Persistence
                    .IsRequired()
                    .HasMaxLength(50);
 
-                entity.Property(p => p.Area)
-                    .IsRequired()
-                    .HasMaxLength(50);
+                //entity.Property(p => p.Area)
+                //    .IsRequired()
+                //    .HasMaxLength(50);
 
                 entity.Property(p => p.IsRejectedByAdmin)
                 .HasDefaultValue(false);
