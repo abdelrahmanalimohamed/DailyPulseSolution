@@ -40,7 +40,7 @@ namespace DailyPulse.Application.CQRS.QueriesHandler.TaskHandlers
                 Name = task.Name,
                 Priority = task.Priority.ToString(),
                 Status = task.Status.ToString(),
-                Area = task.Area,
+               // Area = task.Area,
                 ProjectName = task.Project.Name,
                // ScopeOfWork = task.Scope.Name , 
                 ProjectId = task.ProjectId ,

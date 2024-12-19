@@ -9,5 +9,6 @@
         public string? LogDesc { get; set; }
         public string? Total_Working_Hours { get; set; }
         public string? WorkLogDuration { get; set; }
+        public string? Remaining_Time { get; set; }
     }
 }

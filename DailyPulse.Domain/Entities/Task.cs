@@ -8,11 +8,12 @@ namespace DailyPulse.Domain.Entities
         public string DrawingId { get; set; }
         public string DrawingTitle { get; set; }
         public string FilePath { get; set; }
-        public string Area { get; set; }
+       // public string Area { get; set; }
         public string EstimatedWorkingHours { get; set; }
         public bool IsRejectedByAdmin { get; set; }
         public bool IsRejectedByEmployee { get; set; }
         public Status Status { get; set; }
+        public Levels Levels { get; set; }
         public Priority Priority { get; set; }
         public DateTime DateFrom { get; set; }
         public DateTime DateTo { get; set; }

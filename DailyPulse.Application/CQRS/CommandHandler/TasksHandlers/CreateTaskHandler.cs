@@ -20,7 +20,7 @@ namespace DailyPulse.Application.CQRS.CommandHandler.TasksHandlers
             var task = new DailyPulse.Domain.Entities.Task
             {
                 Name = request.TaskName,
-                Area = request.Area,
+                //Area = request.Area,
                 DateFrom = request.FromDate,
                 DateTo = request.ToDate,
                 DrawingId = request.DrawingNo,
@@ -33,6 +33,8 @@ namespace DailyPulse.Application.CQRS.CommandHandler.TasksHandlers
                 Priority = Enum.TryParse(request.Priority, true, out Priority role)
                      ? role : throw new ArgumentException($"Invalid priority: {request.Priority}"),
                 DrawingTitle = request.DrawingTitle,
+                Levels = Enum.TryParse(request.level, true, out Levels level)
+                     ? level : throw new ArgumentException($"Invalid level: {request.level}"),
             };
 
             await _repository.AddAsync(task, cancellationToken);

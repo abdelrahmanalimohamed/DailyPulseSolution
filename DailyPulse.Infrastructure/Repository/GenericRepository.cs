@@ -1,8 +1,9 @@
-﻿using System.Linq.Expressions;
-using System.Runtime.CompilerServices;
-using DailyPulse.Application.Abstraction;
+﻿using DailyPulse.Application.Abstraction;
 using DailyPulse.Infrastructure.Persistence;
+using Dapper;
 using Microsoft.EntityFrameworkCore;
+using MySqlConnector;
+using System.Linq.Expressions;
 
 namespace DailyPulse.Infrastructure.Repository
 {
@@ -25,10 +26,24 @@ namespace DailyPulse.Infrastructure.Repository
         {
             return await _context.Set<T>().Where(predicate).ToListAsync(cancellationToken);
         }
-        public async Task<IEnumerable<T>> CallStoredProc(string storedProcName, object[] parameters, CancellationToken cancellationToken = default)
+        public async Task<T> GetFirstOrDefault(Expression<Func<T, bool>> predicate, CancellationToken cancellationToken = default)
         {
-            var sql = CreateInterpolatedSql(storedProcName, parameters);
-            return await _context.Set<T>().FromSqlInterpolated(sql).ToListAsync(cancellationToken);
+            return await _context.Set<T>().FirstOrDefaultAsync(predicate ,cancellationToken);
+        }
+        public async Task<IEnumerable<T>> CallStoredProc<T>(string storedProcName, DynamicParameters parameters, CancellationToken cancellationToken = default)
+        {
+            using var connection = new MySqlConnection(_context.Database.GetConnectionString());
+
+            if (connection.State == System.Data.ConnectionState.Closed)
+            {
+                await connection.OpenAsync(cancellationToken);
+            }
+
+            return await connection.QueryAsync<T>(
+                storedProcName,
+                parameters,
+                commandType: System.Data.CommandType.StoredProcedure
+            );
         }
         public async Task<IEnumerable<T>> FindWithIncludeAsync(
            Expression<Func<T, bool>> predicate = null,
@@ -72,11 +87,6 @@ namespace DailyPulse.Infrastructure.Repository
         {
             _context.Set<T>().Remove(entity);
             await _context.SaveChangesAsync(cancellationToken);
-        }
-        private FormattableString CreateInterpolatedSql(string storedProcName, object[] parameters)
-        {
-            var paramPlaceholders = string.Join(", ", parameters.Select((_, index) => $"{{{index}}}"));
-            return FormattableStringFactory.Create($"CALL {storedProcName}({paramPlaceholders})", parameters);
         }
     }
 }

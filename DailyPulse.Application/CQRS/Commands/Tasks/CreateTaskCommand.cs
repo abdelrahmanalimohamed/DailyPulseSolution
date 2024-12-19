@@ -6,7 +6,7 @@ namespace DailyPulse.Application.CQRS.Commands.Tasks
     {
         public string TaskName { get; set; }
 
-        public string Area { get; set; }
+        //public string Area { get; set; }
 
         public string DrawingNo { get; set; }
 
@@ -17,7 +17,9 @@ namespace DailyPulse.Application.CQRS.Commands.Tasks
         public string file { get; set; }
 
         public string Priority { get; set; }
-        
+
+        public string level { get; set; }
+
         public DateTime FromDate { get; set; }
 
         public DateTime ToDate { get; set; }
