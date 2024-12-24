@@ -1,13 +1,14 @@
 ﻿using DailyPulse.Application.CQRS.Queries.Regions;
 using MediatR;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DailyPluse.WebAPI.Controllers
 {
-    [Route("api/[controller]")]
+	[Route("api/[controller]")]
     [ApiController]
-    public class RegionsController : ControllerBase
+	[Authorize]
+	public class RegionsController : ControllerBase
     {
         private readonly IMediator _mediator;
 

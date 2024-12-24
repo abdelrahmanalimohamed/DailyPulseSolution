@@ -1,11 +1,14 @@
+using DailyPluse.WebAPI.Swagger;
 using DailyPulse.Application.DependenyInjectionServices;
 using DailyPulse.Infrastructure.DependencyInjectionService;
 using DailyPulse.Infrastructure.Persistence;
 using DailyPulse.Infrastructure.Seeding;
+using Microsoft.Extensions.Options;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace DailyPluse.WebAPI
 {
-    public class Program
+	public class Program
     {
         public static async Task Main(string[] args)
         {
@@ -16,6 +19,7 @@ namespace DailyPluse.WebAPI
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
 
             builder.Services
                   .AddApplication()
@@ -26,9 +30,9 @@ namespace DailyPluse.WebAPI
                 options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
             });
 
-            var app = builder.Build();
-
-            using (var scope = app.Services.CreateScope())
+			var app = builder.Build();
+			
+			using (var scope = app.Services.CreateScope())
             {
                 var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
                 await SeedData.Initialize(context);

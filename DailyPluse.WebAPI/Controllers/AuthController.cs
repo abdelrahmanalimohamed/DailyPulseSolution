@@ -20,6 +20,10 @@ namespace DailyPluse.WebAPI.Controllers
         public async Task<IActionResult> Login([FromBody] LoginQuery loginQuery) 
         { 
             var loginResponse = await mediator.Send(loginQuery);
+
+            if (loginResponse.IsSuccess == false)
+                return Unauthorized();
+
             return Ok(loginResponse);
         }
     }

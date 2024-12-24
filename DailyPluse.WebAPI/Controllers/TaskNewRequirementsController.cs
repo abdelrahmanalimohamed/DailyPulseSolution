@@ -1,5 +1,6 @@
 ﻿using DailyPulse.Application.CQRS.Commands.TaskNewRequirements;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,7 +8,8 @@ namespace DailyPluse.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TaskNewRequirementsController : ControllerBase
+	[Authorize]
+	public class TaskNewRequirementsController : ControllerBase
     {
         private readonly IMediator mediator;
 

@@ -1,12 +1,14 @@
 ﻿using DailyPulse.Application.CQRS.Queries.ScopeOfWorks;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DailyPluse.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ScopeOWorksController : ControllerBase
+	[Authorize]
+	public class ScopeOWorksController : ControllerBase
     {
         private readonly IMediator _mediator;
 

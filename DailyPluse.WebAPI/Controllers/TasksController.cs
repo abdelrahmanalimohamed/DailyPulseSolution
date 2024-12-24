@@ -1,13 +1,15 @@
 ﻿using DailyPulse.Application.CQRS.Commands.Tasks;
 using DailyPulse.Application.CQRS.Queries.Tasks;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DailyPluse.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TasksController : ControllerBase
+	[Authorize]
+	public class TasksController : ControllerBase
     {
         private readonly IMediator _mediator;
 

@@ -1,12 +1,14 @@
 ﻿using DailyPulse.Application.CQRS.Commands.Projects;
 using DailyPulse.Application.CQRS.Queries.Projects;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DailyPluse.WebAPI.Controllers
 {
-    [Route("api/[controller]")]
+	[Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ProjectsController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -15,7 +17,7 @@ namespace DailyPluse.WebAPI.Controllers
         {
             this._mediator = _mediator;
         }
-
+        [Authorize(Policy = "AdminRoles")]
         [HttpGet]
         public async Task<IActionResult> GetAllProjects() 
         {
@@ -24,10 +26,11 @@ namespace DailyPluse.WebAPI.Controllers
             return Ok(projects);
         }
 
-        [HttpGet("{id}")]
+		[Authorize(Policy = "SeniorRoles")]
+		[HttpGet("{id}")]
         public async Task<IActionResult> GetProject(Guid id)
         {
-            var query = new GetProjectByIdQuery{ ProjectId = id};
+            var query = new GetProjectByIdQuery{ ProjectId = id };
             var project = await _mediator.Send(query);
             return Ok(project);
         }
