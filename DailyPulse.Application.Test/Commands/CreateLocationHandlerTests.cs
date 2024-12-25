@@ -2,13 +2,12 @@
 using DailyPulse.Application.CQRS.CommandHandler.LocationsHandlers;
 using DailyPulse.Application.CQRS.Commands.Locations;
 using DailyPulse.Domain.Entities;
-using MediatR;
 using Moq;
 using Task = System.Threading.Tasks.Task;
 
 namespace DailyPulse.Application.Test.Commands
 {
-    public class CreateLocationHandlerTests
+	public class CreateLocationHandlerTests
     {
         private readonly Mock<IGenericRepository<Location>> _mockRepository;
         private readonly CreateLocationHandler _handler;
@@ -32,7 +31,7 @@ namespace DailyPulse.Application.Test.Commands
             // Act
             await _handler.Handle(command, CancellationToken.None);
 
-
+            //Assert
             _mockRepository.Verify(repo => repo.AddAsync(It.Is<Location>(
                 loc => loc.Name == command.Name && loc.RegionId == command.RegionId
             ), It.IsAny<CancellationToken>()), Times.Once); 
