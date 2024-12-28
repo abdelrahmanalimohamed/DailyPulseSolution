@@ -1,17 +1,16 @@
 ﻿using DailyPulse.Application.CQRS.Commands.Locations;
 using DailyPulse.Application.CQRS.Queries.Locations;
-using DailyPulse.Infrastructure.Persistence;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DailyPluse.WebAPI.Controllers
 {
-    [Route("api/[controller]")]
+	[Route("api/[controller]")]
     [ApiController]
     public class LocationsController : ControllerBase
     {
         private readonly IMediator _mediator;
-        public LocationsController(IMediator mediator , ApplicationDbContext applicationDbContext)
+        public LocationsController(IMediator mediator)
         {
             _mediator = mediator;
         }
