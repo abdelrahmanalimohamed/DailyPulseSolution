@@ -34,7 +34,7 @@ namespace DailyPulse.Application.CQRS.CommandHandler.ProjectsHandlers
                 RegionId = request.RegionId
             };
 
-            var insertedProject = await _repository.AddAsyncWithReturnEntity(project, cancellationToken);
+             await _repository.AddAsync(project, cancellationToken);
 
           //  await InsertProjectScopes(insertedProject, request.ScopeOfWorksSelections , cancellationToken);
 

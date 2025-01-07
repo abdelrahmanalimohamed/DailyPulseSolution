@@ -14,14 +14,13 @@ using System.Text;
 
 namespace DailyPulse.Infrastructure.DependencyInjectionService
 {
-    public static class DependencyInjection
+    public static class InfrastructureService
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services , IConfiguration Configuration)
         {
-
             var defaultConnectionString = Configuration.GetConnectionString("DefaultConnection");
 
-            services.AddDbContextPool<ApplicationDbContext>(
+            services.AddDbContext<ApplicationDbContext>(
                 options => options.UseMySql(defaultConnectionString,
                 ServerVersion.AutoDetect(defaultConnectionString)));
 

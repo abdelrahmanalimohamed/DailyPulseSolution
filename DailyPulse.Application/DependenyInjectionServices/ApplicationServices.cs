@@ -3,11 +3,11 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DailyPulse.Application.DependenyInjectionServices
 {
-    public static class DependencyInjection
+    public static class ApplicationServices
     {
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
-            var assembly = typeof(DependencyInjection).Assembly;
+            var assembly = typeof(ApplicationServices).Assembly;
 
             services.AddMediatR(configuration =>
               configuration.RegisterServicesFromAssembly(assembly));

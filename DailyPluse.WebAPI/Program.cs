@@ -3,6 +3,7 @@ using DailyPulse.Application.DependenyInjectionServices;
 using DailyPulse.Infrastructure.DependencyInjectionService;
 using DailyPulse.Infrastructure.Persistence;
 using DailyPulse.Infrastructure.Seeding;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -35,7 +36,8 @@ namespace DailyPluse.WebAPI
 			using (var scope = app.Services.CreateScope())
             {
                 var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-                await SeedData.Initialize(context);
+				context.Database.Migrate();
+				await SeedData.Initialize(context);
             }
 
             app.UseCors(policy => policy.AllowAnyHeader()

@@ -12,7 +12,7 @@ namespace DailyPluse.WebAPI.Controllers
 
         public ReAssignController(IMediator mediator)
         {
-            this._mediator = mediator;
+            _mediator = mediator;
         }
 
         [HttpPost("createreassign")]
@@ -21,6 +21,5 @@ namespace DailyPluse.WebAPI.Controllers
             await _mediator.Send(createReAssignationCommand);
             return StatusCode(201);
         }
-
     }
 }

@@ -17,7 +17,7 @@ namespace DailyPluse.WebAPI.Controllers
         {
             this._mediator = _mediator;
         }
-        [Authorize(Policy = "AdminRoles")]
+       // [Authorize(Policy = "AdminRoles")]
         [HttpGet]
         public async Task<IActionResult> GetAllProjects() 
         {
@@ -26,7 +26,7 @@ namespace DailyPluse.WebAPI.Controllers
             return Ok(projects);
         }
 
-		[Authorize(Policy = "SeniorRoles")]
+		//[Authorize(Policy = "SeniorRoles")]
 		[HttpGet("{id}")]
         public async Task<IActionResult> GetProject(Guid id)
         {

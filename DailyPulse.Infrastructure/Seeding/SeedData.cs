@@ -1,4 +1,6 @@
-﻿using DailyPulse.Domain.Entities;
+﻿using BCrypt.Net;
+using DailyPulse.Domain.Entities;
+using DailyPulse.Domain.Enums;
 using DailyPulse.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Task = System.Threading.Tasks.Task;
@@ -76,6 +78,25 @@ namespace DailyPulse.Infrastructure.Seeding
                 );
                 await context.SaveChangesAsync();
             }
-        }
+
+			if (!context.Employees.Any())
+			{
+                var id = Guid.NewGuid();
+                await context.Employees.AddAsync(
+                    new Employee
+                    {
+                        Id = id,
+                        IsAdmin = true , 
+                        password = BCrypt.Net.BCrypt.HashPassword("123456789"),
+                        username = "admin@gmail.com",
+                        Name="Admin" , 
+                        ReportToId = id ,
+                        Role = EmployeeRole.Admin , 
+                        Title = "DailyPulseAdmin"
+                    }
+                );
+				await context.SaveChangesAsync();
+			}
+		}
     }
 }

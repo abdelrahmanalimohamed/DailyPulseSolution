@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <UserSecretsId>e2b55236-c7a4-4c61-831b-a8aa83310b2e</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DailyPluse.WebAPI\DailyPluse.WebAPI.csproj" />
+    <ProjectReference Include="..\DailyPulse.Application\DailyPulse.Application.csproj" />
+    <ProjectReference Include="..\DailyPulse.Domain\DailyPulse.Domain.csproj" />
+    <ProjectReference Include="..\DailyPulse.Infrastructure\DailyPulse.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentAssertions" Version="6.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.35" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.36" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
+    <PackageReference Include="xunit" Version="2.9.2" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="3.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+</Project>

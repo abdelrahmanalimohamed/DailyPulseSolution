@@ -2,7 +2,7 @@
 using DailyPulse.Application.CQRS.CommandHandler.ProjectsHandlers;
 using DailyPulse.Application.CQRS.Commands.Projects;
 using DailyPulse.Domain.Entities;
-using MediatR;
+using DailyPulse.Domain.Enums;
 using Moq;
 using Task = System.Threading.Tasks.Task;
 
@@ -19,7 +19,7 @@ namespace DailyPulse.Application.Test.Commands
         }
 
         [Fact]
-        public async Task Handle_ShouldAddLocationAndReturnUnitValue_WhenCommandIsValid()
+        public async Task Handle_ShouldAddProjectAndReturnUnitValue_WhenCommandIsValid()
         {
             // Arrange
             var command = new CreateProjectCommand {
@@ -27,6 +27,7 @@ namespace DailyPulse.Application.Test.Commands
                 RegionId = Guid.NewGuid() , 
                 LocationId = Guid.NewGuid()  ,
                 Description = "Description Test",
+                TradeId = "1"
                 //ScopeOfWorkId = Guid.NewGuid() , 
                 //TeamLeadId = Guid.NewGuid() 
             };
@@ -44,7 +45,8 @@ namespace DailyPulse.Application.Test.Commands
                 proj => proj.Name == command.Name && 
                 proj.RegionId == command.RegionId &&
                 proj.LocationId == command.LocationId && 
-                proj.Description == command.Description
+                proj.Description == command.Description && 
+                proj.Trade == Treats.TradeOne
             ), It.IsAny<CancellationToken>()), Times.Once);
         }
     }
