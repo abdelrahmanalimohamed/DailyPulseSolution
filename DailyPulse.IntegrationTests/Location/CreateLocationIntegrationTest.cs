@@ -20,8 +20,10 @@ namespace DailyPulse.IntegrationTests.Location
 		{
 			// Arrange: Define request payload
 
-			var regionId = await applicationDbContext.Regions.Where(x => x.Name == "EGYPT")
-				.Select(x => x.Id).FirstOrDefaultAsync(); ;
+			var regionId = await applicationDbContext.Regions
+				.Where(x => x.Name == "EGYPT")
+				.Select(x => x.Id)
+				.FirstOrDefaultAsync();
 
 			var createLocationRequest = new CreateLocationCommand
 			{
@@ -29,15 +31,13 @@ namespace DailyPulse.IntegrationTests.Location
 				RegionId = regionId
 			};
 
-			//var httpClient = _client.CreateClient();
-
 			var jsonContent = new StringContent(
 				JsonSerializer.Serialize(createLocationRequest),
 				Encoding.UTF8,
 				"application/json"
 			);
 
-			//Act
+			// Act: Send the command via MediatR
 			await sender.Send(createLocationRequest);
 
 			// Assert: Validate the database changes or any expected side effect
