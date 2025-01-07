@@ -31,12 +31,6 @@ namespace DailyPulse.IntegrationTests.Location
 				RegionId = regionId
 			};
 
-			var jsonContent = new StringContent(
-				JsonSerializer.Serialize(createLocationRequest),
-				Encoding.UTF8,
-				"application/json"
-			);
-
 			// Act: Send the command via MediatR
 			await sender.Send(createLocationRequest);
 
