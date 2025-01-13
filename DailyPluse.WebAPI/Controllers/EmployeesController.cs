@@ -1,13 +1,15 @@
 ﻿using DailyPulse.Application.CQRS.Commands.Employees;
 using DailyPulse.Application.CQRS.Queries.Employees;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DailyPluse.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class EmployeesController : ControllerBase
+	[Authorize]
+	public class EmployeesController : ControllerBase
     {
         private readonly IMediator _mediator;
 

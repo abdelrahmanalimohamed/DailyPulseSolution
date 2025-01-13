@@ -1,6 +1,8 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Data;
+using System.Text.RegularExpressions;
 using DailyPulse.Application.Abstraction;
 using DailyPulse.Application.CQRS.Commands.Employees;
+using DailyPulse.Application.Extensions;
 using DailyPulse.Domain.Entities;
 using DailyPulse.Domain.Enums;
 using MediatR;
@@ -18,7 +20,18 @@ namespace DailyPulse.Application.CQRS.CommandHandler.EmployeesHandlers
         }
         public async Task Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
         {
-            var hashedPassword = BCrypt.Net.BCrypt.HashPassword(request.Password);
+			var normalizedName = request.Name.RemoveWhitespace();
+
+			var existingEmployee = await _repository.GetFirstOrDefault(
+						emp => emp.Name.Trim().ToLower() == normalizedName.ToLower(),
+						cancellationToken);
+
+			if (existingEmployee != null)
+			{
+				throw new DuplicateNameException("An Employee with the same name already exists.");
+			}
+
+			var hashedPassword = BCrypt.Net.BCrypt.HashPassword(request.Password);
 
             string grade = Regex.Replace(request.Jobgrade, @"\s+", "");
 

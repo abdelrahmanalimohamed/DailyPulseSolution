@@ -1,7 +1,9 @@
 ﻿using DailyPulse.Application.Abstraction;
 using DailyPulse.Application.CQRS.Commands.Tasks;
+using DailyPulse.Application.Extensions;
 using DailyPulse.Domain.Enums;
 using MediatR;
+using System.Data;
 using Task = System.Threading.Tasks.Task;
 
 
@@ -17,7 +19,17 @@ namespace DailyPulse.Application.CQRS.CommandHandler.TasksHandlers
         }
         public async Task Handle(CreateTaskCommand request, CancellationToken cancellationToken)
         {
-            var task = new DailyPulse.Domain.Entities.Task
+			var normalizedName = request.TaskName.RemoveWhitespace();
+
+			var existingTask = await _repository.GetFirstOrDefault(
+						tsk => tsk.Name.Trim().ToLower() == normalizedName.ToLower(),
+						cancellationToken);
+
+			if (existingTask != null)
+			{
+				throw new DuplicateNameException("A Task with the same name already exists.");
+			}
+			var task = new DailyPulse.Domain.Entities.Task
             {
                 Name = request.TaskName,
                 //Area = request.Area,

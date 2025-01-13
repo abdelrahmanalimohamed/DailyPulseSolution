@@ -23,7 +23,6 @@ namespace DailyPulse.Application.CQRS.QueriesHandler.LoginHandlers
 
 			if (employee == null || !BCrypt.Net.BCrypt.Verify(request.password, employee.password))
 			{
-				// Return a response indicating invalid credentials
 				return new LoginResponseDTO
 				{
 					IsSuccess = false,

@@ -11,12 +11,12 @@ namespace DailyPulse.Application.CQRS.CommandHandler.TasksHandlers
     {
         private readonly IGenericRepository<DailyPulse.Domain.Entities.Task> _repository;
 
-        private readonly IGenericRepository<RejectedTasks> _rejectedtasksRepo;
+        private readonly IGenericRepository<EmployeeRejectedTasks> _rejectedtasksRepo;
 
         private readonly IGenericRepository<TaskStatusLogs> _taskstatusLogsrepo;
         public UpdateTaskStatusByEmployeeHandler(
             IGenericRepository<DailyPulse.Domain.Entities.Task> _repository ,
-            IGenericRepository<RejectedTasks> _rejectedtasksRepo,
+            IGenericRepository<EmployeeRejectedTasks> _rejectedtasksRepo,
             IGenericRepository<TaskStatusLogs> _taskstatusLogsrepo)
         {
             this._repository = _repository;
@@ -58,7 +58,7 @@ namespace DailyPulse.Application.CQRS.CommandHandler.TasksHandlers
 
         private async Task RejectionReasons(Guid TaskId , Guid EmpId , string RejectionReasons , CancellationToken cancellationToken)
         {
-            var rejectedTask = new RejectedTasks
+            var rejectedTask = new EmployeeRejectedTasks
             {
                 EmpId = EmpId,
                 TaskId = TaskId,

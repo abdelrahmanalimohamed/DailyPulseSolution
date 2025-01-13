@@ -2,7 +2,7 @@
 
 namespace DailyPulse.Domain.Entities
 {
-    public class RejectedTasks : BaseEntity
+    public class EmployeeRejectedTasks : BaseEntity
     {
         public Guid TaskId { get; set; }
         public Task Task { get; set; }

@@ -8,7 +8,7 @@ namespace DailyPluse.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-	[Authorize]
+	//[Authorize]
 	public class TaskNewRequirementsController : ControllerBase
     {
         private readonly IMediator mediator;

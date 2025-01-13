@@ -11,7 +11,6 @@ namespace DailyPulse.Infrastructure.Seeding
     {
         public static async Task Initialize(ApplicationDbContext context)
         {
-            // Seed Regions
             if (!context.Regions.Any())
             {
                 await context.Regions.AddRangeAsync(
@@ -21,7 +20,6 @@ namespace DailyPulse.Infrastructure.Seeding
                 await context.SaveChangesAsync();
             }
 
-            // Seed Locations
             if (!context.Locations.Any())
             {
                 var regionEgypt = await context.Regions.Where(x => x.Name == "EGYPT")
@@ -82,7 +80,7 @@ namespace DailyPulse.Infrastructure.Seeding
 			if (!context.Employees.Any())
 			{
                 var id = Guid.NewGuid();
-                await context.Employees.AddAsync(
+                await context.Employees.AddRangeAsync(
                     new Employee
                     {
                         Id = id,
@@ -93,8 +91,30 @@ namespace DailyPulse.Infrastructure.Seeding
                         ReportToId = id ,
                         Role = EmployeeRole.Admin , 
                         Title = "DailyPulseAdmin"
-                    }
-                );
+                    }, 
+                    new Employee
+                    {
+                        Id = Guid.NewGuid(),
+                        IsAdmin = false ,
+                        password = BCrypt.Net.BCrypt.HashPassword("123456789"),
+                        username = "senior@gmail.com",
+                        Name = "Senior",
+                        ReportToId = id , 
+                        Role = EmployeeRole.Senior , 
+                        Title = "DailyPulseSenior"
+					},
+					new Employee
+					 {
+						 Id = Guid.NewGuid(),
+						 IsAdmin = false,
+						 password = BCrypt.Net.BCrypt.HashPassword("123456789"),
+						 username = "teamleader@gmail.com",
+						 Name = "TeamLeader",
+						 ReportToId = id,
+						 Role = EmployeeRole.TeamLeader,
+						 Title = "DailyPulseTeamLeader"
+					 }
+				);
 				await context.SaveChangesAsync();
 			}
 		}
