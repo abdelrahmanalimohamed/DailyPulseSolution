@@ -18,8 +18,6 @@ namespace DailyPulse.Application.CQRS.QueriesHandler.EmployeeHandlers
         public async Task<IEnumerable<EmployeesDTO>> Handle(GetEmployeesQuery request, CancellationToken cancellationToken)
         {
             var employees =  await _repository.FindAsync(x => x.IsAdmin == false , cancellationToken);
-
-
             var empDto = employees.Select(emp => new EmployeesDTO
             {
                 Id = emp.Id,

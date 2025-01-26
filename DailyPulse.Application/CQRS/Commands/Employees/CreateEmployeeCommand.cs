@@ -1,8 +1,9 @@
-﻿using MediatR;
+﻿using DailyPulse.Application.DTO;
+using MediatR;
 
 namespace DailyPulse.Application.CQRS.Commands.Employees
 {
-    public class CreateEmployeeCommand : IRequest
+    public class CreateEmployeeCommand : IRequest<CreateEmployeeResponseDTO>
     {
         public string Name { get; set; }
         public string Title { get; set; }

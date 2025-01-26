@@ -40,7 +40,7 @@ namespace DailyPulse.Application.Test.Commands
 			_mock.Verify(repo => repo.AddAsync(It.Is<Employee>(
 				emp => emp.Name == command.Name &&
 						emp.Role == EmployeeRole.Trainee && 
-						emp.username == command.Email &&
+						emp.Email == command.Email &&
 						emp.ReportToId == command.ReportTo
 			), It.IsAny<CancellationToken>()), Times.Once);
 

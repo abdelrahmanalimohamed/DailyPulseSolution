@@ -18,10 +18,10 @@ namespace DailyPulse.Application.CQRS.QueriesHandler.LoginHandlers
 		public async Task<LoginResponseDTO> Handle(LoginQuery request, CancellationToken cancellationToken)
 		{
 			var employee = await _repository.GetFirstOrDefault(
-							x => x.username == request.username,
+							x => x.Email == request.username,
 							cancellationToken);
 
-			if (employee == null || !BCrypt.Net.BCrypt.Verify(request.password, employee.password))
+			if (employee == null || !BCrypt.Net.BCrypt.Verify(request.password, employee.Password))
 			{
 				return new LoginResponseDTO
 				{

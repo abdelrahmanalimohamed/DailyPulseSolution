@@ -85,8 +85,8 @@ namespace DailyPulse.Infrastructure.Seeding
                     {
                         Id = id,
                         IsAdmin = true , 
-                        password = BCrypt.Net.BCrypt.HashPassword("123456789"),
-                        username = "admin@gmail.com",
+                        Password = BCrypt.Net.BCrypt.HashPassword("123456789"),
+                        Email = "admin@gmail.com",
                         Name="Admin" , 
                         ReportToId = id ,
                         Role = EmployeeRole.Admin , 
@@ -96,8 +96,8 @@ namespace DailyPulse.Infrastructure.Seeding
                     {
                         Id = Guid.NewGuid(),
                         IsAdmin = false ,
-                        password = BCrypt.Net.BCrypt.HashPassword("123456789"),
-                        username = "senior@gmail.com",
+                        Password = BCrypt.Net.BCrypt.HashPassword("123456789"),
+                        Email = "senior@gmail.com",
                         Name = "Senior",
                         ReportToId = id , 
                         Role = EmployeeRole.Senior , 
@@ -107,8 +107,8 @@ namespace DailyPulse.Infrastructure.Seeding
 					 {
 						 Id = Guid.NewGuid(),
 						 IsAdmin = false,
-						 password = BCrypt.Net.BCrypt.HashPassword("123456789"),
-						 username = "teamleader@gmail.com",
+						 Password = BCrypt.Net.BCrypt.HashPassword("123456789"),
+						 Email = "teamleader@gmail.com",
 						 Name = "TeamLeader",
 						 ReportToId = id,
 						 Role = EmployeeRole.TeamLeader,
