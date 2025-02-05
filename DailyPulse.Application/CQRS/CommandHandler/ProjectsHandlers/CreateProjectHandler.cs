@@ -1,6 +1,8 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Data;
+using System.Text.RegularExpressions;
 using DailyPulse.Application.Abstraction;
 using DailyPulse.Application.CQRS.Commands.Projects;
+using DailyPulse.Application.Extensions;
 using DailyPulse.Domain.Entities;
 using DailyPulse.Domain.Enums;
 using MediatR;
@@ -22,7 +24,18 @@ namespace DailyPulse.Application.CQRS.CommandHandler.ProjectsHandlers
 
         public async Task Handle(CreateProjectCommand request, CancellationToken cancellationToken)
         {
-            string trade = Regex.Replace(request.TradeId, @"\s+", "");
+			var normalizedName = request.Name.RemoveWhitespace();
+
+			var existingProject = await _repository.GetFirstOrDefault(
+						prj => prj.Name.Trim().ToLower() == normalizedName.ToLower(),
+						cancellationToken);
+
+			if (existingProject != null)
+			{
+				throw new DuplicateNameException("A Project with the same name already exists.");
+			}
+
+			string trade = Regex.Replace(request.TradeId, @"\s+", "");
 
             var project = new Project
             {

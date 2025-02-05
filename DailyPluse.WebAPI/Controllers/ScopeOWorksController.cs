@@ -7,7 +7,7 @@ namespace DailyPluse.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-	[Authorize]
+	//[Authorize]
 	public class ScopeOWorksController : ControllerBase
     {
         private readonly IMediator _mediator;

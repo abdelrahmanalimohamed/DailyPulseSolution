@@ -1,11 +1,10 @@
-﻿using DailyPulse.Application.DTO;
-using DailyPulse.Domain.Entities;
+﻿using DailyPulse.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Task = DailyPulse.Domain.Entities.Task;
 
 namespace DailyPulse.Infrastructure.Persistence
 {
-    public class ApplicationDbContext : DbContext
+	public class ApplicationDbContext : DbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
           : base(options)
@@ -20,9 +19,9 @@ namespace DailyPulse.Infrastructure.Persistence
         public DbSet<Task> Tasks { get; set; }
         public DbSet<ReAssign> ReAssigns { get; set; }
       //  public DbSet<ProjectsScopes> ProjectsScopes { get; set; }
-        public DbSet<RejectedTasks> RejectedTasks { get; set; }
+        public DbSet<EmployeeRejectedTasks> EmployeeRejectedTasks { get; set; }
         public DbSet<TaskNewRequirements> TaskNewRequirements { get; set; }
-        public DbSet<TaskLogs> TaskLogs { get; set; }
+        public DbSet<AdminRejectedTask> AdminRejectedTasks { get; set; }
         public DbSet<TaskStatusLogs> TaskStatusLogs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -49,12 +48,14 @@ namespace DailyPulse.Infrastructure.Persistence
                     .HasForeignKey(e => e.ReportToId)
                     .OnDelete(DeleteBehavior.Restrict);
 
-
                 entity.HasMany(e => e.Tasks)
                    .WithOne(p => p.Employee)
                    .HasForeignKey(p => p.EmpId)
                    .OnDelete(DeleteBehavior.Restrict);
-            });
+
+				entity.HasIndex(p => p.Name)
+						  .IsUnique();
+			});
 
             // Project Entity Configuration
             modelBuilder.Entity<Project>(entity =>
@@ -84,12 +85,15 @@ namespace DailyPulse.Infrastructure.Persistence
                     .HasForeignKey(p => p.LocationId)
                     .OnDelete(DeleteBehavior.Restrict);
 
-                // Foreign Key for Team Lead
-                //entity.HasOne(p => p.TeamLead)
-                //    .WithMany(e => e.Projects)
-                //    .HasForeignKey(p => p.TeamLeadId)
-                //    .OnDelete(DeleteBehavior.Restrict);
-            });
+				entity.HasIndex(p => p.Name)
+	                      .IsUnique();
+
+				// Foreign Key for Team Lead
+				//entity.HasOne(p => p.TeamLead)
+				//    .WithMany(e => e.Projects)
+				//    .HasForeignKey(p => p.TeamLeadId)
+				//    .OnDelete(DeleteBehavior.Restrict);
+			});
 
             // Tasks Entity Configuration
             modelBuilder.Entity<Domain.Entities.Task>(entity =>
@@ -155,7 +159,10 @@ namespace DailyPulse.Infrastructure.Persistence
                       .WithOne(td => td.Task)
                       .HasForeignKey(td => td.TaskId)
                       .OnDelete(DeleteBehavior.Cascade);
-            });
+
+				entity.HasIndex(p => p.Name)
+						  .IsUnique();
+			});
 
             modelBuilder.Entity<TaskWorkLog>(entity =>
             {
@@ -183,7 +190,10 @@ namespace DailyPulse.Infrastructure.Persistence
                     .WithMany(r => r.Locations)
                     .HasForeignKey(x => x.RegionId)
                     .OnDelete(DeleteBehavior.Restrict);
-            });
+
+				entity.HasIndex(p => p.Name)
+						  .IsUnique();
+			});
 
             modelBuilder.Entity<Region>(entity =>
             {
@@ -249,7 +259,7 @@ namespace DailyPulse.Infrastructure.Persistence
 
             //});
 
-            modelBuilder.Entity<RejectedTasks>(entity =>
+            modelBuilder.Entity<EmployeeRejectedTasks>(entity =>
             {
                 entity.HasKey(k => k.Id);
                 entity.Property(x => x.CreatedDate).HasDefaultValueSql("current_timestamp()");
@@ -280,7 +290,7 @@ namespace DailyPulse.Infrastructure.Persistence
                 entity.HasIndex(r => r.TaskId);
             });
 
-            modelBuilder.Entity<TaskLogs>(entity =>
+            modelBuilder.Entity<AdminRejectedTask>(entity =>
             {
                 entity.HasKey(k => k.Id);
                 entity.Property(x => x.CreatedDate).HasDefaultValueSql("current_timestamp()");
@@ -290,15 +300,15 @@ namespace DailyPulse.Infrastructure.Persistence
                     .HasForeignKey(r => r.TaskId)
                     .OnDelete(DeleteBehavior.Cascade);
 
-                entity.HasOne(r => r.NewEmployee)
-                 .WithMany(t => t.NewAssignedTasks)
-                 .HasForeignKey(r => r.NewAssignedEmp)
-                 .OnDelete(DeleteBehavior.Cascade);
+                //entity.HasOne(r => r.NewEmployee)
+                // .WithMany(t => t.NewAssignedTasks)
+                // .HasForeignKey(r => r.NewAssignedEmp)
+                // .OnDelete(DeleteBehavior.Cascade);
 
-                entity.HasOne(r => r.OldEmployee)
-                 .WithMany(t => t.OldAssignedTasks)
-                 .HasForeignKey(r => r.OldAssignedEmp)
-                 .OnDelete(DeleteBehavior.Cascade);
+                //entity.HasOne(r => r.OldEmployee)
+                // .WithMany(t => t.OldAssignedTasks)
+                // .HasForeignKey(r => r.OldAssignedEmp)
+                // .OnDelete(DeleteBehavior.Cascade);
 
                 entity.HasIndex(r => r.TaskId);
             });

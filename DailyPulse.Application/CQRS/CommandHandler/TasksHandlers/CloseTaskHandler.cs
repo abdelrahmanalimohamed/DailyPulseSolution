@@ -11,13 +11,13 @@ namespace DailyPulse.Application.CQRS.CommandHandler.TasksHandlers
     {
         private readonly IGenericRepository<DailyPulse.Domain.Entities.Task> _taskrepository;
 
-        private readonly IGenericRepository<TaskLogs> _tasklogsrepo;
+        private readonly IGenericRepository<AdminRejectedTask> _tasklogsrepo;
 
         private readonly IGenericRepository<TaskStatusLogs> _taskstatusLogsrepo;
 
         public CloseTaskHandler(
             IGenericRepository<DailyPulse.Domain.Entities.Task> _taskrepository,
-            IGenericRepository<TaskLogs> _tasklogsrepo,
+            IGenericRepository<AdminRejectedTask> _tasklogsrepo,
             IGenericRepository<TaskStatusLogs> _taskstatusLogsrepo)
         {
             this._taskrepository = _taskrepository;
@@ -42,7 +42,7 @@ namespace DailyPulse.Application.CQRS.CommandHandler.TasksHandlers
 
         private async Task SaveToLogs(CloseTaskCommand request, CancellationToken cancellationToken)
         {
-            var tasklog = new TaskLogs
+            var tasklog = new AdminRejectedTask
             {
                 Status = (Status)Enum.Parse(typeof(Status), request.Status),
                 TaskId = request.TaskId,

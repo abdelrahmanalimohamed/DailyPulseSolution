@@ -8,6 +8,8 @@ namespace DailyPulse.Application.ViewModel
 
         public string EmployeeName { get; set; }
 
+        public string CreatedDate { get; set; }
+
         public DateTime StartDate { get; set; }
 
         public DateTime EndDate { get; set; }

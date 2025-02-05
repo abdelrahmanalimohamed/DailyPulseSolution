@@ -35,7 +35,8 @@ namespace DailyPulse.Application.CQRS.QueriesHandler.TaskHandlers
                 EmployeeName = task.Employee.Name ,
                 StartDate = task.DateFrom ,
                 EndDate = task.DateTo,
-                Priority = task.Priority.ToString(),
+                CreatedDate = task.CreatedDate.ToString("dd-MM-yyyy"),
+				Priority = task.Priority.ToString(),
                 ProjectName = task.Project.Name ,
                 Overdue = todayDate > task.DateTo && task.Status.ToString() == Status.InProgress.ToString()
                   ? $"{(todayDate - task.DateTo).Days} Days"

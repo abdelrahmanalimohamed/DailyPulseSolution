@@ -27,11 +27,11 @@ namespace DailyPulse.Domain.Entities
         public Project Project { get; set; }
         public ICollection<TaskWorkLog> TaskDetails { get; set; } = new List<TaskWorkLog>();
         public ICollection<ReAssign> ReAssigns { get; set; } = new List<ReAssign>();
-        public ICollection<RejectedTasks> RejectedTasks { get; set; } = new List<RejectedTasks>();
+        public ICollection<EmployeeRejectedTasks> RejectedTasks { get; set; } = new List<EmployeeRejectedTasks>();
 
         public ICollection<TaskNewRequirements> TaskNewRequirements = new List<TaskNewRequirements>();
 
-        public ICollection<TaskLogs> TaskLogs = new List<TaskLogs>();
+        public ICollection<AdminRejectedTask> TaskLogs = new List<AdminRejectedTask>();
 
         public ICollection<TaskStatusLogs> TaskStatusLogs = new List<TaskStatusLogs>();
     }

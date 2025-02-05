@@ -1,8 +1,10 @@
 ﻿using DailyPulse.Application.Abstraction;
 using DailyPulse.Application.CQRS.CommandHandler.LocationsHandlers;
 using DailyPulse.Application.CQRS.Commands.Locations;
+using DailyPulse.Application.CQRS.Commands.Projects;
 using DailyPulse.Domain.Entities;
 using Moq;
+using System.Linq.Expressions;
 using Task = System.Threading.Tasks.Task;
 
 namespace DailyPulse.Application.Test.Commands
@@ -37,5 +39,21 @@ namespace DailyPulse.Application.Test.Commands
             ), It.IsAny<CancellationToken>()), Times.Once); 
         }
 
-    }
+		[Fact]
+		public async Task AddLocation_ShouldThrowException_WhenNameIsDuplicate()
+		{
+			// Arrange
+			var command = new CreateLocationCommand { Name = "Duplicate Location", RegionId = Guid.NewGuid() };
+
+			_mockRepository
+				.Setup(repo => repo.GetFirstOrDefault(It.IsAny<Expression<Func<Location, bool>>>(), CancellationToken.None))
+				.ReturnsAsync(new Location { Name = "Duplicate Location" });  // Simulate duplicate location
+
+			// Act & Assert
+			var exception = await Assert.ThrowsAsync<InvalidOperationException>(() => _handler.Handle(command, CancellationToken.None));
+
+			Assert.Equal("A location with the same name already exists.", exception.Message);
+		}
+
+	}
 }

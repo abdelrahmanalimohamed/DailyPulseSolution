@@ -25,13 +25,13 @@ namespace DailyPulse.Application.CQRS.CommandHandler.EmployeesHandlers
 
             employee.Name = request.Name ?? employee.Name;
             employee.Title = request.Title ?? employee.Title;
-            employee.username = request.Email ?? employee.username; // Assuming Email is the username
+            employee.Email = request.Email ?? employee.Email; // Assuming Email is the username
             employee.Role = request.Role; // Update role
             employee.ReportToId = request.ReportTo;
 
             if (!string.IsNullOrEmpty(request.Password))
             {
-                employee.password = BCrypt.Net.BCrypt.HashPassword(request.Password);
+                employee.Password = BCrypt.Net.BCrypt.HashPassword(request.Password);
             }
 
             await _repository.UpdateAsync(employee, cancellationToken);

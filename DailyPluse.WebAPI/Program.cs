@@ -1,3 +1,4 @@
+using DailyPluse.WebAPI.Middleware;
 using DailyPluse.WebAPI.Swagger;
 using DailyPulse.Application.DependenyInjectionServices;
 using DailyPulse.Infrastructure.DependencyInjectionService;
@@ -59,7 +60,9 @@ namespace DailyPluse.WebAPI
 
             app.MapControllers();
 
-            await app.RunAsync();
+			app.UseMiddleware<ExceptionHandling>();
+
+			await app.RunAsync();
         }
     }
 }

@@ -1,24 +1,39 @@
-﻿using System.Text.RegularExpressions;
-using DailyPulse.Application.Abstraction;
+﻿using DailyPulse.Application.Abstraction;
 using DailyPulse.Application.CQRS.Commands.Employees;
+using DailyPulse.Application.DTO;
+using DailyPulse.Application.Extensions;
 using DailyPulse.Domain.Entities;
 using DailyPulse.Domain.Enums;
 using MediatR;
-using Task = System.Threading.Tasks.Task;
+using System.Data;
+using System.Text.RegularExpressions;
 
 namespace DailyPulse.Application.CQRS.CommandHandler.EmployeesHandlers
 {
-    public class CreateEmployeeHandler : IRequestHandler<CreateEmployeeCommand>
+	public class CreateEmployeeHandler : IRequestHandler<CreateEmployeeCommand , CreateEmployeeResponseDTO>
     {
         private readonly IGenericRepository<Employee> _repository;
-
-        public CreateEmployeeHandler(IGenericRepository<Employee> _repository)
+		private readonly IEmailServices _emailService;
+		private readonly IEmailTemplateService _emailTemplateService;
+		public CreateEmployeeHandler(
+            IGenericRepository<Employee> _repository ,
+			IEmailServices _emailService ,
+			IEmailTemplateService _emailTemplateService)
         {
             this._repository = _repository;
+            this._emailService = _emailService;
+            this._emailTemplateService = _emailTemplateService;
         }
-        public async Task Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
+        public async Task<CreateEmployeeResponseDTO> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
         {
-            var hashedPassword = BCrypt.Net.BCrypt.HashPassword(request.Password);
+            var existingEmployee = await CheckEmployeeByName(request.Name , cancellationToken);
+
+			if (existingEmployee != null)
+			{
+				throw new DuplicateNameException("An Employee with the same name already exists.");
+			}
+
+			var hashedPassword = BCrypt.Net.BCrypt.HashPassword(request.Password);
 
             string grade = Regex.Replace(request.Jobgrade, @"\s+", "");
 
@@ -26,8 +41,8 @@ namespace DailyPulse.Application.CQRS.CommandHandler.EmployeesHandlers
             {
                 Name = request.Name,
                 Title = request.Title,
-                username = request.Email,
-                password = hashedPassword,
+                Email = request.Email,
+                Password = hashedPassword,
                 Role = Enum.TryParse(grade, true, out EmployeeRole role)
                      ? role : throw new ArgumentException($"Invalid job grade: {request.Jobgrade}"),
                 ReportToId = request.ReportTo,
@@ -35,6 +50,30 @@ namespace DailyPulse.Application.CQRS.CommandHandler.EmployeesHandlers
             };
 
             await _repository.AddAsync(employee, cancellationToken);
-        }
-    }
+
+			var verificationLink = $"http://localhost:5173/verify-email?token={employee.Id}";
+
+			var emailSubject = _emailTemplateService.GetVerificationEmailSubject();
+
+			var emailBody =  _emailTemplateService.GenerateVerificationEmailBodyAsync(verificationLink);
+
+			 _emailService.SendEmailAsync(employee.Email, emailSubject, emailBody);
+
+			return new CreateEmployeeResponseDTO
+			{
+				EmployeeId = employee.Id,
+				Email = employee.Email
+			};
+		}
+        private async Task<Employee> CheckEmployeeByName(string requestName , CancellationToken cancellationToken)
+        {
+			var normalizedName = requestName.RemoveWhitespace();
+
+			var existingEmployee = await _repository.GetFirstOrDefault(
+						emp => emp.Name.Trim().ToLower() == normalizedName.ToLower(),
+						cancellationToken);
+
+            return existingEmployee;
+		}
+	}
 }
