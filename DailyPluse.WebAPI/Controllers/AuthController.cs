@@ -1,4 +1,5 @@
-﻿using DailyPulse.Application.CQRS.Queries.Login;
+﻿using DailyPulse.Application.CQRS.Commands.Employees;
+using DailyPulse.Application.CQRS.Queries.Login;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -25,6 +26,13 @@ namespace DailyPluse.WebAPI.Controllers
                 return Unauthorized();
 
             return Ok(loginResponse);
+        }
+
+        [HttpPost("verifyuser")]
+        public async Task<IActionResult> VerifyUser([FromBody] VerifyEmployeeEmailCommand verifyEmployeeEmailCommand)
+        {
+            var verifyResponse = await mediator.Send(verifyEmployeeEmailCommand);
+            return Ok(verifyResponse);
         }
     }
 }

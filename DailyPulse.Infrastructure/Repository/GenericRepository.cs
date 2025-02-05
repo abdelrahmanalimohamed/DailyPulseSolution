@@ -12,7 +12,7 @@ namespace DailyPulse.Infrastructure.Repository
         private readonly ApplicationDbContext _context;
         public GenericRepository(ApplicationDbContext _context)
         {
-            this._context = _context;
+            this._context = _context;   
         }
         public async Task<T> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
@@ -80,9 +80,24 @@ namespace DailyPulse.Infrastructure.Repository
         }
         public async Task UpdateAsync(T entity, CancellationToken cancellationToken = default)
         {
-            _context.Set<T>().Update(entity);
-            await _context.SaveChangesAsync(cancellationToken);
-        }
+			// Attach the entity to the context (if not already tracked)
+			_context.Attach(entity);
+
+			// Loop through the properties and mark only the ones that are changed as modified
+			var entityEntry = _context.Entry(entity);
+
+			foreach (var property in entityEntry.OriginalValues.Properties)
+			{
+				// Only mark the property as modified if it's explicitly set in the current entity
+				if (entityEntry.Property(property.Name).IsModified)
+				{
+					entityEntry.Property(property.Name).IsModified = true;
+				}
+			}
+
+			// Save the changes to the database
+			await _context.SaveChangesAsync(cancellationToken);
+		}
         public async Task DeleteAsync(T entity, CancellationToken cancellationToken = default)
         {
             _context.Set<T>().Remove(entity);

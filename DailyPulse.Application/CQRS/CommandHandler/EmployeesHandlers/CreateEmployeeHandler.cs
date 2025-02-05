@@ -51,13 +51,13 @@ namespace DailyPulse.Application.CQRS.CommandHandler.EmployeesHandlers
 
             await _repository.AddAsync(employee, cancellationToken);
 
-			var verificationLink = $"https://domainname.com/verify-email?token={employee.Id}";
+			var verificationLink = $"http://localhost:5173/verify-email?token={employee.Id}";
 
 			var emailSubject = _emailTemplateService.GetVerificationEmailSubject();
 
 			var emailBody =  _emailTemplateService.GenerateVerificationEmailBodyAsync(verificationLink);
 
-			await _emailService.SendEmailAsync(employee.Email, emailSubject, emailBody);
+			 _emailService.SendEmailAsync(employee.Email, emailSubject, emailBody);
 
 			return new CreateEmployeeResponseDTO
 			{

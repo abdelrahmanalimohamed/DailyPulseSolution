@@ -13,7 +13,7 @@ namespace DailyPulse.Infrastructure.Repository
 		{
 			this._emailSettings = _emailSettings.Value;
 		}
-		public async Task SendEmailAsync(string toEmail, string subject, string body)
+		public void SendEmailAsync(string toEmail, string subject, string body)
 		{
 			var message = new MimeMessage();
 			message.From.Add(new MailboxAddress(_emailSettings.DisplayName, _emailSettings.Mail));
@@ -28,10 +28,10 @@ namespace DailyPulse.Infrastructure.Repository
 
 			using (var client = new SmtpClient())
 			{
-				await client.ConnectAsync(_emailSettings.Host, _emailSettings.Port, useSsl: true);
-				await client.AuthenticateAsync(_emailSettings.Mail, _emailSettings.Password);
-				await client.SendAsync(message);
-				await client.DisconnectAsync(true);
+				 client.Connect(_emailSettings.Host, _emailSettings.Port, false);
+				 client.Authenticate(_emailSettings.Mail, _emailSettings.Password);
+				 client.Send(message);
+				 client.Disconnect(true);
 			}
 		}
 	}

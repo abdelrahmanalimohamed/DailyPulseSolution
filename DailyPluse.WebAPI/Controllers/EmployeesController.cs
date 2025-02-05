@@ -24,6 +24,14 @@ namespace DailyPluse.WebAPI.Controllers
 			return StatusCode(201, newEmployee);
 		}
 
+        [HttpPut("updatepassword")]
+        [AllowAnonymous]
+        public async Task<IActionResult> UpdatePassword([FromBody] UpdateEmployeePasswordCommand updateEmployeePasswordCommand)
+        {
+             await _mediator.Send(updateEmployeePasswordCommand);
+			return StatusCode(204);
+		}
+
         [HttpGet("getemployess")]
         public async Task<IActionResult> GetEmployees()
         {
