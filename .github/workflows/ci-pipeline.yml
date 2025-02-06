@@ -32,12 +32,12 @@ jobs:
         mkdir -p ~/.ssh
         echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa  # Use the private key stored in GitHub Secrets
         chmod 600 ~/.ssh/id_rsa  # Set the proper permissions for the private key
-        ssh-keyscan -H your-server-ip >> ~/.ssh/known_hosts  # Add the server's SSH key to known_hosts
+        ssh-keyscan -H 197.161.195.179 >> ~/.ssh/known_hosts  # Add the server's SSH key to known_hosts
 
     - name: Deploy to server
       run: |
         ssh deployer@your-server-ip "mkdir -p /path/to/deploy"  # Make the target directory if needed
-        scp -r ./publish/* deployer@your-server-ip:/path/to/deploy  # Copy the published files to the server
+        scp -r ./publish/* deployer@197.161.195.179:/deployer/Download/deploy  # Copy the published files to the server
         ssh deployer@your-server-ip "sudo systemctl restart your-app-service"  # Restart your application (use the correct service name)
 
     - name: Clean up
