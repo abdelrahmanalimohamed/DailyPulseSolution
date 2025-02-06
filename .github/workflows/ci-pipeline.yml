@@ -38,6 +38,6 @@ jobs:
           cd /home/${{ secrets.SERVER_USER }}/Downloads/Publish
           fuser -k 5002/tcp || true  # Kill any existing app running on port 5001
           # Start the .NET application using setsid to keep it running after SSH session ends
-          setsid dotnet DailyPulseWebAPI.dll --urls "http://0.0.0.0:5002" > output.log 2>&1 &
+          setsid dotnet DailyPulseWebAPI.dll  --urls "http://0.0.0.0:5002" > output.log 2>&1 &
           echo $! > dotnet_app.pid  # Save the process ID for future reference
         EOF
