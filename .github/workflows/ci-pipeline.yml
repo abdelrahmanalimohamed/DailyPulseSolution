@@ -1,0 +1,46 @@
+name: Deploy .NET Application
+
+on:
+  push:
+    branches:
+      - master  # Trigger deployment when code is pushed to the main branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest  # The OS where the workflow will run
+
+    steps:
+    - name: Checkout the repository
+      uses: actions/checkout@v2  # Checkout the code from your repository
+
+    - name: Set up .NET
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: '6.0'  # Set the .NET version (adjust if necessary)
+
+    - name: Restore dependencies
+      run: dotnet restore  # Restore the .NET project dependencies
+
+    - name: Build the project
+      run: dotnet build --configuration Release  # Build the project in Release mode
+
+    - name: Publish the project
+      run: dotnet publish --configuration Release --output ./publish  # Publish the app
+
+    - name: Setup SSH Key
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa  # Use the private key stored in GitHub Secrets
+        chmod 600 ~/.ssh/id_rsa  # Set the proper permissions for the private key
+        ssh-keyscan -H your-server-ip >> ~/.ssh/known_hosts  # Add the server's SSH key to known_hosts
+
+    - name: Deploy to server
+      run: |
+        ssh deployer@your-server-ip "mkdir -p /path/to/deploy"  # Make the target directory if needed
+        scp -r ./publish/* deployer@your-server-ip:/path/to/deploy  # Copy the published files to the server
+        ssh deployer@your-server-ip "sudo systemctl restart your-app-service"  # Restart your application (use the correct service name)
+
+    - name: Clean up
+      run: |
+        rm -rf ./publish  # Clean up after deployment
+
