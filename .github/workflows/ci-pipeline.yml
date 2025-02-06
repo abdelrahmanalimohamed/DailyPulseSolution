@@ -36,7 +36,7 @@ jobs:
 
     - name: Deploy to server
       run: |
-        ssh deployer@197.161.195.179 "mkdir -p /deployer/Download/deploy"  # Make the target directory if needed
+        ssh deployer@197.161.195.179 "sudo mkdir -p /deployer/Download/deploy"  # Make the target directory if needed
         scp -r ./publish/* deployer@197.161.195.179:/deployer/Download/deploy  # Copy the published files to the server
         ssh deployer@197.161.195.179 "sudo systemctl restart dailypulsebackend.service"  # Restart your application (use the correct service name)
 
