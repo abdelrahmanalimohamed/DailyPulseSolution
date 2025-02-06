@@ -1,43 +1,46 @@
-name: Deploy and Run .NET App Without Systemd
+name: Deploy .NET Application
 
 on:
   push:
     branches:
-      - master  # Adjust this based on your branch
+      - master  # Trigger deployment when code is pushed to the main branch
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # The OS where the workflow will run
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+    - name: Checkout the repository
+      uses: actions/checkout@v2  # Checkout the code from your repository
 
-    - name: Set up SSH
+    - name: Set up .NET
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: '6.0'  # Set the .NET version (adjust if necessary)
+
+    - name: Restore dependencies
+      run: dotnet restore  # Restore the .NET project dependencies
+
+    - name: Build the project
+      run: dotnet build --configuration Release  # Build the project in Release mode
+
+    - name: Publish the project
+      run: dotnet publish --configuration Release --output ./publish  # Publish the app
+
+    - name: Setup SSH Key
       run: |
         mkdir -p ~/.ssh
-        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
-        ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
-    - name: Publish .NET Application
-      run: |
-        dotnet publish -c Release -o ./publish
-    - name: Copy Published Files to Server
-      uses: appleboy/scp-action@v0.1.3
-      with:
-        host: ${{ secrets.SERVER_IP }}  # Server IP from secrets
-        username: ${{ secrets.SERVER_USER }}  # Username from secrets
-        key: ${{ secrets.SSH_PRIVATE_KEY }}  # SSH Private Key from secrets
-        source: ./publish/*
-        target: /home/${{ secrets.SERVER_USER }}/Downloads/Publish
-        port: 22
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa  # Use the private key stored in GitHub Secrets
+        chmod 600 ~/.ssh/id_rsa  # Set the proper permissions for the private key
+        ssh-keyscan -H 197.161.195.179 >> ~/.ssh/known_hosts  # Add the server's SSH key to known_hosts
 
-    - name: Run .NET Application on Remote Server
+    - name: Deploy to server
       run: |
-        ssh -i ~/.ssh/id_rsa ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
-          cd /home/${{ secrets.SERVER_USER }}/Downloads/Publish
-          fuser -k 5002/tcp || true  # Kill any existing app running on port 5001
-          # Start the .NET application using setsid to keep it running after SSH session ends
-          setsid dotnet DailyPulseWebAPI.dll  --urls "http://0.0.0.0:5002" > output.log 2>&1 &
-          echo $! > dotnet_app.pid  # Save the process ID for future reference
-        EOF
+        ssh deployer@197.161.195.179 "mkdir -p /deployer/Download/deploy"  # Make the target directory if needed
+        scp -r ./publish/* deployer@197.161.195.179:/deployer/Download/deploy  # Copy the published files to the server
+        ssh deployer@your-server-ip "sudo systemctl restart your-app-service"  # Restart your application (use the correct service name)
+
+    - name: Clean up
+      run: |
+        rm -rf ./publish  # Clean up after deployment
+
