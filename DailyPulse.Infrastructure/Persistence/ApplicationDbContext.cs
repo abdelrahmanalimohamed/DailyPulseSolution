@@ -18,7 +18,6 @@ namespace DailyPulse.Infrastructure.Persistence
         public DbSet<Location> Locations { get; set; }
         public DbSet<Task> Tasks { get; set; }
         public DbSet<ReAssign> ReAssigns { get; set; }
-      //  public DbSet<ProjectsScopes> ProjectsScopes { get; set; }
         public DbSet<EmployeeRejectedTasks> EmployeeRejectedTasks { get; set; }
         public DbSet<TaskNewRequirements> TaskNewRequirements { get; set; }
         public DbSet<AdminRejectedTask> AdminRejectedTasks { get; set; }
