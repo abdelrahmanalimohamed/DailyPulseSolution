@@ -1,4 +1,4 @@
-﻿namespace DailyPulse.Infrastructure.Configurations
+﻿namespace DailyPulse.Infrastructure.Settings
 {
 	public class EmailSettings
 	{

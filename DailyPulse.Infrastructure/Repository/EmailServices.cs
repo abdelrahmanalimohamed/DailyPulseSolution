@@ -1,8 +1,8 @@
 ﻿using DailyPulse.Application.Abstraction;
 using MimeKit;
 using MailKit.Net.Smtp;
-using DailyPulse.Infrastructure.Configurations;
 using Microsoft.Extensions.Options;
+using DailyPulse.Infrastructure.Settings;
 
 namespace DailyPulse.Infrastructure.Repository
 {

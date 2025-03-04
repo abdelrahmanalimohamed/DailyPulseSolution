@@ -1,10 +1,10 @@
 ﻿using DailyPulse.Application.Abstraction;
 using DailyPulse.Application.Mapper;
 using DailyPulse.Domain.Enums;
-using DailyPulse.Infrastructure.Configurations;
 using DailyPulse.Infrastructure.JWT;
 using DailyPulse.Infrastructure.Persistence;
 using DailyPulse.Infrastructure.Repository;
+using DailyPulse.Infrastructure.Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
