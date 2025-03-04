@@ -8,7 +8,9 @@ namespace DailyPulse.Infrastructure.Configurations
 		public void Configure(EntityTypeBuilder<Domain.Entities.Task> builder)
 		{
 			builder.HasKey(k => k.Id);
-			builder.Property(x => x.CreatedDate).HasDefaultValueSql("current_timestamp()");
+
+			builder.Property(x => x.CreatedDate)
+				.HasDefaultValueSql("current_timestamp()");
 
 			builder.Property(p => p.Name)
 					   .IsRequired()

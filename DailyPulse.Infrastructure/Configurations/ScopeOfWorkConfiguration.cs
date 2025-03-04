@@ -9,6 +9,7 @@ namespace DailyPulse.Infrastructure.Configurations
 		public void Configure(EntityTypeBuilder<ScopeOfWork> builder)
 		{
 			builder.HasKey(k => k.Id);
+
 			builder.Property(x => x.CreatedDate)
 					.HasDefaultValueSql("current_timestamp()");
 

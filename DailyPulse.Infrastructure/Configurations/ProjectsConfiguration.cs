@@ -10,7 +10,8 @@ namespace DailyPulse.Infrastructure.Configurations
 		{
 			builder.HasKey(k => k.Id);
 
-			builder.Property(x => x.CreatedDate).HasDefaultValueSql("current_timestamp()");
+			builder.Property(x => x.CreatedDate)
+				   .HasDefaultValueSql("current_timestamp()");
 
 			builder.Property(p => p.Name)
 			   .IsRequired()

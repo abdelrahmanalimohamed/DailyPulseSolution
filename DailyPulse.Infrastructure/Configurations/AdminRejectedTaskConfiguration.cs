@@ -9,7 +9,9 @@ namespace DailyPulse.Infrastructure.Configurations
 		public void Configure(EntityTypeBuilder<AdminRejectedTask> builder)
 		{
 			builder.HasKey(k => k.Id);
-			builder.Property(x => x.CreatedDate).HasDefaultValueSql("current_timestamp()");
+
+			builder.Property(x => x.CreatedDate)
+				.HasDefaultValueSql("current_timestamp()");
 
 			builder.HasOne(r => r.Task)
 				.WithMany(t => t.TaskLogs)
