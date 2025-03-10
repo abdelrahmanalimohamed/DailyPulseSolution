@@ -42,6 +42,13 @@ namespace DailyPluse.WebAPI.Controllers
             return Ok(projects);
         }
 
+        [HttpGet("getprojectByName")]
+        public async Task<IActionResult> GetProjectByName([FromQuery] GetProjectByNameQuery getProjectByNameQuery)
+        {
+			var projectByName = await _mediator.Send(getProjectByNameQuery);
+			return Ok(projectByName);
+		}
+
         [HttpPost]
         public async Task<IActionResult> AddProject([FromBody] CreateProjectCommand createProjectCommand)
         {

@@ -21,43 +21,54 @@ namespace DailyPluse.WebAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateTask([FromBody] CreateTaskCommand createTaskCommand)
         {
-            await _mediator.Send(createTaskCommand);
+			createTaskCommand.MachineName = Environment.MachineName;
 
+			await _mediator.Send(createTaskCommand);
             return StatusCode(201);
         }
 
         [HttpPost("reject-rejectTask")]
         public async Task<IActionResult> RejectTaskByEmployee([FromBody] UpdateTaskRejectionByEmployeeCommand updateTaskRejectionByEmployeeCommand)
         {
-            await _mediator.Send(updateTaskRejectionByEmployeeCommand);
+			updateTaskRejectionByEmployeeCommand.MachineName = Environment.MachineName;
+
+			await _mediator.Send(updateTaskRejectionByEmployeeCommand);
             return StatusCode(201);
         }
 
         [HttpPut("updatetaskstatus")]
         public async Task<IActionResult> UpdateTaskStatusByAdmin([FromBody] UpdateTaskStatusByAdminCommand updateTaskStatusByAdminCommand)
         {
-            await _mediator.Send(updateTaskStatusByAdminCommand);
+			updateTaskStatusByAdminCommand.MachineName = Environment.MachineName;
+
+			await _mediator.Send(updateTaskStatusByAdminCommand);
             return StatusCode(201);
         }
 
         [HttpPut("updatetaskstatusbyemployee")]
         public async Task<IActionResult> UpdateTaskStatusByEmployee([FromBody] UpdateTaskStatusByEmployeeCommand updateTaskStatusByEmployeeCommand)
         {
-            await _mediator.Send(updateTaskStatusByEmployeeCommand);
+			updateTaskStatusByEmployeeCommand.MachineName = Environment.MachineName;
+
+			await _mediator.Send(updateTaskStatusByEmployeeCommand);
             return StatusCode(201);
         }
 
         [HttpPut("update-updatetask")]
         public async Task<IActionResult> UpdateTask([FromBody] UpdateTaskCommand updateTaskCommand)
         {
-            await _mediator.Send(updateTaskCommand);
+			updateTaskCommand.MachineName = Environment.MachineName;
+
+			await _mediator.Send(updateTaskCommand);
             return StatusCode(200);
         }
 
         [HttpPut("closeorcompletetask")]
         public async Task<IActionResult> CloseOrCompleteTaskByAdmin([FromBody] CloseTaskCommand closeTaskCommand)
         {
-            await _mediator.Send(closeTaskCommand);
+			closeTaskCommand.MachineName = Environment.MachineName;
+
+			await _mediator.Send(closeTaskCommand);
             return StatusCode(201);
         }
 

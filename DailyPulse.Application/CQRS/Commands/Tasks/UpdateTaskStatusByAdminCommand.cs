@@ -7,5 +7,7 @@ namespace DailyPulse.Application.CQRS.Commands.Tasks
         public Guid TaskId { get; set; }
 
         public string Action { get; set; }
+
+        public string MachineName { get; set; }
     }
 }

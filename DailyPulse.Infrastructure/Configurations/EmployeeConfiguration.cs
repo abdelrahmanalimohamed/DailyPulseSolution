@@ -38,6 +38,9 @@ namespace DailyPulse.Infrastructure.Configurations
 
 			builder.HasIndex(p => p.Name)
 					  .IsUnique();
+
+			builder.HasIndex(p => p.Email)
+					  .IsUnique();
 		}
 	}
 }

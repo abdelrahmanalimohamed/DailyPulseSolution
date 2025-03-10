@@ -20,6 +20,10 @@ namespace DailyPulse.Infrastructure.Configurations
 			   .IsRequired()
 			   .HasMaxLength(50);
 
+			builder.Property(p => p.CreatedByMachine)
+				.IsRequired()
+				.HasMaxLength(100);
+
 			builder.Property(p => p.IsRejectedByAdmin)
 			.HasDefaultValue(false);
 

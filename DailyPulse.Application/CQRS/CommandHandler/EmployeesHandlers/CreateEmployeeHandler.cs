@@ -26,11 +26,11 @@ namespace DailyPulse.Application.CQRS.CommandHandler.EmployeesHandlers
         }
         public async Task<CreateEmployeeResponseDTO> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
         {
-            var existingEmployee = await CheckEmployeeByName(request.Name , cancellationToken);
+            var existingEmployee = await CheckEmployeeByName(request.Name , request.Email , cancellationToken);
 
 			if (existingEmployee != null)
 			{
-				throw new DuplicateNameException("An Employee with the same name already exists.");
+				throw new DuplicateNameException("An Employee with the same name or email already exists.");
 			}
 
 			var hashedPassword = BCrypt.Net.BCrypt.HashPassword(request.Password);
@@ -51,7 +51,7 @@ namespace DailyPulse.Application.CQRS.CommandHandler.EmployeesHandlers
 
             await _repository.AddAsync(employee, cancellationToken);
 
-			var verificationLink = $"http://localhost:5173/verify-email?token={employee.Id}";
+			var verificationLink = $"http://192.68.121.17:5000/verify-email?token={employee.Id}";
 
 			var emailSubject = _emailTemplateService.GetVerificationEmailSubject();
 
@@ -65,12 +65,14 @@ namespace DailyPulse.Application.CQRS.CommandHandler.EmployeesHandlers
 				Email = employee.Email
 			};
 		}
-        private async Task<Employee> CheckEmployeeByName(string requestName , CancellationToken cancellationToken)
+        private async Task<Employee> CheckEmployeeByName(string requestName , string email , CancellationToken cancellationToken)
         {
 			var normalizedName = requestName.RemoveWhitespace();
+			var normalizedEmail = email.RemoveWhitespace();
 
 			var existingEmployee = await _repository.GetFirstOrDefault(
-						emp => emp.Name.Trim().ToLower() == normalizedName.ToLower(),
+						emp => emp.Name.Trim().ToLower() == normalizedName.ToLower() 
+						|| emp.Email.Trim().ToLower() == normalizedEmail.ToLower(),
 						cancellationToken);
 
             return existingEmployee;

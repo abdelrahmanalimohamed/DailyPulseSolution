@@ -12,6 +12,7 @@ namespace DailyPulse.Domain.Entities
         public string EstimatedWorkingHours { get; set; }
         public bool IsRejectedByAdmin { get; set; }
         public bool IsRejectedByEmployee { get; set; }
+        public string CreatedByMachine { get; set; }
         public Status Status { get; set; }
         public Levels Levels { get; set; }
         public Priority Priority { get; set; }

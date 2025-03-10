@@ -14,6 +14,9 @@ namespace DailyPulse.Infrastructure.Configurations
 			builder.Property(x => x.CreatedDate)
 					.HasDefaultValueSql("current_timestamp()");
 
+			builder.Property(x => x.MachineName)
+				   .HasMaxLength(100);
+
 			builder.HasOne(r => r.Task)
 				.WithMany(t => t.TaskStatusLogs)
 				.HasForeignKey(r => r.TaskId)
