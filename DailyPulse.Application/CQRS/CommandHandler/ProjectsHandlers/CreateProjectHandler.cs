@@ -44,7 +44,8 @@ namespace DailyPulse.Application.CQRS.CommandHandler.ProjectsHandlers
                 Trade = Enum.TryParse(trade, true, out Treats role)
                      ? role : throw new ArgumentException($"Invalid trade: {request.TradeId}"),
                 Name = request.Name,
-                RegionId = request.RegionId
+                RegionId = request.RegionId ,
+                EmployeeId = request.EmployeeId
             };
 
              await _repository.AddAsync(project, cancellationToken);

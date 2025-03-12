@@ -19,17 +19,22 @@ namespace DailyPulse.Application.CQRS.QueriesHandler.ProjectHandlers
 			var includes = new List<Expression<Func<Project, object>>>
 				 {
 					project => project.Region ,
-					project => project.Location
+					project => project.Location , 
+					project => project.Employee
 				 };
 
 			var projects = await _repository.FindWithIncludeAsync(
 					x => x.Name == request.projectName, includes);
 
 			var projectsDto = projects.Select(project => new ProjectByNameDTO
-			(project.Name , 
+			(
+			project.Id,
+			project.Name , 
 			project.Region.Name , 
 			project.Location.Name , 
-			DateOnly.FromDateTime(project.CreatedDate).ToString()));
+			DateOnly.FromDateTime(project.CreatedDate).ToString(),
+			project.Employee.Name,
+			project.Trade.ToString()));
 
 			return projectsDto;
 		}

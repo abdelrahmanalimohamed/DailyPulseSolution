@@ -1,8 +1,6 @@
 ﻿using DailyPulse.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System.Reflection.Emit;
-using static Dapper.SqlMapper;
 
 namespace DailyPulse.Infrastructure.Configurations
 {

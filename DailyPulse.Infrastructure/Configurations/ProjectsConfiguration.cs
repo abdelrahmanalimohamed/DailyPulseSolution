@@ -14,11 +14,11 @@ namespace DailyPulse.Infrastructure.Configurations
 				   .HasDefaultValueSql("current_timestamp()");
 
 			builder.Property(p => p.Name)
-			   .IsRequired()
-			.HasMaxLength(500);
+				   .IsRequired()
+				   .HasMaxLength(500);
 
 			builder.Property(e => e.Trade)
-			.IsRequired();
+				   .IsRequired();
 
 			builder.Property(p => p.Description)
 				.IsRequired()
@@ -33,6 +33,12 @@ namespace DailyPulse.Infrastructure.Configurations
 				.WithMany(s => s.Projects)
 				.HasForeignKey(p => p.LocationId)
 				.OnDelete(DeleteBehavior.Restrict);
+
+			builder.HasOne(p => p.Employee)
+					.WithMany(s => s.Projects)
+					.HasForeignKey(p => p.EmployeeId)
+					.IsRequired()
+					.OnDelete(DeleteBehavior.Restrict);
 
 			builder.HasIndex(p => p.Name)
 					  .IsUnique();

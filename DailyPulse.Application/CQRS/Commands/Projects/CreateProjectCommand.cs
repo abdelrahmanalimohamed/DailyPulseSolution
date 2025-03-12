@@ -14,6 +14,6 @@ namespace DailyPulse.Application.CQRS.Commands.Projects
 
         public Guid RegionId { get; set; }
 
-        //public Guid TeamLeadId { get; set; }
+        public Guid EmployeeId { get; set; }
     }
 }
