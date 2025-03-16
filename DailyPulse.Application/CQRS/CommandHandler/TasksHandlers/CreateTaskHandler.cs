@@ -4,8 +4,7 @@ using DailyPulse.Application.Extensions;
 using DailyPulse.Domain.Enums;
 using MediatR;
 using System.Data;
-using System.Net.Http;
-using System.Web;
+using System.Text.RegularExpressions;
 using Task = System.Threading.Tasks.Task;
 
 
@@ -49,9 +48,11 @@ namespace DailyPulse.Application.CQRS.CommandHandler.TasksHandlers
                 Priority = Enum.TryParse(request.Priority, true, out Priority role)
                      ? role : throw new ArgumentException($"Invalid priority: {request.Priority}"),
                 DrawingTitle = request.DrawingTitle,
-                Levels = Enum.TryParse(request.level, true, out Levels level)
-                     ? level : throw new ArgumentException($"Invalid level: {request.level}"),
-                TaskTypeDetailsId = request.tasktypedetailsId , 
+			    Levels = Enum.TryParse(Regex.Replace(request.level, @"[^a-zA-Z0-9]", ""), true, out Levels level)
+				? level
+				: throw new ArgumentException($"Invalid level: {request.level}"),
+
+			TaskTypeDetailsId = request.tasktypedetailsId , 
                 OtherTypes = request.others
             };
 

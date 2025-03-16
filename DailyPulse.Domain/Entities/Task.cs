@@ -1,5 +1,6 @@
 ﻿using DailyPulse.Domain.Base;
 using DailyPulse.Domain.Enums;
+using System.Text.Json.Serialization;
 
 namespace DailyPulse.Domain.Entities
 {
@@ -19,11 +20,12 @@ namespace DailyPulse.Domain.Entities
         public Priority Priority { get; set; }
         public DateTime DateFrom { get; set; }
         public DateTime DateTo { get; set; }
-        public DateTime? StartTime { get; set; }
-        public DateTime? EndTime { get; set; }
         public Guid EmpId { get; set; } // Foreign key to Employee
         public Guid ProjectId { get; set; }  // Foreign key to Scope
-        public Guid? TaskTypeDetailsId { get; set; }
+
+		[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+		public Guid? TaskTypeDetailsId { get; set; }
+
         public Employee Employee { get; set; }
         public Project Project { get; set; }
         public TaskTypeDetails TaskTypeDetails { get; set; }

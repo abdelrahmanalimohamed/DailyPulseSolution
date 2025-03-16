@@ -48,6 +48,9 @@ namespace DailyPulse.Infrastructure.Configurations
 			builder.Property(p => p.DateTo)
 				 .IsRequired();
 
+			builder.Property(t => t.TaskTypeDetailsId)
+				.IsRequired(false);
+
 			builder.HasOne(p => p.Project)
 				.WithMany(s => s.Tasks)
 				.HasForeignKey(p => p.ProjectId)
