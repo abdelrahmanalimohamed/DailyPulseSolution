@@ -24,6 +24,14 @@ namespace DailyPulse.Infrastructure.Configurations
 				.IsRequired()
 			.HasMaxLength(500);
 
+			builder.Property(p => p.BuildingNo)
+					.IsRequired()
+				    .HasMaxLength(100);
+
+			builder.Property(p => p.ProjectNo)
+					.IsRequired()
+					.HasMaxLength(100);
+
 			builder.HasOne(p => p.Region)
 				.WithMany(s => s.Projects)
 				.HasForeignKey(p => p.RegionId)

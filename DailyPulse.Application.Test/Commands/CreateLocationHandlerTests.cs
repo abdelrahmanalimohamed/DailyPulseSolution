@@ -1,7 +1,6 @@
 ﻿using DailyPulse.Application.Abstraction;
 using DailyPulse.Application.CQRS.CommandHandler.LocationsHandlers;
 using DailyPulse.Application.CQRS.Commands.Locations;
-using DailyPulse.Application.CQRS.Commands.Projects;
 using DailyPulse.Domain.Entities;
 using Moq;
 using System.Data;

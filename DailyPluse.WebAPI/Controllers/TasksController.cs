@@ -123,5 +123,21 @@ namespace DailyPluse.WebAPI.Controllers
 
             return Ok(report);
         }
+
+        [HttpGet("getTaskTypes")]
+        public async Task<IActionResult> GetTasksTypes()
+        {
+            var getTaskTypesQuery = new GetTaskTypesQuery();
+            var taskstypes = await _mediator.Send(getTaskTypesQuery);
+            return Ok(taskstypes);
+		}
+
+        [HttpGet("getTaskTypesDetails")]
+        public async Task<IActionResult> GetTaskTypesDetails(Guid tasktypeId)
+        {
+            var getTaskTypesDetails = new GetTaskTypeDetailsQuery { tasktypeId = tasktypeId };
+            var taskdetailsTypes = await _mediator.Send(getTaskTypesDetails);
+            return Ok(taskdetailsTypes);
+        }
     }
 }

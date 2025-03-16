@@ -65,6 +65,11 @@ namespace DailyPulse.Infrastructure.Configurations
 				  .HasForeignKey(td => td.TaskId)
 				  .OnDelete(DeleteBehavior.Cascade);
 
+			builder.HasOne(t => t.TaskTypeDetails)
+				  .WithMany(td => td.Tasks)
+				  .HasForeignKey(td => td.TaskTypeDetailsId)
+				  .OnDelete(DeleteBehavior.Cascade);
+
 			builder.HasIndex(p => p.Name)
 					  .IsUnique();
 		}

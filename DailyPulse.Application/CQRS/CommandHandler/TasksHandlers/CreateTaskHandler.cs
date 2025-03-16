@@ -51,6 +51,8 @@ namespace DailyPulse.Application.CQRS.CommandHandler.TasksHandlers
                 DrawingTitle = request.DrawingTitle,
                 Levels = Enum.TryParse(request.level, true, out Levels level)
                      ? level : throw new ArgumentException($"Invalid level: {request.level}"),
+                TaskTypeDetailsId = request.tasktypedetailsId , 
+                OtherTypes = request.others
             };
 
             await _repository.AddAsync(task, cancellationToken);

@@ -22,7 +22,8 @@ namespace DailyPulse.Infrastructure.Persistence
         public DbSet<TaskNewRequirements> TaskNewRequirements { get; set; }
         public DbSet<AdminRejectedTask> AdminRejectedTasks { get; set; }
         public DbSet<TaskStatusLogs> TaskStatusLogs { get; set; }
-
+        public DbSet<TaskType> TaskType { get; set; }
+        public DbSet<TaskTypeDetails> TaskTypeDetails { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);

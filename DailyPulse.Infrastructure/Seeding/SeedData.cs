@@ -115,6 +115,52 @@ namespace DailyPulse.Infrastructure.Seeding
 						 Title = "DailyPulseTeamLeader"
 					 }
 				);
+
+				await context.SaveChangesAsync();
+			}
+
+			if (!context.TaskType.Any())
+			{
+				await context.TaskType.AddRangeAsync(
+					new TaskType { Name = "Drawing Generation" },
+					new TaskType { Name = "Model" },
+					new TaskType { Name = "Coordination" },
+					new TaskType { Name = "Other" }
+				);
+
+				await context.SaveChangesAsync();
+			}
+
+			if (!context.TaskTypeDetails.Any())
+			{
+				var drawingGeneration = await context.TaskType.Where(x => x.Name == "Drawing Generation")
+					.Select(a => a.Id).FirstOrDefaultAsync();
+
+				var model = await context.TaskType.Where(x => x.Name == "Model")
+									.Select(a => a.Id).FirstOrDefaultAsync();
+
+
+				var coordination = await context.TaskType.Where(x => x.Name == "Coordination")
+									.Select(a => a.Id).FirstOrDefaultAsync();
+
+
+				var other = await context.TaskType.Where(x => x.Name == "Other")
+									.Select(a => a.Id).FirstOrDefaultAsync();
+
+				await context.TaskTypeDetails.AddRangeAsync(
+					new TaskTypeDetails { Name = "Shop Drawing" , TaskTypeId = drawingGeneration },
+					new TaskTypeDetails { Name = "As-Built", TaskTypeId = drawingGeneration },
+
+					new TaskTypeDetails { Name = "Modeling", TaskTypeId = model },
+					new TaskTypeDetails { Name = "Model Repair", TaskTypeId = model },
+					new TaskTypeDetails { Name = "Resolving Clashes", TaskTypeId = model },
+
+					new TaskTypeDetails { Name = "RFIs", TaskTypeId = coordination },
+					new TaskTypeDetails { Name = "Meetings", TaskTypeId = coordination },
+					new TaskTypeDetails { Name = "Site Visits", TaskTypeId = coordination },
+					new TaskTypeDetails { Name = "Project Study", TaskTypeId = coordination }
+				);
+
 				await context.SaveChangesAsync();
 			}
 		}
