@@ -22,8 +22,9 @@ namespace DailyPluse.WebAPI
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
+			builder.Services.AddHttpContextAccessor();
 
-            builder.Services
+			builder.Services
                   .AddApplication()
                   .AddInfrastructure(builder.Configuration);
 

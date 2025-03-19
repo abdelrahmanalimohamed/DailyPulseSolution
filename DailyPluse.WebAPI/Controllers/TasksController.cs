@@ -3,6 +3,7 @@ using DailyPulse.Application.CQRS.Queries.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace DailyPluse.WebAPI.Controllers
 {
@@ -12,16 +13,18 @@ namespace DailyPluse.WebAPI.Controllers
 	public class TasksController : ControllerBase
     {
         private readonly IMediator _mediator;
+		private readonly string _machineName;
 
-        public TasksController(IMediator _mediator)
-        {
-            this._mediator = _mediator;
-        }
+		public TasksController(IMediator _mediator, IHttpContextAccessor httpContextAccessor)
+		{
+			this._mediator = _mediator;
+			_machineName = ResolveClientMachineName(httpContextAccessor);
+		}
 
-        [HttpPost]
+		[HttpPost]
         public async Task<IActionResult> CreateTask([FromBody] CreateTaskCommand createTaskCommand)
         {
-			createTaskCommand.MachineName = Environment.MachineName;
+			createTaskCommand.MachineName = _machineName;
 
 			await _mediator.Send(createTaskCommand);
             return StatusCode(201);
@@ -30,7 +33,7 @@ namespace DailyPluse.WebAPI.Controllers
         [HttpPost("reject-rejectTask")]
         public async Task<IActionResult> RejectTaskByEmployee([FromBody] UpdateTaskRejectionByEmployeeCommand updateTaskRejectionByEmployeeCommand)
         {
-			updateTaskRejectionByEmployeeCommand.MachineName = Environment.MachineName;
+			updateTaskRejectionByEmployeeCommand.MachineName = _machineName;
 
 			await _mediator.Send(updateTaskRejectionByEmployeeCommand);
             return StatusCode(201);
@@ -39,7 +42,7 @@ namespace DailyPluse.WebAPI.Controllers
         [HttpPut("updatetaskstatus")]
         public async Task<IActionResult> UpdateTaskStatusByAdmin([FromBody] UpdateTaskStatusByAdminCommand updateTaskStatusByAdminCommand)
         {
-			updateTaskStatusByAdminCommand.MachineName = Environment.MachineName;
+			updateTaskStatusByAdminCommand.MachineName = _machineName;
 
 			await _mediator.Send(updateTaskStatusByAdminCommand);
             return StatusCode(201);
@@ -48,7 +51,7 @@ namespace DailyPluse.WebAPI.Controllers
         [HttpPut("updatetaskstatusbyemployee")]
         public async Task<IActionResult> UpdateTaskStatusByEmployee([FromBody] UpdateTaskStatusByEmployeeCommand updateTaskStatusByEmployeeCommand)
         {
-			updateTaskStatusByEmployeeCommand.MachineName = Environment.MachineName;
+			updateTaskStatusByEmployeeCommand.MachineName = _machineName;
 
 			await _mediator.Send(updateTaskStatusByEmployeeCommand);
             return StatusCode(201);
@@ -57,7 +60,7 @@ namespace DailyPluse.WebAPI.Controllers
         [HttpPut("update-updatetask")]
         public async Task<IActionResult> UpdateTask([FromBody] UpdateTaskCommand updateTaskCommand)
         {
-			updateTaskCommand.MachineName = Environment.MachineName;
+			updateTaskCommand.MachineName = _machineName;
 
 			await _mediator.Send(updateTaskCommand);
             return StatusCode(200);
@@ -66,7 +69,7 @@ namespace DailyPluse.WebAPI.Controllers
         [HttpPut("closeorcompletetask")]
         public async Task<IActionResult> CloseOrCompleteTaskByAdmin([FromBody] CloseTaskCommand closeTaskCommand)
         {
-			closeTaskCommand.MachineName = Environment.MachineName;
+			closeTaskCommand.MachineName = _machineName;
 
 			await _mediator.Send(closeTaskCommand);
             return StatusCode(201);
@@ -139,5 +142,23 @@ namespace DailyPluse.WebAPI.Controllers
             var taskdetailsTypes = await _mediator.Send(getTaskTypesDetails);
             return Ok(taskdetailsTypes);
         }
-    }
+
+		private string ResolveClientMachineName(IHttpContextAccessor httpContextAccessor)
+		{
+			var remoteIp = httpContextAccessor.HttpContext?.Connection.RemoteIpAddress?.ToString();
+			if (!string.IsNullOrEmpty(remoteIp))
+			{
+				try
+				{
+					var hostEntry = Dns.GetHostEntry(remoteIp);
+					return hostEntry.HostName;
+				}
+				catch
+				{
+					return remoteIp; // Fallback to IP if DNS lookup fails
+				}
+			}
+			return "Unknown";
+		}
+	}
 }
