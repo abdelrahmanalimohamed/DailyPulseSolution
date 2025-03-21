@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DailyPulse.Application", "D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DailyPulse.Infrastructure", "DailyPulse.Infrastructure\DailyPulse.Infrastructure.csproj", "{0F55F38A-D818-40F4-9626-739D3191EAF3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DailyPluse.WebAPI", "DailyPluse.WebAPI\DailyPluse.WebAPI.csproj", "{E6F36651-917B-40BC-95B3-28BD45138352}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DailyPulse.WebAPI", "DailyPluse.WebAPI\DailyPulse.WebAPI.csproj", "{E6F36651-917B-40BC-95B3-28BD45138352}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DailyPulse.Application.Test", "DailyPulse.Application.Test\DailyPulse.Application.Test.csproj", "{E32A0DBC-AC70-4417-8E41-7B628388339D}"
 EndProject

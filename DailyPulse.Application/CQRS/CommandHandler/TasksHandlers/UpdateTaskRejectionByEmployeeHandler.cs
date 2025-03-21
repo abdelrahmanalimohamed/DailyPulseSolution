@@ -1,5 +1,6 @@
 ﻿using DailyPulse.Application.Abstraction;
 using DailyPulse.Application.CQRS.Commands.Tasks;
+using DailyPulse.Application.DTO;
 using DailyPulse.Domain.Entities;
 using DailyPulse.Domain.Enums;
 using MediatR;
@@ -38,7 +39,10 @@ namespace DailyPulse.Application.CQRS.CommandHandler.TasksHandlers
 
             await AddRejectionReasons(task.Id , task.EmpId , request.Reasons , cancellationToken);
 
-            await SaveTaskStatusLog(task.Id , oldStatus ,task.Status , cancellationToken);
+			SaveTaskStatusDTO saveTaskStatusDTO = new SaveTaskStatusDTO(
+	             task.Id, oldStatus, task.Status, request.MachineName);
+
+			await SaveTaskStatusLog(saveTaskStatusDTO, cancellationToken);
         }
 
         private async Task AddRejectionReasons(Guid TaskId, Guid EmpId, string RejectionReasons, CancellationToken cancellationToken)
@@ -52,21 +56,19 @@ namespace DailyPulse.Application.CQRS.CommandHandler.TasksHandlers
 
             await _rejectedtasksRepo.AddAsync(rejectedTask, cancellationToken);
         }
+		private async Task SaveTaskStatusLog(
+         SaveTaskStatusDTO saveTaskStatusDTO,
+         CancellationToken cancellationToken)
+		{
+			var taskStatusLogs = new TaskStatusLogs
+			{
+				TaskId = saveTaskStatusDTO.taskId,
+				OldStatus = saveTaskStatusDTO.oldStatus,
+				NewStatus = saveTaskStatusDTO.newStatus,
+				MachineName = saveTaskStatusDTO.machineName
+			};
 
-        private async Task SaveTaskStatusLog(
-            Guid taskId,
-            Status OldStatus,
-            Status NewStatus, 
-            CancellationToken cancellationToken)
-        {
-            var taskStatusLogs = new TaskStatusLogs
-            {
-                TaskId = taskId,
-                OldStatus = OldStatus,
-                NewStatus = NewStatus
-            };
-
-            await _taskstatusLogsrepo.AddAsync(taskStatusLogs, cancellationToken);
-        }
-    }
+			await _taskstatusLogsrepo.AddAsync(taskStatusLogs, cancellationToken);
+		}
+	}
 }

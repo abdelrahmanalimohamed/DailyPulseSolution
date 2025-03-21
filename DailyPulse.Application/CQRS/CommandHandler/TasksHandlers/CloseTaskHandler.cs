@@ -1,5 +1,6 @@
 ﻿using DailyPulse.Application.Abstraction;
 using DailyPulse.Application.CQRS.Commands.Tasks;
+using DailyPulse.Application.DTO;
 using DailyPulse.Domain.Entities;
 using DailyPulse.Domain.Enums;
 using MediatR;
@@ -30,12 +31,16 @@ namespace DailyPulse.Application.CQRS.CommandHandler.TasksHandlers
 
             var oldStaus = task.Status;
 
-            task.Status = (Status)Enum.Parse(typeof(Status), request.Status);
+			task.Status = Enum.Parse<Status>(request.Status);
 
-            await _taskrepository.UpdateAsync(task , cancellationToken);
+			await _taskrepository.UpdateAsync(task , cancellationToken);
 
             await SaveToLogs(request , cancellationToken);
-            await SaveTaskStatusLog(task.Id , oldStaus , task.Status , cancellationToken);
+
+            SaveTaskStatusDTO saveTaskStatusDTO = new SaveTaskStatusDTO(
+                task.Id, oldStaus, task.Status, request.MachineName);
+
+			await SaveTaskStatusLog(saveTaskStatusDTO, cancellationToken);
 
             return Unit.Value;
         }
@@ -51,18 +56,16 @@ namespace DailyPulse.Application.CQRS.CommandHandler.TasksHandlers
 
             await _tasklogsrepo.AddAsync(tasklog, cancellationToken);
         }
-
         private async Task SaveTaskStatusLog(
-            Guid taskId,
-            Status OldStatus,
-            Status NewStatus, 
-            CancellationToken cancellationToken)
+		    SaveTaskStatusDTO saveTaskStatusDTO ,
+			CancellationToken cancellationToken)
         {
             var taskStatusLogs = new TaskStatusLogs
             {
-                TaskId = taskId,
-                OldStatus = OldStatus,
-                NewStatus = NewStatus
+                TaskId = saveTaskStatusDTO.taskId,
+                OldStatus = saveTaskStatusDTO.oldStatus,
+                NewStatus = saveTaskStatusDTO.newStatus,
+                MachineName = saveTaskStatusDTO.machineName
             };
 
             await _taskstatusLogsrepo.AddAsync(taskStatusLogs, cancellationToken);

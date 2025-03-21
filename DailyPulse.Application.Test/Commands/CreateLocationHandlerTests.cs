@@ -1,9 +1,9 @@
 ﻿using DailyPulse.Application.Abstraction;
 using DailyPulse.Application.CQRS.CommandHandler.LocationsHandlers;
 using DailyPulse.Application.CQRS.Commands.Locations;
-using DailyPulse.Application.CQRS.Commands.Projects;
 using DailyPulse.Domain.Entities;
 using Moq;
+using System.Data;
 using System.Linq.Expressions;
 using Task = System.Threading.Tasks.Task;
 
@@ -50,7 +50,7 @@ namespace DailyPulse.Application.Test.Commands
 				.ReturnsAsync(new Location { Name = "Duplicate Location" });  // Simulate duplicate location
 
 			// Act & Assert
-			var exception = await Assert.ThrowsAsync<InvalidOperationException>(() => _handler.Handle(command, CancellationToken.None));
+			var exception = await Assert.ThrowsAsync<DuplicateNameException>(() => _handler.Handle(command, CancellationToken.None));
 
 			Assert.Equal("A location with the same name already exists.", exception.Message);
 		}

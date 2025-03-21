@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DailyPluse.WebAPI\DailyPluse.WebAPI.csproj" />
+    <ProjectReference Include="..\DailyPluse.WebAPI\DailyPulse.WebAPI.csproj" />
     <ProjectReference Include="..\DailyPulse.Application\DailyPulse.Application.csproj" />
     <ProjectReference Include="..\DailyPulse.Domain\DailyPulse.Domain.csproj" />
     <ProjectReference Include="..\DailyPulse.Infrastructure\DailyPulse.Infrastructure.csproj" />

@@ -35,6 +35,7 @@ namespace DailyPulse.Application.CQRS.CommandHandler.ProjectsHandlers
 				throw new DuplicateNameException("A Project with the same name already exists.");
 			}
 
+
 			string trade = Regex.Replace(request.TradeId, @"\s+", "");
 
             var project = new Project
@@ -44,7 +45,10 @@ namespace DailyPulse.Application.CQRS.CommandHandler.ProjectsHandlers
                 Trade = Enum.TryParse(trade, true, out Treats role)
                      ? role : throw new ArgumentException($"Invalid trade: {request.TradeId}"),
                 Name = request.Name,
-                RegionId = request.RegionId
+                RegionId = request.RegionId ,
+                EmployeeId = request.EmployeeId , 
+                BuildingNo = request.BuildingNo,
+                ProjectNo = request.ProjectNo
             };
 
              await _repository.AddAsync(project, cancellationToken);

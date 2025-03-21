@@ -3,6 +3,7 @@ using DailyPulse.Application.CQRS.Queries.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace DailyPluse.WebAPI.Controllers
 {
@@ -12,52 +13,65 @@ namespace DailyPluse.WebAPI.Controllers
 	public class TasksController : ControllerBase
     {
         private readonly IMediator _mediator;
+		private readonly string _machineName;
 
-        public TasksController(IMediator _mediator)
-        {
-            this._mediator = _mediator;
-        }
+		public TasksController(IMediator _mediator, IHttpContextAccessor httpContextAccessor)
+		{
+			this._mediator = _mediator;
+			_machineName = ResolveClientMachineName(httpContextAccessor);
+		}
 
-        [HttpPost]
+		[HttpPost]
         public async Task<IActionResult> CreateTask([FromBody] CreateTaskCommand createTaskCommand)
         {
-            await _mediator.Send(createTaskCommand);
+			createTaskCommand.MachineName = _machineName;
 
+			await _mediator.Send(createTaskCommand);
             return StatusCode(201);
         }
 
         [HttpPost("reject-rejectTask")]
         public async Task<IActionResult> RejectTaskByEmployee([FromBody] UpdateTaskRejectionByEmployeeCommand updateTaskRejectionByEmployeeCommand)
         {
-            await _mediator.Send(updateTaskRejectionByEmployeeCommand);
+			updateTaskRejectionByEmployeeCommand.MachineName = _machineName;
+
+			await _mediator.Send(updateTaskRejectionByEmployeeCommand);
             return StatusCode(201);
         }
 
         [HttpPut("updatetaskstatus")]
         public async Task<IActionResult> UpdateTaskStatusByAdmin([FromBody] UpdateTaskStatusByAdminCommand updateTaskStatusByAdminCommand)
         {
-            await _mediator.Send(updateTaskStatusByAdminCommand);
+			updateTaskStatusByAdminCommand.MachineName = _machineName;
+
+			await _mediator.Send(updateTaskStatusByAdminCommand);
             return StatusCode(201);
         }
 
         [HttpPut("updatetaskstatusbyemployee")]
         public async Task<IActionResult> UpdateTaskStatusByEmployee([FromBody] UpdateTaskStatusByEmployeeCommand updateTaskStatusByEmployeeCommand)
         {
-            await _mediator.Send(updateTaskStatusByEmployeeCommand);
+			updateTaskStatusByEmployeeCommand.MachineName = _machineName;
+
+			await _mediator.Send(updateTaskStatusByEmployeeCommand);
             return StatusCode(201);
         }
 
         [HttpPut("update-updatetask")]
         public async Task<IActionResult> UpdateTask([FromBody] UpdateTaskCommand updateTaskCommand)
         {
-            await _mediator.Send(updateTaskCommand);
+			updateTaskCommand.MachineName = _machineName;
+
+			await _mediator.Send(updateTaskCommand);
             return StatusCode(200);
         }
 
         [HttpPut("closeorcompletetask")]
         public async Task<IActionResult> CloseOrCompleteTaskByAdmin([FromBody] CloseTaskCommand closeTaskCommand)
         {
-            await _mediator.Send(closeTaskCommand);
+			closeTaskCommand.MachineName = _machineName;
+
+			await _mediator.Send(closeTaskCommand);
             return StatusCode(201);
         }
 
@@ -112,5 +126,39 @@ namespace DailyPluse.WebAPI.Controllers
 
             return Ok(report);
         }
-    }
+
+        [HttpGet("getTaskTypes")]
+        public async Task<IActionResult> GetTasksTypes()
+        {
+            var getTaskTypesQuery = new GetTaskTypesQuery();
+            var taskstypes = await _mediator.Send(getTaskTypesQuery);
+            return Ok(taskstypes);
+		}
+
+        [HttpGet("getTaskTypesDetails")]
+        public async Task<IActionResult> GetTaskTypesDetails(Guid tasktypeId)
+        {
+            var getTaskTypesDetails = new GetTaskTypeDetailsQuery { tasktypeId = tasktypeId };
+            var taskdetailsTypes = await _mediator.Send(getTaskTypesDetails);
+            return Ok(taskdetailsTypes);
+        }
+
+		private string ResolveClientMachineName(IHttpContextAccessor httpContextAccessor)
+		{
+			var remoteIp = httpContextAccessor.HttpContext?.Connection.RemoteIpAddress?.ToString();
+			if (!string.IsNullOrEmpty(remoteIp))
+			{
+				try
+				{
+					var hostEntry = Dns.GetHostEntry(remoteIp);
+					return hostEntry.HostName;
+				}
+				catch
+				{
+					return remoteIp; // Fallback to IP if DNS lookup fails
+				}
+			}
+			return "Unknown";
+		}
+	}
 }

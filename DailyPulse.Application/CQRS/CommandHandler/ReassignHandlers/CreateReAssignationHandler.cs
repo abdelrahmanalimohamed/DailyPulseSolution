@@ -1,5 +1,6 @@
 ﻿using DailyPulse.Application.Abstraction;
 using DailyPulse.Application.CQRS.Commands.Reassign;
+using DailyPulse.Application.DTO;
 using DailyPulse.Domain.Entities;
 using DailyPulse.Domain.Enums;
 using MediatR;
@@ -35,34 +36,36 @@ namespace DailyPulse.Application.CQRS.CommandHandler.ReassignHandlers
 
             await _repository.AddAsync(reAssign , cancellationToken);
 
-            await UpdateAssignation(request.TaskId, request.EmpId, cancellationToken);
+            await UpdateAssignation(request.TaskId, request.EmpId, request.MachineName , cancellationToken);
         }
-
-        private async Task UpdateAssignation(Guid TaskId, Guid EmpId, CancellationToken cancellationToken) 
+        private async Task UpdateAssignation(Guid taskId, Guid empId, string machineName , CancellationToken cancellationToken) 
         {
-            var task = await _taskRepository.GetByIdAsync(TaskId , cancellationToken);
+            var task = await _taskRepository.GetByIdAsync(taskId , cancellationToken);
 
             var oldStatus = task.Status;
-            task.EmpId = EmpId;
+            task.EmpId = empId;
             task.Status = Status.New;
+
             await _taskRepository.UpdateAsync(task, cancellationToken);
-            await SaveTaskStatusLog(task.Id , oldStatus , task.Status , cancellationToken);
+
+			SaveTaskStatusDTO saveTaskStatusDTO = new SaveTaskStatusDTO(
+		        task.Id, oldStatus, task.Status, machineName);
+
+			await SaveTaskStatusLog(saveTaskStatusDTO, cancellationToken);
         }
+		private async Task SaveTaskStatusLog(
+            SaveTaskStatusDTO saveTaskStatusDTO,
+            CancellationToken cancellationToken)
+		{
+			var taskStatusLogs = new TaskStatusLogs
+			{
+				TaskId = saveTaskStatusDTO.taskId,
+				OldStatus = saveTaskStatusDTO.oldStatus,
+				NewStatus = saveTaskStatusDTO.newStatus,
+				MachineName = saveTaskStatusDTO.machineName
+			};
 
-        private async Task SaveTaskStatusLog(
-            Guid taskId,
-            Status OldStatus,
-            Status NewStatus, CancellationToken cancellationToken)
-        {
-            var taskStatusLogs = new TaskStatusLogs
-            {
-                TaskId = taskId,
-                OldStatus = OldStatus,
-                NewStatus = NewStatus
-            };
-
-            await _taskstatusLogsrepo.AddAsync(taskStatusLogs, cancellationToken);
-        }
-
-    }
+			await _taskstatusLogsrepo.AddAsync(taskStatusLogs, cancellationToken);
+		}
+	}
 }

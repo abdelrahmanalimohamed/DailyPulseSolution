@@ -3,7 +3,6 @@ using DailyPulse.Application.Abstraction;
 using DailyPulse.Application.CQRS.Queries.Tasks;
 using DailyPulse.Application.DTO;
 using DailyPulse.Application.ViewModel;
-using DailyPulse.Domain.Entities;
 using Dapper;
 using MediatR;
 using Task = DailyPulse.Domain.Entities.Task;
@@ -14,6 +13,7 @@ namespace DailyPulse.Application.CQRS.QueriesHandler.TaskHandlers
     {
         private readonly IGenericRepository<Task> _repository;
         private readonly IMapper _mapper;
+
         public GetTaskHistoryHandler(
             IGenericRepository<Task> _repository ,
             IMapper _mapper)

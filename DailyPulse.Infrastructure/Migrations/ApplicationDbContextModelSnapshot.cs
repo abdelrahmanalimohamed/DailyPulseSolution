@@ -59,7 +59,7 @@ namespace DailyPulse.Infrastructure.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<bool>("IsAdmin")
                         .ValueGeneratedOnAdd()
@@ -90,6 +90,9 @@ namespace DailyPulse.Infrastructure.Migrations
                         .HasColumnType("varchar(100)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
 
                     b.HasIndex("Name")
                         .IsUnique();
@@ -164,6 +167,11 @@ namespace DailyPulse.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
+                    b.Property<string>("BuildingNo")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
@@ -174,6 +182,9 @@ namespace DailyPulse.Infrastructure.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("varchar(500)");
 
+                    b.Property<Guid>("EmployeeId")
+                        .HasColumnType("char(36)");
+
                     b.Property<Guid>("LocationId")
                         .HasColumnType("char(36)");
 
@@ -182,6 +193,11 @@ namespace DailyPulse.Infrastructure.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("varchar(500)");
 
+                    b.Property<string>("ProjectNo")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
                     b.Property<Guid>("RegionId")
                         .HasColumnType("char(36)");
 
@@ -189,6 +205,8 @@ namespace DailyPulse.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
 
                     b.HasIndex("LocationId");
 
@@ -279,6 +297,11 @@ namespace DailyPulse.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
+                    b.Property<string>("CreatedByMachine")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
@@ -302,9 +325,6 @@ namespace DailyPulse.Infrastructure.Migrations
 
                     b.Property<Guid>("EmpId")
                         .HasColumnType("char(36)");
-
-                    b.Property<DateTime?>("EndTime")
-                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("EstimatedWorkingHours")
                         .IsRequired()
@@ -334,17 +354,20 @@ namespace DailyPulse.Infrastructure.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("varchar(500)");
 
+                    b.Property<string>("OtherTypes")
+                        .HasColumnType("longtext");
+
                     b.Property<int>("Priority")
                         .HasColumnType("int");
 
                     b.Property<Guid>("ProjectId")
                         .HasColumnType("char(36)");
 
-                    b.Property<DateTime?>("StartTime")
-                        .HasColumnType("datetime(6)");
-
                     b.Property<int>("Status")
                         .HasColumnType("int");
+
+                    b.Property<Guid?>("TaskTypeDetailsId")
+                        .HasColumnType("char(36)");
 
                     b.HasKey("Id");
 
@@ -354,6 +377,8 @@ namespace DailyPulse.Infrastructure.Migrations
                         .IsUnique();
 
                     b.HasIndex("ProjectId");
+
+                    b.HasIndex("TaskTypeDetailsId");
 
                     b.ToTable("Tasks");
                 });
@@ -397,6 +422,11 @@ namespace DailyPulse.Infrastructure.Migrations
                         .HasColumnType("datetime(6)")
                         .HasDefaultValueSql("current_timestamp()");
 
+                    b.Property<string>("MachineName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
                     b.Property<int>("NewStatus")
                         .HasColumnType("int");
 
@@ -411,6 +441,50 @@ namespace DailyPulse.Infrastructure.Migrations
                     b.HasIndex("TaskId");
 
                     b.ToTable("TaskStatusLogs");
+                });
+
+            modelBuilder.Entity("DailyPulse.Domain.Entities.TaskType", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime(6)")
+                        .HasDefaultValueSql("current_timestamp()");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TaskType");
+                });
+
+            modelBuilder.Entity("DailyPulse.Domain.Entities.TaskTypeDetails", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<Guid>("TaskTypeId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TaskTypeId");
+
+                    b.ToTable("TaskTypeDetails");
                 });
 
             modelBuilder.Entity("DailyPulse.Domain.Entities.TaskWorkLog", b =>
@@ -501,6 +575,12 @@ namespace DailyPulse.Infrastructure.Migrations
 
             modelBuilder.Entity("DailyPulse.Domain.Entities.Project", b =>
                 {
+                    b.HasOne("DailyPulse.Domain.Entities.Employee", "Employee")
+                        .WithMany("Projects")
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("DailyPulse.Domain.Entities.Location", "Location")
                         .WithMany("Projects")
                         .HasForeignKey("LocationId")
@@ -512,6 +592,8 @@ namespace DailyPulse.Infrastructure.Migrations
                         .HasForeignKey("RegionId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Employee");
 
                     b.Navigation("Location");
 
@@ -559,9 +641,17 @@ namespace DailyPulse.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("DailyPulse.Domain.Entities.TaskTypeDetails", "TaskTypeDetails")
+                        .WithMany("Tasks")
+                        .HasForeignKey("TaskTypeDetailsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Employee");
 
                     b.Navigation("Project");
+
+                    b.Navigation("TaskTypeDetails");
                 });
 
             modelBuilder.Entity("DailyPulse.Domain.Entities.TaskNewRequirements", b =>
@@ -586,6 +676,17 @@ namespace DailyPulse.Infrastructure.Migrations
                     b.Navigation("Task");
                 });
 
+            modelBuilder.Entity("DailyPulse.Domain.Entities.TaskTypeDetails", b =>
+                {
+                    b.HasOne("DailyPulse.Domain.Entities.TaskType", "TaskType")
+                        .WithMany("TaskTypeDetails")
+                        .HasForeignKey("TaskTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TaskType");
+                });
+
             modelBuilder.Entity("DailyPulse.Domain.Entities.TaskWorkLog", b =>
                 {
                     b.HasOne("DailyPulse.Domain.Entities.Task", "Task")
@@ -600,6 +701,8 @@ namespace DailyPulse.Infrastructure.Migrations
             modelBuilder.Entity("DailyPulse.Domain.Entities.Employee", b =>
                 {
                     b.Navigation("DirectReports");
+
+                    b.Navigation("Projects");
 
                     b.Navigation("ReAssigns");
 
@@ -638,6 +741,16 @@ namespace DailyPulse.Infrastructure.Migrations
                     b.Navigation("TaskNewRequirements");
 
                     b.Navigation("TaskStatusLogs");
+                });
+
+            modelBuilder.Entity("DailyPulse.Domain.Entities.TaskType", b =>
+                {
+                    b.Navigation("TaskTypeDetails");
+                });
+
+            modelBuilder.Entity("DailyPulse.Domain.Entities.TaskTypeDetails", b =>
+                {
+                    b.Navigation("Tasks");
                 });
 #pragma warning restore 612, 618
         }

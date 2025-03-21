@@ -10,10 +10,14 @@ namespace DailyPulse.Application.CQRS.Commands.Projects
 
         public string TradeId { get; set; }
 
+        public string BuildingNo { get; set; }
+
+        public string ProjectNo { get; set; }
+
         public Guid LocationId { get; set; }
 
         public Guid RegionId { get; set; }
 
-        //public Guid TeamLeadId { get; set; }
+        public Guid EmployeeId { get; set; }
     }
 }

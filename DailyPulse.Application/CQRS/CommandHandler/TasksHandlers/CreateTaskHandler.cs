@@ -4,6 +4,7 @@ using DailyPulse.Application.Extensions;
 using DailyPulse.Domain.Enums;
 using MediatR;
 using System.Data;
+using System.Text.RegularExpressions;
 using Task = System.Threading.Tasks.Task;
 
 
@@ -29,6 +30,7 @@ namespace DailyPulse.Application.CQRS.CommandHandler.TasksHandlers
 			{
 				throw new DuplicateNameException("A Task with the same name already exists.");
 			}
+
 			var task = new DailyPulse.Domain.Entities.Task
             {
                 Name = request.TaskName,
@@ -40,13 +42,18 @@ namespace DailyPulse.Application.CQRS.CommandHandler.TasksHandlers
                 EmpId = request.EmployeeId,
                 FilePath = request.file,
                 ProjectId = request.ProjectId,
+                CreatedByMachine = request.MachineName,
                 Status = Status.New,
                 //ScopeId = request.ScopeId,
                 Priority = Enum.TryParse(request.Priority, true, out Priority role)
                      ? role : throw new ArgumentException($"Invalid priority: {request.Priority}"),
                 DrawingTitle = request.DrawingTitle,
-                Levels = Enum.TryParse(request.level, true, out Levels level)
-                     ? level : throw new ArgumentException($"Invalid level: {request.level}"),
+			    Levels = Enum.TryParse(Regex.Replace(request.level, @"[^a-zA-Z0-9]", ""), true, out Levels level)
+				? level
+				: throw new ArgumentException($"Invalid level: {request.level}"),
+
+			TaskTypeDetailsId = request.tasktypedetailsId , 
+                OtherTypes = request.others
             };
 
             await _repository.AddAsync(task, cancellationToken);

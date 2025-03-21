@@ -9,5 +9,6 @@ namespace DailyPulse.Application.CQRS.Commands.TaskWorkLog
         public DateTime PauseTime { get; set; }
         public DateTime EndTime { get; set; }
         public string LogDesc { get; set; }
+        public string MachineName { get; set; }
     }
 }

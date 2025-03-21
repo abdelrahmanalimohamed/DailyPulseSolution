@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using DailyPulse.Application.CQRS.Commands.TaskWorkLog;
+using DailyPulse.Application.CQRS.Commands.Tasks;
 
 namespace DailyPluse.WebAPI.Controllers
 {
@@ -26,7 +27,9 @@ namespace DailyPluse.WebAPI.Controllers
         [HttpPost("taskcompletion")]
         public async Task<IActionResult> CreateTaskCompletionDetails([FromBody] CreateTaskCompletionDetailsCommand createTaskCompletionDetailsCommand)
         {
-            await _mediator.Send(createTaskCompletionDetailsCommand);
+			createTaskCompletionDetailsCommand.MachineName = Environment.MachineName;
+
+			await _mediator.Send(createTaskCompletionDetailsCommand);
             return StatusCode(201);
         }
 
