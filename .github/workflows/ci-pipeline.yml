@@ -36,11 +36,17 @@ jobs:
 
     - name: Run .NET Application on Remote Server
       run: |
-        ssh -i ~/.ssh/id_rsa ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
-          cd /home/${{ secrets.SERVER_USER }}/Downloads/testpublish
-          fuser -k 5000/tcp || true  # Kill any existing app running on port 5000
-
-          # Start the .NET application using setsid to keep it running after SSH session ends
-          setsid dotnet DailyPulse.WebAPI.dll --urls "http://192.168.121.17:5000" > output.log 2>&1 &
-          echo $! > dotnet_app.pid  # Save the process ID for future reference
-        EOF
+        ssh -t -i ~/.ssh/id_rsa ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
+        cd /home/${{ secrets.SERVER_USER }}/Downloads/testpublish
+            # Kill any running process of the app
+            pids=$(pgrep -f "dotnet DailyPulse.WebAPI.dll")
+            if [ -n "$pids" ]; then
+              echo "Killing existing app processes: $pids"
+              kill -9 $pids
+            else
+              echo "No existing app process found"
+            fi
+  
+            # Start the new instance in the foreground
+            dotnet DailyPulse.WebAPI.dll --urls "http://192.168.121.17:5000"
+          EOF  
