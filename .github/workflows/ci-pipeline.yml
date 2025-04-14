@@ -37,7 +37,7 @@ jobs:
     - name: Run .NET Application on Remote Server
       run: |
         ssh -t -i ~/.ssh/id_rsa ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
-        cd /home/${{ secrets.SERVER_USER }}/Downloads/testpublish
+        cd /home/${{ secrets.SERVER_USER }}/Downloads/testpublish/publish
 
             # Kill any running process of the app
             pids=$(pgrep -f "dotnet DailyPulse.WebAPI.dll")
