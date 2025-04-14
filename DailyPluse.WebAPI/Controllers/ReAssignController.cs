@@ -9,6 +9,7 @@ namespace DailyPluse.WebAPI.Controllers
     public class ReAssignController : ControllerBase
     {
         private readonly IMediator _mediator;
+        
 
         public ReAssignController(IMediator mediator)
         {
