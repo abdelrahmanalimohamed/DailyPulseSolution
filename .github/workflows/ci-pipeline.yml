@@ -38,15 +38,23 @@ jobs:
       run: |
         ssh -t -i ~/.ssh/id_rsa ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
         cd /home/${{ secrets.SERVER_USER }}/Downloads/testpublish
+
             # Kill any running process of the app
             pids=$(pgrep -f "dotnet DailyPulse.WebAPI.dll")
             if [ -n "$pids" ]; then
               echo "Killing existing app processes: $pids"
-              kill -9 $pids
+              sudo kill -9 $pids
             else
               echo "No existing app process found"
             fi
   
-            # Start the new instance in the foreground
-            dotnet DailyPulse.WebAPI.dll --urls "http://192.168.121.17:5000"
-          EOF  
+            # Make sure the .dll file exists
+            if [ -f "DailyPulse.WebAPI.dll" ]; then
+              echo "Starting new instance of .NET app..."
+              dotnet DailyPulse.WebAPI.dll --urls "http://192.168.121.17:5000"
+            else
+              echo "Error: dotnet application file not found!"
+              exit 1
+            fi
+          EOF
+  
