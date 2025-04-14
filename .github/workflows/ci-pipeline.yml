@@ -1,4 +1,4 @@
-name: Deploy and Run .NET App Without Systemd
+name: Deploy and Run .NET WebAPI
 
 on:
   push:
@@ -20,41 +20,52 @@ jobs:
         chmod 600 ~/.ssh/id_rsa
         ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
 
-    - name: Publish .NET Application
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '6.0.x'  # Adjust to your .NET version
+
+    - name: Restore dependencies
+      run: dotnet restore DailyPluse.WebAPI/DailyPluse.WebAPI.csproj
+
+    - name: Build
+      run: dotnet build DailyPluse.WebAPI/DailyPluse.WebAPI.csproj --configuration Release --no-restore
+
+    - name: Publish WebAPI
       run: |
-        dotnet publish -c Release -o ./publish
+        dotnet publish DailyPluse.WebAPI/DailyPluse.WebAPI.csproj -c Release -o ./publish --no-build
 
     - name: Copy Published Files to Server
       uses: appleboy/scp-action@v0.1.3
       with:
-        host: ${{ secrets.SERVER_IP }}  # Server IP from secrets
-        username: ${{ secrets.SERVER_USER }}  # Username from secrets
-        key: ${{ secrets.SSH_PRIVATE_KEY }}  # SSH Private Key from secrets
+        host: ${{ secrets.SERVER_IP }}
+        username: ${{ secrets.SERVER_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
         source: ./publish/*
         target: /home/${{ secrets.SERVER_USER }}/Downloads/testpublish
         port: 22
 
-    - name: Run .NET Application on Remote Server
+    - name: Run WebAPI on Remote Server
       run: |
         ssh -t -i ~/.ssh/id_rsa ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
-        cd /home/${{ secrets.SERVER_USER }}/Downloads/testpublish/publish
+        cd /home/${{ secrets.SERVER_USER }}/Downloads/testpublish
 
-            # Kill any running process of the app
-            pids=$(pgrep -f "dotnet DailyPulse.WebAPI.dll")
-            if [ -n "$pids" ]; then
-              echo "Killing existing app processes: $pids"
-              sudo kill -9 $pids
-            else
-              echo "No existing app process found"
-            fi
-  
-            # Make sure the .dll file exists
-            if [ -f "DailyPulse.WebAPI.dll" ]; then
-              echo "Starting new instance of .NET app..."
-              dotnet DailyPulse.WebAPI.dll --urls "http://192.168.121.17:5000"
-            else
-              echo "Error: dotnet application file not found!"
-              exit 1
-            fi
-          EOF
+        # Kill any running process of the app
+        pids=$(pgrep -f "dotnet DailyPluse.WebAPI.dll")
+        if [ -n "$pids" ]; then
+          echo "Killing existing app processes: $pids"
+          sudo kill -9 $pids
+        else
+          echo "No existing app process found"
+        fi
+
+        # Make sure the .dll file exists
+        if [ -f "DailyPluse.WebAPI.dll" ]; then
+          echo "Starting new instance of WebAPI..."
+          dotnet DailyPluse.WebAPI.dll --urls "http://192.168.121.17:5000"
+        else
+          echo "Error: WebAPI application file not found!"
+          exit 1
+        fi
+        EOF
   
