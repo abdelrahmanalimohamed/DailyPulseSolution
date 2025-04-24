@@ -7,7 +7,7 @@ using Task = DailyPulse.Domain.Entities.Task;
 
 namespace DailyPulse.Application.CQRS.QueriesHandler.TaskHandlers
 {
-    public class GetAllTasksByEmployeeIdHandler : IRequestHandler<GetAllTasksByEmployeeIdQuery, IEnumerable<TaskHeaderViewModel>>
+    internal sealed class GetAllTasksByEmployeeIdHandler : IRequestHandler<GetAllTasksByEmployeeIdQuery, IEnumerable<TaskHeaderViewModel>>
     {
         private readonly IGenericRepository<Task> _repository;
 

@@ -1,5 +1,6 @@
 ﻿using DailyPulse.Application.CQRS.Commands.Tasks;
 using DailyPulse.Application.CQRS.Queries.Tasks;
+using DailyPulse.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -79,7 +80,8 @@ namespace DailyPluse.WebAPI.Controllers
         public async Task<IActionResult> GetAllTasks()
         {
             var getTasksQuery = new GetTasksQuery();
-            var tasks = await _mediator.Send(getTasksQuery);
+            var x = Environment.MachineName;
+			var tasks = await _mediator.Send(getTasksQuery);
             return Ok(tasks);
         }
 
@@ -143,22 +145,30 @@ namespace DailyPluse.WebAPI.Controllers
             return Ok(taskdetailsTypes);
         }
 
+        [HttpGet("getTaskInnerDetails")]
+        public async Task<IActionResult> GetTaskInnerDetails(Guid taskId)
+        {
+			var getTaskInnerDetailsQuery = new GetTaskInnerDetailsQuery { TaskId = taskId };
+			var taskInnerDetails = await _mediator.Send(getTaskInnerDetailsQuery);
+			return Ok(taskInnerDetails);
+		}
+
 		private string ResolveClientMachineName(IHttpContextAccessor httpContextAccessor)
 		{
-			var remoteIp = httpContextAccessor.HttpContext?.Connection.RemoteIpAddress?.ToString();
-			if (!string.IsNullOrEmpty(remoteIp))
-			{
-				try
-				{
-					var hostEntry = Dns.GetHostEntry(remoteIp);
-					return hostEntry.HostName;
-				}
-				catch
-				{
-					return remoteIp; // Fallback to IP if DNS lookup fails
-				}
-			}
-			return "Unknown";
+			//var remoteIp = httpContextAccessor.HttpContext?.Connection.RemoteIpAddress?.ToString();
+			//if (!string.IsNullOrEmpty(remoteIp))
+			//{
+			//	try
+			//	{
+			//		var hostEntry = Dns.GetHostEntry(remoteIp);
+			//		return hostEntry.HostName;
+			//	}
+			//	catch
+			//	{
+			//		return remoteIp;
+			//	}
+			//}
+			return Environment.MachineName;
 		}
 	}
 }

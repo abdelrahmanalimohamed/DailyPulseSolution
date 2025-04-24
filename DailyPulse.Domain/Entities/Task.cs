@@ -13,6 +13,7 @@ namespace DailyPulse.Domain.Entities
         public string EstimatedWorkingHours { get; set; }
         public bool IsRejectedByAdmin { get; set; }
         public bool IsRejectedByEmployee { get; set; }
+        public string TaskDescription { get; set; }
         public string CreatedByMachine { get; set; }
         public string? OtherTypes { get; set; }
         public Status Status { get; set; }
@@ -25,8 +26,9 @@ namespace DailyPulse.Domain.Entities
 
 		[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
 		public Guid? TaskTypeDetailsId { get; set; }
-
+		public Guid? TaskCreatedBy { get; set; }
         public Employee Employee { get; set; }
+        public Employee CreatedByEmployee { get; set; }
         public Project Project { get; set; }
         public TaskTypeDetails TaskTypeDetails { get; set; }
         public ICollection<TaskWorkLog> TaskDetails { get; set; } = new List<TaskWorkLog>();

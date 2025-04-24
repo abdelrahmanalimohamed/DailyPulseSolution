@@ -3,6 +3,7 @@ using System;
 using DailyPulse.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DailyPulse.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250422140505_AddCreatedByColumnInTaskTable")]
+    partial class AddCreatedByColumnInTaskTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -369,11 +371,6 @@ namespace DailyPulse.Infrastructure.Migrations
                     b.Property<Guid?>("TaskCreatedBy")
                         .HasColumnType("char(36)");
 
-                    b.Property<string>("TaskDescription")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("varchar(150)");
-
                     b.Property<Guid?>("TaskTypeDetailsId")
                         .HasColumnType("char(36)");
 
@@ -399,9 +396,6 @@ namespace DailyPulse.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("char(36)");
-
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
@@ -418,8 +412,6 @@ namespace DailyPulse.Infrastructure.Migrations
                         .HasColumnType("char(36)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CreatedBy");
 
                     b.HasIndex("TaskId");
 
@@ -678,18 +670,11 @@ namespace DailyPulse.Infrastructure.Migrations
 
             modelBuilder.Entity("DailyPulse.Domain.Entities.TaskNewRequirements", b =>
                 {
-                    b.HasOne("DailyPulse.Domain.Entities.Employee", "Employee")
-                        .WithMany("TaskNewRequirements")
-                        .HasForeignKey("CreatedBy")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.HasOne("DailyPulse.Domain.Entities.Task", "Task")
                         .WithMany("TaskNewRequirements")
                         .HasForeignKey("TaskId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Employee");
 
                     b.Navigation("Task");
                 });
@@ -738,8 +723,6 @@ namespace DailyPulse.Infrastructure.Migrations
                     b.Navigation("ReAssigns");
 
                     b.Navigation("RejectedTasks");
-
-                    b.Navigation("TaskNewRequirements");
 
                     b.Navigation("Tasks");
                 });

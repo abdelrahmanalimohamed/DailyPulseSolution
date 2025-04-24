@@ -13,5 +13,7 @@ namespace DailyPulse.Application.CQRS.Commands.TaskNewRequirements
         public string RequirementDescription { get; set; }
         
         public string EstimatedWorkingHours { get; set; }
+
+        public Guid CreatedBy { get; set; }
     }
 }

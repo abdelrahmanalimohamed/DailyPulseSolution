@@ -55,5 +55,13 @@ namespace DailyPluse.WebAPI.Controllers
             var superVisors = await _mediator.Send(getEmployeeSupervisorsQuery);
             return Ok(superVisors);
         }
+
+        [HttpGet("getAllEmployess")]
+        public async Task<IActionResult> GetAllEmployess()
+        {
+            var getAllEmployeesQuery = new GetAllEmployeesQuery();
+            var results = await _mediator.Send(getAllEmployeesQuery);
+            return Ok(results);
+        }
     }
 }

@@ -41,6 +41,7 @@ namespace DailyPulse.Application.CQRS.CommandHandler.TaskNewRequirementsHandlers
                 TaskId = request.TaskId,
                 RequirementsDetails = request.RequirementDescription,
                 EstimatedWorkingHours = request.EstimatedWorkingHours,
+                CreatedBy = request.CreatedBy
             };
 
             await _repository.AddAsync(taskNewRequirement , cancellationToken);

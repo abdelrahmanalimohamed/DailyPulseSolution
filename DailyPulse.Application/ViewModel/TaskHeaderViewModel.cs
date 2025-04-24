@@ -2,7 +2,7 @@
 
 namespace DailyPulse.Application.ViewModel
 {
-    public class TaskHeaderViewModel : ViewModelBase
+    internal sealed class TaskHeaderViewModel : ViewModelBase
     {
         public string Status { get; set; }
 
@@ -19,5 +19,7 @@ namespace DailyPulse.Application.ViewModel
         public string Overdue { get; set; }
 
         public string ProjectName { get; set; }
+
+        public string? CreatedBy { get; set; }
     }
 }

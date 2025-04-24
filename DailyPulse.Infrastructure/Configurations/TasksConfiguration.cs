@@ -20,6 +20,10 @@ namespace DailyPulse.Infrastructure.Configurations
 			   .IsRequired()
 			   .HasMaxLength(50);
 
+			builder.Property(p => p.TaskDescription)
+				.IsRequired()
+				.HasMaxLength(150);
+
 			builder.Property(p => p.CreatedByMachine)
 				.IsRequired()
 				.HasMaxLength(100);
@@ -61,6 +65,11 @@ namespace DailyPulse.Infrastructure.Configurations
 				.WithMany(e => e.Tasks)
 				.HasForeignKey(p => p.EmpId)
 				.OnDelete(DeleteBehavior.Restrict);
+
+			builder.HasOne(p => p.CreatedByEmployee)
+			.WithMany(e => e.CreatedTasks)
+			.HasForeignKey(p => p.TaskCreatedBy)
+			.OnDelete(DeleteBehavior.Restrict);
 
 			// Define one-to-many relationship with TaskDetail
 			builder.HasMany(t => t.TaskDetails)

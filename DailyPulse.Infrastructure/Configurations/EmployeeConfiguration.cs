@@ -34,6 +34,11 @@ namespace DailyPulse.Infrastructure.Configurations
 			   .HasForeignKey(p => p.EmpId)
 			   .OnDelete(DeleteBehavior.Restrict);
 
+			builder.HasMany(e => e.TaskNewRequirements)
+			   .WithOne(p => p.Employee)
+			   .HasForeignKey(p => p.CreatedBy)
+			   .OnDelete(DeleteBehavior.Restrict);
+
 			builder.HasIndex(p => p.Name)
 					  .IsUnique();
 

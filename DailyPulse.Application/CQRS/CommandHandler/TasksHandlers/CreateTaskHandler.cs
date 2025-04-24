@@ -31,7 +31,7 @@ namespace DailyPulse.Application.CQRS.CommandHandler.TasksHandlers
 				throw new DuplicateNameException("A Task with the same name already exists.");
 			}
 
-			var task = new DailyPulse.Domain.Entities.Task
+            var task = new DailyPulse.Domain.Entities.Task
             {
                 Name = request.TaskName,
                 //Area = request.Area,
@@ -48,12 +48,14 @@ namespace DailyPulse.Application.CQRS.CommandHandler.TasksHandlers
                 Priority = Enum.TryParse(request.Priority, true, out Priority role)
                      ? role : throw new ArgumentException($"Invalid priority: {request.Priority}"),
                 DrawingTitle = request.DrawingTitle,
-			    Levels = Enum.TryParse(Regex.Replace(request.level, @"[^a-zA-Z0-9]", ""), true, out Levels level)
-				? level
-				: throw new ArgumentException($"Invalid level: {request.level}"),
+                Levels = Enum.TryParse(Regex.Replace(request.level, @"[^a-zA-Z0-9]", ""), true, out Levels level)
+                ? level
+                : throw new ArgumentException($"Invalid level: {request.level}"),
 
-			TaskTypeDetailsId = request.tasktypedetailsId , 
-                OtherTypes = request.others
+                TaskTypeDetailsId = request.tasktypedetailsId,
+                OtherTypes = request.others,
+                TaskCreatedBy = request.CreatedBy , 
+                TaskDescription = request.TaskDescription
             };
 
             await _repository.AddAsync(task, cancellationToken);
