@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.Data;
-using System.Data.Common;
+﻿using System.Data;
 
 namespace DailyPluse.WebAPI.Middleware
 {
@@ -35,38 +33,20 @@ namespace DailyPluse.WebAPI.Middleware
 			var statusCode = StatusCodes.Status500InternalServerError;
 			var result = new { error = "An unexpected error occurred." };
 
-			// Check for custom exceptions and handle them specifically
+			if (exception is Exception ex)
+			{
+				statusCode = StatusCodes.Status400BadRequest;
+				result = new { error = ex.Message };
+			}
+
 			if (exception is DuplicateNameException duplicateNameException)
 			{
-				statusCode = StatusCodes.Status400BadRequest; // Bad Request for business rule violations
+				statusCode = StatusCodes.Status400BadRequest;
 				result = new { error = duplicateNameException.Message };
 			}
 
 			context.Response.StatusCode = statusCode;
 			return context.Response.WriteAsJsonAsync(result);
-		}
-
-		private bool IsUniqueConstraintViolation(DbUpdateException exception)
-		{
-			// Check the inner exception message or specific database error codes
-			if (exception.InnerException is not null)
-			{
-				var message = exception.InnerException.Message;
-
-				// For SQL Server
-				if (message.Contains("Cannot insert duplicate key"))
-				{
-					return true;
-				}
-
-				// For MySQL/MariaDB
-				if (message.Contains("Duplicate entry"))
-				{
-					return true;
-				}
-			}
-
-			return false;
 		}
 	}
 }

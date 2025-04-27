@@ -4,7 +4,20 @@ namespace DailyPulse.Infrastructure.Repository
 {
 	public class EmailTemplateService : IEmailTemplateService
 	{
-		public string GenerateVerificationEmailBodyAsync(string verificationLink)
+		public string GenerateResetPasswordEmailBody(string resetpasswordLink)
+		{
+			var template = @"
+            <html>
+                <body>
+                    <p>Reset your password by clicking the link below:</p>
+                    <p><a href='{0}'>Reset Password</a></p>
+                </body>
+            </html>";
+
+			return string.Format(template, resetpasswordLink);
+		}
+
+		public string GenerateVerificationEmailBody(string verificationLink)
 		{
 			var template = @"
             <html>
@@ -19,6 +32,11 @@ namespace DailyPulse.Infrastructure.Repository
 		public string GetVerificationEmailSubject()
 		{
 			return "Verify Your Email";
+		}
+
+		public string ResetPasswordEmailSubject()
+		{
+			return "Reset Password";
 		}
 	}
 }

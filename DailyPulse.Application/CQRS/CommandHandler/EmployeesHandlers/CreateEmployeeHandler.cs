@@ -5,6 +5,7 @@ using DailyPulse.Application.Extensions;
 using DailyPulse.Domain.Entities;
 using DailyPulse.Domain.Enums;
 using MediatR;
+using Microsoft.Extensions.Configuration;
 using System.Data;
 using System.Text.RegularExpressions;
 
@@ -15,14 +16,17 @@ namespace DailyPulse.Application.CQRS.CommandHandler.EmployeesHandlers
         private readonly IGenericRepository<Employee> _repository;
 		private readonly IEmailServices _emailService;
 		private readonly IEmailTemplateService _emailTemplateService;
+		private readonly IConfiguration _configuration;
 		public CreateEmployeeHandler(
             IGenericRepository<Employee> _repository ,
 			IEmailServices _emailService ,
-			IEmailTemplateService _emailTemplateService)
+			IEmailTemplateService _emailTemplateService , 
+			IConfiguration _configuration)
         {
             this._repository = _repository;
             this._emailService = _emailService;
             this._emailTemplateService = _emailTemplateService;
+			this._configuration = _configuration;
         }
         public async Task<CreateEmployeeResponseDTO> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
         {
@@ -33,7 +37,7 @@ namespace DailyPulse.Application.CQRS.CommandHandler.EmployeesHandlers
 				throw new DuplicateNameException("An Employee with the same name or email already exists.");
 			}
 
-			var hashedPassword = BCrypt.Net.BCrypt.HashPassword(request.Password);
+			var hashedPassword =  BCrypt.Net.BCrypt.HashPassword(request.Password);
 
             string grade = Regex.Replace(request.Jobgrade, @"\s+", "");
 
@@ -51,13 +55,13 @@ namespace DailyPulse.Application.CQRS.CommandHandler.EmployeesHandlers
 
             await _repository.AddAsync(employee, cancellationToken);
 
-			var verificationLink = $"http://192.168.121.17:5173/verify-email?token={employee.Id}";
+			var verificationLink = $"http://localhost:5173/verify-email?token={employee.Id}";
 
 			var emailSubject = _emailTemplateService.GetVerificationEmailSubject();
 
-			var emailBody =  _emailTemplateService.GenerateVerificationEmailBodyAsync(verificationLink);
+			var emailBody =  _emailTemplateService.GenerateVerificationEmailBody(verificationLink);
 
-			 _emailService.SendEmailAsync(employee.Email, emailSubject, emailBody);
+			await _emailService.SendEmailAsync(employee.Email, emailSubject, emailBody);
 
 			return new CreateEmployeeResponseDTO
 			{

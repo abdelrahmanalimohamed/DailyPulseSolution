@@ -38,5 +38,31 @@ namespace DailyPulse.Infrastructure.JWT
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
-    }
+
+		public ClaimsPrincipal ValidateToken(string token)
+		{
+			try
+			{
+				var tokenHandler = new JwtSecurityTokenHandler();
+				var key = Encoding.UTF8.GetBytes(_key);
+
+				var validationParameters = new TokenValidationParameters
+				{
+					ValidateIssuer = true,
+					ValidateAudience = true,
+					ValidateLifetime = true,
+					ValidateIssuerSigningKey = true,
+					ValidIssuer = _issuer,
+					ValidAudience = _issuer,
+					IssuerSigningKey = new SymmetricSecurityKey(key)
+				};
+
+				return tokenHandler.ValidateToken(token, validationParameters, out _);
+			}
+			catch
+			{
+                throw new Exception("Invalid Token");
+			}
+		}
+	}
 }

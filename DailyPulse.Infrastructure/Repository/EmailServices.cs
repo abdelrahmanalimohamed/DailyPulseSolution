@@ -13,25 +13,33 @@ namespace DailyPulse.Infrastructure.Repository
 		{
 			this._emailSettings = _emailSettings.Value;
 		}
-		public void SendEmailAsync(string toEmail, string subject, string body)
+		public async Task<bool> SendEmailAsync(string toEmail, string subject, string body)
 		{
-			var message = new MimeMessage();
-			message.From.Add(new MailboxAddress(_emailSettings.DisplayName, _emailSettings.Mail));
-			message.To.Add(new MailboxAddress("", toEmail));
-			message.Subject = subject;
-
-			var bodyBuilder = new BodyBuilder
+			try
 			{
-				HtmlBody = body
-			};
-			message.Body = bodyBuilder.ToMessageBody();
+				var message = new MimeMessage();
+				message.From.Add(new MailboxAddress(_emailSettings.DisplayName, _emailSettings.Mail));
+				message.To.Add(new MailboxAddress("", toEmail));
+				message.Subject = subject;
 
-			using (var client = new SmtpClient())
+				var bodyBuilder = new BodyBuilder
+				{
+					HtmlBody = body
+				};
+				message.Body = bodyBuilder.ToMessageBody();
+
+				using (var client = new SmtpClient())
+				{
+					await client.ConnectAsync(_emailSettings.Host, _emailSettings.Port, false);
+					await client.AuthenticateAsync(_emailSettings.Mail, _emailSettings.Password);
+					await client.SendAsync(message);
+					await client.DisconnectAsync(true);
+				}
+				return true;
+			}
+			catch (Exception ex)
 			{
-				 client.Connect(_emailSettings.Host, _emailSettings.Port, false);
-				 client.Authenticate(_emailSettings.Mail, _emailSettings.Password);
-				 client.Send(message);
-				 client.Disconnect(true);
+				throw new Exception("An Error Occured while sending an email" , ex);
 			}
 		}
 	}
