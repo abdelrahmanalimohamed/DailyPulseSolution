@@ -1,5 +1,4 @@
-﻿using BCrypt.Net;
-using DailyPulse.Domain.Entities;
+﻿using DailyPulse.Domain.Entities;
 using DailyPulse.Domain.Enums;
 using DailyPulse.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -124,8 +123,7 @@ namespace DailyPulse.Infrastructure.Seeding
 				await context.TaskType.AddRangeAsync(
 					new TaskType { Name = "Drawing Generation" },
 					new TaskType { Name = "Model" },
-					new TaskType { Name = "Coordination" },
-					new TaskType { Name = "Other" }
+					new TaskType { Name = "Coordination" }
 				);
 
 				await context.SaveChangesAsync();
@@ -139,12 +137,7 @@ namespace DailyPulse.Infrastructure.Seeding
 				var model = await context.TaskType.Where(x => x.Name == "Model")
 									.Select(a => a.Id).FirstOrDefaultAsync();
 
-
 				var coordination = await context.TaskType.Where(x => x.Name == "Coordination")
-									.Select(a => a.Id).FirstOrDefaultAsync();
-
-
-				var other = await context.TaskType.Where(x => x.Name == "Other")
 									.Select(a => a.Id).FirstOrDefaultAsync();
 
 				await context.TaskTypeDetails.AddRangeAsync(

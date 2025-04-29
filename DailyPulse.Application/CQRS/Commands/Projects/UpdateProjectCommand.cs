@@ -4,14 +4,13 @@ namespace DailyPulse.Application.CQRS.Commands.Projects
 {
     public class UpdateProjectCommand : IRequest
     {
-        public Guid ProjectId { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-
-        public Guid ScopeOfWorkId { get; set; }
-
+        public Guid projectId { get; set; }
+        public string projectName { get; set; }
+        public string description { get; set; }
+        public string buildingNo { get; set; }
+        public string projectNo { get; set; }
+        //public Guid ScopeOfWorkId { get; set; }
         public Guid LocationId { get; set; }
-
         public Guid RegionId { get; set; }
        // public Guid TeamLeadId { get; set; }
     }

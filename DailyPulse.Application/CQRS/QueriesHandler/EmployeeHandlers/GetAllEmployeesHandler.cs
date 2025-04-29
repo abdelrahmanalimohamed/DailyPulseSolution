@@ -29,6 +29,5 @@ internal sealed class GetAllEmployeesHandler : IRequestHandler<GetAllEmployeesQu
 		var employess = await _empRepository.FindWithIncludeAsync(null,includes , cancellationToken);
 		var employessViewModel = _mapper.Map<List<AllEmployeesViewModel>>(employess);
 		return employessViewModel;
-
 	}
 }

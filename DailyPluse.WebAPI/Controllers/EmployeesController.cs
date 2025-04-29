@@ -63,5 +63,13 @@ namespace DailyPluse.WebAPI.Controllers
             var results = await _mediator.Send(getAllEmployeesQuery);
             return Ok(results);
         }
+
+        [HttpGet("getEmployee")]
+        public async Task<IActionResult> GetEmployee(Guid employeeId)
+        {
+            GetSelectedEmployeeQuery getEmployeeByIdQuery = new GetSelectedEmployeeQuery { EmployeeId = employeeId };
+            var results = await _mediator.Send(getEmployeeByIdQuery);
+            return Ok(results);
+        }
     }
 }

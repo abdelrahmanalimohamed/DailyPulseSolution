@@ -15,7 +15,7 @@ namespace DailyPluse.WebAPI.Controllers
             _mediator = mediator;
         }
 
-        [HttpGet]
+        [HttpGet("getalllocations")]
         public async Task<IActionResult> GetAllLocations()
         {
             var query = new GetLocationsQuery();

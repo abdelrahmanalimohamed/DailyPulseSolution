@@ -40,6 +40,7 @@ namespace DailyPulse.Application.CQRS.QueriesHandler.LoginHandlers
 				Role = employee.Role.ToString(),
 				Token = token,
 				UserId = employee.Id,
+				Name = employee.Name
 			};
 
 			return loginResponse;

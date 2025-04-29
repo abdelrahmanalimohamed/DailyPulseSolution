@@ -29,7 +29,7 @@ internal sealed class GetProjectsDetailsHandler : IRequestHandler<GetProjectsDet
 
 		var projects = await _projectRepository.FindWithIncludeAsync(null , includes , cancellationToken);
 
-		var x = _mapper.Map<IEnumerable<ProjectsDetailsViewModel>>(projects);
-		return x;
+		var projectResults = _mapper.Map<IEnumerable<ProjectsDetailsViewModel>>(projects);
+		return projectResults;
 	}
 }

@@ -48,5 +48,7 @@ public class MappingProfile : Profile
 				.ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(src => src.CreatedDate.ToString("dd-MM-yyyy")))
 				.ForMember(dest => dest.EstimatedWorkingHours, opt => opt.MapFrom(src => $"{src.EstimatedWorkingHours} Hours"));
 
+		CreateMap<Employee, SelectedEmployeeDTO>()
+		   .ForMember(dest => dest.Role, opt => opt.MapFrom(src => (int)src.Role));
 	}
 }

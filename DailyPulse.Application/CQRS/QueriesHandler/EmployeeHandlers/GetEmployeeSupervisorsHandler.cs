@@ -17,7 +17,10 @@ namespace DailyPulse.Application.CQRS.QueriesHandler.EmployeeHandlers
         }
         public async Task<IEnumerable<EmployeeViewModel>> Handle(GetEmployeeSupervisorsQuery request, CancellationToken cancellationToken)
         {
-            var empSuperVisors = await _repository.FindAsync(x => x.Role == EmployeeRole.TeamLeader || x.Role == EmployeeRole.Senior);
+            var empSuperVisors = await _repository.FindAsync
+                (x => x.Role == EmployeeRole.TeamLeader 
+                 || x.Role == EmployeeRole.Senior 
+                 || x.Role == EmployeeRole.Admin);
 
             var superVisors = empSuperVisors.Select(emp => new EmployeeViewModel
             {

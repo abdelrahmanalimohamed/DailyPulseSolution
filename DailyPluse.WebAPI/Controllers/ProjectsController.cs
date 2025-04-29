@@ -64,12 +64,9 @@ namespace DailyPluse.WebAPI.Controllers
             return StatusCode(201);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateProject(Guid id , [FromBody] UpdateProjectCommand updateProjectCommand)
+        [HttpPut("update-project")]
+        public async Task<IActionResult> UpdateProject([FromBody] UpdateProjectCommand updateProjectCommand)
         {
-            if (id != updateProjectCommand.ProjectId)
-                return BadRequest("Project ID mismatch");
-
             await _mediator.Send(updateProjectCommand);
             return Ok();
         }
@@ -81,5 +78,5 @@ namespace DailyPluse.WebAPI.Controllers
             await _mediator.Send(command);
             return Ok();
         }
-    } 
+    }
 }

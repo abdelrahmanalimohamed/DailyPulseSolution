@@ -16,17 +16,18 @@ namespace DailyPulse.Application.CQRS.CommandHandler.ProjectsHandlers
         }
         public async Task Handle(UpdateProjectCommand request, CancellationToken cancellationToken)
         {
-            var project = await _repository.GetByIdAsync(request.LocationId);
+            var project = await _repository.GetByIdAsync(request.projectId);
             if (project == null)
             {
-                throw new KeyNotFoundException("Project not found");
+                throw new Exception("Project not found");
             }
 
-            project.Name = request.Name;
+            project.Name = request.projectName;
             project.RegionId = request.RegionId;
-            project.Description = request.Description;
+            project.Description = request.description;
             project.LocationId = request.LocationId;
-           // project.TeamLeadId = request.TeamLeadId;
+            project.BuildingNo = request.buildingNo;
+            project.ProjectNo = request.projectNo;
 
             await _repository.UpdateAsync(project, cancellationToken);
         }

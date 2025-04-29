@@ -1,9 +1,9 @@
-﻿using System.Linq.Expressions;
-using DailyPulse.Application.Abstraction;
+﻿using DailyPulse.Application.Abstraction;
 using DailyPulse.Application.CQRS.Queries.Tasks;
 using DailyPulse.Application.ViewModel;
 using DailyPulse.Domain.Enums;
 using MediatR;
+using System.Linq.Expressions;
 using Task = DailyPulse.Domain.Entities.Task;
 
 namespace DailyPulse.Application.CQRS.QueriesHandler.TaskHandlers;
@@ -24,21 +24,26 @@ internal sealed class GetTasksHandler : IRequestHandler<GetTasksQuery, IEnumerab
                  task => task.CreatedByEmployee
              };
 
-        var tasks = await _repository.FindWithIncludeAsync(null , includes, cancellationToken);
+		var tasks = await _repository.FindWithIncludeAsync(
+			predicate: null,
+			includes: includes,
+			cancellationToken: cancellationToken
+		);
 
-        var todayDate = DateTime.Now;
+
+		var todayDate = DateTime.Now;
 
         var taskHeaderViewModel = tasks.Select(task => new TaskHeaderViewModel
         {
             Id = task.Id,
             Name = task.Name,
             Status = task.Status.ToString(),
-            EmployeeName = task.Employee.Name ,
-            StartDate = task.DateFrom ,
+            EmployeeName = task.Employee.Name,
+            StartDate = task.DateFrom,
             EndDate = task.DateTo,
             CreatedDate = task.CreatedDate.ToString("dd-MM-yyyy"),
-				Priority = task.Priority.ToString(),
-            ProjectName = task.Project.Name ,
+            Priority = task.Priority.ToString(),
+            ProjectName = task.Project.Name,
             CreatedBy  = task.CreatedByEmployee?.Name,
             Overdue = todayDate > task.DateTo && task.Status.ToString() == Status.InProgress.ToString()
               ? $"{(todayDate - task.DateTo).Days} Days"

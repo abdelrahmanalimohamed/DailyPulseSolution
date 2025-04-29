@@ -1,4 +1,7 @@
 ﻿using DailyPulse.Application.Abstraction;
+using DailyPulse.Application.Common;
+using DailyPulse.Domain.Common;
+using DailyPulse.Infrastructure.Extensions;
 using DailyPulse.Infrastructure.Persistence;
 using Dapper;
 using Microsoft.EntityFrameworkCore;
@@ -104,5 +107,51 @@ namespace DailyPulse.Infrastructure.Repository
             _context.Set<T>().Remove(entity);
             await _context.SaveChangesAsync(cancellationToken);
         }
-    }
+
+		public async Task<PagedList<T>> FindWithIncludePaginated(
+			Expression<Func<T, bool>> predicate,
+			List<Expression<Func<T, object>>> includes,
+			RequestParameters requestParameters,
+			CancellationToken cancellationToken = default)
+		{
+			IQueryable<T> query = _context.Set<T>();
+
+			if (predicate != null)
+			{
+				query = query.Where(predicate);
+			}
+
+			if (includes != null)
+			{
+				foreach (var include in includes)
+				{
+					query = query.Include(include);
+				}
+			}
+			return await query.ToPagedListAsync(
+			requestParameters.PageNumber,
+			requestParameters.PageSize,
+			cancellationToken
+		);
+		}
+		public async Task<T> FindWithIncludeSingleOrDefault(Expression<Func<T, bool>> predicate, List<Expression<Func<T, object>>> includes, CancellationToken cancellationToken = default)
+		{
+			IQueryable<T> query = _context.Set<T>();
+
+			if (predicate != null)
+			{
+				query = query.Where(predicate);
+			}
+
+			if (includes != null)
+			{
+				foreach (var include in includes)
+				{
+					query = query.Include(include);
+				}
+			}
+
+			return await query.SingleOrDefaultAsync(cancellationToken);
+		}
+	}
 }
