@@ -26,14 +26,14 @@ jobs:
         dotnet-version: '6.0.x'  # Adjust to your .NET version
 
     - name: Restore dependencies
-      run: dotnet restore DailyPluse.WebAPI/DailyPluse.WebAPI.csproj
+      run: dotnet restore DailyPulse.WebAPI/DailyPulse.WebAPI.csproj
 
     - name: Build
-      run: dotnet build DailyPluse.WebAPI/DailyPluse.WebAPI.csproj --configuration Release --no-restore
+      run: dotnet build DailyPulse.WebAPI/DailyPulse.WebAPI.csproj --configuration Release --no-restore
 
     - name: Publish WebAPI
       run: |
-        dotnet publish DailyPluse.WebAPI/DailyPluse.WebAPI.csproj -c Release -o ./publish --no-build
+        dotnet publish DailyPulse.WebAPI/DailyPulse.WebAPI.csproj -c Release -o ./publish --no-build
 
     - name: Copy Published Files to Server
       uses: appleboy/scp-action@v0.1.3
@@ -51,7 +51,7 @@ jobs:
         cd /home/${{ secrets.SERVER_USER }}/Downloads/testpublish
 
         # Kill any running process of the app
-        pids=$(pgrep -f "dotnet DailyPluse.WebAPI.dll")
+        pids=$(pgrep -f "dotnet DailyPulse.WebAPI.dll")
         if [ -n "$pids" ]; then
           echo "Killing existing app processes: $pids"
           sudo kill -9 $pids
@@ -60,9 +60,9 @@ jobs:
         fi
 
         # Make sure the .dll file exists
-        if [ -f "DailyPluse.WebAPI.dll" ]; then
+        if [ -f "DailyPulse.WebAPI.dll" ]; then
           echo "Starting new instance of WebAPI..."
-          dotnet DailyPluse.WebAPI.dll --urls "http://192.168.121.17:5000"
+          dotnet DailyPulse.WebAPI.dll --urls "http://192.168.121.17:5000"
         else
           echo "Error: WebAPI application file not found!"
           exit 1

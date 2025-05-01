@@ -32,6 +32,13 @@ namespace DailyPluse.WebAPI.Controllers
 			return StatusCode(204);
 		}
 
+        [HttpPut("update-employee")]
+        public async Task<IActionResult> UpdateEmployee([FromBody] UpdateEmployeeCommand updateEmployeeCommand)
+        {
+            await _mediator.Send(updateEmployeeCommand);
+            return Ok();
+        }
+
         [HttpGet("getemployess")]
         public async Task<IActionResult> GetEmployees()
         {

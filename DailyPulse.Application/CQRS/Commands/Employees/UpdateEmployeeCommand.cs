@@ -1,20 +1,14 @@
-﻿using DailyPulse.Domain.Enums;
-using MediatR;
+﻿using MediatR;
 
 namespace DailyPulse.Application.CQRS.Commands.Employees
 {
     public class UpdateEmployeeCommand : IRequest
     {
-        public Guid EmployeeId { get; set; }
-        public string Name { get; set; }
-        public string Title { get; set; }
-
-        public int Jobgrade { get; set; }
-
-        public string Email { get; set; }
-        
-        public string Password { get; set; }
-        public EmployeeRole Role { get; set; }
-        public Guid ReportTo { get; set; }
+        public Guid employeeId { get; set; }
+        public string name { get; set; }
+        public string title { get; set; }
+        public int role { get; set; }
+        public string email { get; set; }
+        public Guid reportToId { get; set; }
     }
 }
