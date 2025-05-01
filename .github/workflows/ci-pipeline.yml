@@ -47,7 +47,7 @@ jobs:
       with:
         host: ${{ secrets.SERVER_IP }}
         username: ${{ secrets.SERVER_USER }}
-        key: ${{ secrets.SERVER_PRIVATE_KEY }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
         source: ./DailyPulse.WebAPI/publish/*
         target: /home/${{ secrets.SERVER_USER }}/Downloads/testpublish
         port: 22
