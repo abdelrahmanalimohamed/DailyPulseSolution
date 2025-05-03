@@ -32,7 +32,7 @@ jobs:
 
     - name: Restore dependencies
       run: dotnet restore DailyPulse.WebAPI.csproj
-      working-directory: ./DailyPulse.WebAPI  # Adjust based on find output
+      working-directory: ./DailyPulse.WebAPI
 
     - name: Build
       run: dotnet build DailyPulse.WebAPI.csproj --configuration Release --no-restore
@@ -52,9 +52,19 @@ jobs:
         target: /home/${{ secrets.SERVER_USER }}/Downloads/testpublish
         port: 22
 
+    - name: Setup SSH key
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+
+    - name: Add remote host to known_hosts
+      run: |
+        ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
+
     - name: Run WebAPI on Remote Server
       run: |
-        ssh -t -i ~/.ssh/id_rsa ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
+        ssh -i ~/.ssh/id_rsa ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
         cd /home/${{ secrets.SERVER_USER }}/Downloads/testpublish/DailyPulse.WebAPI/publish || exit 1
         pids=$(pgrep -f "dotnet DailyPulse.WebAPI.dll")
         if [ -n "$pids" ]; then
