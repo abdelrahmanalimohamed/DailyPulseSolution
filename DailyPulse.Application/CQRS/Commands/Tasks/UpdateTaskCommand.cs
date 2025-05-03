@@ -15,6 +15,7 @@ namespace DailyPulse.Application.CQRS.Commands.Tasks
         public string Priority { get; set; }
 
         public string MachineName { get; set; }
+        public string EstimatedWorkingHours { get; set; }
 
         public DateTime StartDate { get; set; }
 

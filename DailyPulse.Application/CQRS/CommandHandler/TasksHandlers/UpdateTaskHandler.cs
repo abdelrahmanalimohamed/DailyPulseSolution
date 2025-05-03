@@ -26,6 +26,7 @@ namespace DailyPulse.Application.CQRS.CommandHandler.TasksHandlers
             task.DateFrom = request.StartDate;
             task.DateTo = request.EndDate;
             task.ProjectId = request.ProjectId;
+            task.EstimatedWorkingHours = request.EstimatedWorkingHours;
 
             task.Priority = Enum.TryParse(request.Priority, true, out Priority role)
                      ? role : throw new ArgumentException($"Invalid priority: {request.Priority}");
@@ -35,7 +36,6 @@ namespace DailyPulse.Application.CQRS.CommandHandler.TasksHandlers
             await SaveStatusLogIfNeeded(task, request.MachineName, cancellationToken);
             await _repository.UpdateAsync(task , cancellationToken);
         }
-
         private async Task SaveStatusLogIfNeeded(
             DailyPulse.Domain.Entities.Task task,
             string machineName ,

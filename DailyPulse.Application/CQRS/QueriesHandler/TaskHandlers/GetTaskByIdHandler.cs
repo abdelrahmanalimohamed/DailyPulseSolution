@@ -45,6 +45,7 @@ namespace DailyPulse.Application.CQRS.QueriesHandler.TaskHandlers
                // ScopeOfWork = task.Scope.Name , 
                 ProjectId = task.ProjectId ,
                 EmpId = task.EmpId ,
+                EstimatedWorkingHours = task.EstimatedWorkingHours
             });
 
             return taskViewModel;

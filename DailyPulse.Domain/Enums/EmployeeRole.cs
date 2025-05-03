@@ -7,7 +7,7 @@
         Junior = 3,
         Senior = 4 ,
         Trainee = 5 , 
-        SectionHead = 6 , 
+        SectionHead = 6 ,
         ShopDrawingManager = 7
     }
 }

@@ -10,5 +10,4 @@ internal sealed class TaskInnerDetailsViewModel
 	public string Level { get; set; }
 	public string Type { get; set; }
 	public string CreatedBy { get; set; }
-	public string Requirements { get; set; }
 }

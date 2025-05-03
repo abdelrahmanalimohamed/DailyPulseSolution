@@ -50,5 +50,16 @@ public class MappingProfile : Profile
 
 		CreateMap<Employee, SelectedEmployeeDTO>()
 		   .ForMember(dest => dest.Role, opt => opt.MapFrom(src => (int)src.Role));
+
+		CreateMap<Task, CompletedTaskViewModel>()
+			.ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()))
+			.ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(src => src.CreatedDate.ToString("dd-MM-yyyy")))
+			.ForMember(dest => dest.Priority, opt => opt.MapFrom(src => src.Priority.ToString()))
+			.ForMember(dest => dest.ProjectName, opt => opt.MapFrom(src => src.Project.Name))
+			.ForMember(dest => dest.CreatedBy, opt => opt.MapFrom(src => src.CreatedByEmployee != null ? src.CreatedByEmployee.Name : null))
+			.ForMember(dest => dest.EstimatedWorkingHours, opt => opt.MapFrom(src => $"{src.EstimatedWorkingHours} Hours"))
+			.ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.TaskDescription))
+			.ForMember(dest => dest.DrawingNo, opt => opt.MapFrom(src => src.DrawingId))
+			.ForMember(dest => dest.DrawingTitle, opt => opt.MapFrom(src => src.DrawingTitle));
 	}
 }

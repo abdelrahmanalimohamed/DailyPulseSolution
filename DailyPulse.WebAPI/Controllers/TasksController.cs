@@ -1,10 +1,8 @@
 ﻿using DailyPulse.Application.CQRS.Commands.Tasks;
 using DailyPulse.Application.CQRS.Queries.Tasks;
-using DailyPulse.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
 
 namespace DailyPluse.WebAPI.Controllers
 {
@@ -15,7 +13,6 @@ namespace DailyPluse.WebAPI.Controllers
     {
         private readonly IMediator _mediator;
 		private readonly string _machineName;
-
 		public TasksController(IMediator _mediator, IHttpContextAccessor httpContextAccessor)
 		{
 			this._mediator = _mediator;
@@ -153,6 +150,13 @@ namespace DailyPluse.WebAPI.Controllers
 			return Ok(taskInnerDetails);
 		}
 
+        [HttpGet("getTaskClosedOrCompleted")]
+        public async Task<IActionResult> GetTaskCompletedOrClosed(Guid EmployeeId)
+        {
+            GetTasksClosedOrCompletedByEmployeeIdQuery getTasksClosedOrCompletedByEmployeeId = new GetTasksClosedOrCompletedByEmployeeIdQuery { EmployeeID = EmployeeId };
+            var closedOrCompletedTask = await _mediator.Send(getTasksClosedOrCompletedByEmployeeId);
+            return Ok(closedOrCompletedTask);
+		}
 		private string ResolveClientMachineName(IHttpContextAccessor httpContextAccessor)
 		{
 			//var remoteIp = httpContextAccessor.HttpContext?.Connection.RemoteIpAddress?.ToString();

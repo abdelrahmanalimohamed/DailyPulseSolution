@@ -55,7 +55,7 @@ jobs:
     - name: Run WebAPI on Remote Server
       run: |
         ssh -t -i ~/.ssh/id_rsa ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
-        cd /home/${{ secrets.SERVER_USER }}/Downloads/testpublish
+        cd /home/${{ secrets.SERVER_USER }}/Downloads/testpublish/DailyPulse.WebAPI/publish || exit 1
         pids=$(pgrep -f "dotnet DailyPulse.WebAPI.dll")
         if [ -n "$pids" ]; then
           echo "Killing existing app processes: $pids"

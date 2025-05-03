@@ -10,7 +10,6 @@ namespace DailyPulse.Application.CQRS.QueriesHandler.TaskHandlers
     internal sealed class GetWorkedTasksByEmployeeIdHandler : IRequestHandler<GetWorkedTasksByEmployeeIdQuery, IEnumerable<TaskHeaderViewModel>>
     {
         private readonly IGenericRepository<Task> _repository;
-
         public GetWorkedTasksByEmployeeIdHandler(IGenericRepository<Task> _repository)
         {
             this._repository = _repository;
