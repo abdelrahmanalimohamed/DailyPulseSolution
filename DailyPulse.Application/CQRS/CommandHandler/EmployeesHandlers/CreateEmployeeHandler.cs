@@ -54,8 +54,7 @@ namespace DailyPulse.Application.CQRS.CommandHandler.EmployeesHandlers
             };
 
             await _repository.AddAsync(employee, cancellationToken);
-
-			var verificationLink = $"http://localhost:5173/verify-email?token={employee.Id}";
+			var verificationLink = $"{_configuration["Hosts:host"]}/verify-email?token={employee.Id}";
 
 			var emailSubject = _emailTemplateService.GetVerificationEmailSubject();
 

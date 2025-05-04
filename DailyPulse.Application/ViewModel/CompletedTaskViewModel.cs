@@ -12,7 +12,7 @@ internal sealed class CompletedTaskViewModel : ViewModelBase
 	public List<string> Comments { get; set; }
 	public string ActualWorkingHours { get; set; }
 	public string EstimatedWorkingHours { get; set; }
-	public string CreatedBy { get; set; }
+	public string? CreatedBy { get; set; }
 	public string Priority { get; set; }
 	public string CreatedDate { get; set; }
 }

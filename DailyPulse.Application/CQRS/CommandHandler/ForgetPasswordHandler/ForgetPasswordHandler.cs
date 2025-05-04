@@ -36,7 +36,7 @@ internal sealed class ForgetPasswordHandler : IRequestHandler<ForgetPasswordComm
 
 		var token = _jwtTokenGenerator.GenerateToken(employee.Id, employee.Role);
 
-		var resetLink = $"{_configuration["Hosts:host"]}/reset-passowrd?token={token}";
+		var resetLink = $"{_configuration["Hosts:host"]}/reset-password?token={token}";
 
 		var emailSubject = _emailTemplateService.ResetPasswordEmailSubject();
 

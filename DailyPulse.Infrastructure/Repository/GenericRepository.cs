@@ -134,7 +134,10 @@ namespace DailyPulse.Infrastructure.Repository
 			cancellationToken
 		);
 		}
-		public async Task<T> FindWithIncludeSingleOrDefault(Expression<Func<T, bool>> predicate, List<Expression<Func<T, object>>> includes, CancellationToken cancellationToken = default)
+		public async Task<T> FindWithIncludeSingleOrDefault(
+            Expression<Func<T, bool>> predicate, 
+            List<Expression<Func<T, object>>> includes, 
+            CancellationToken cancellationToken = default)
 		{
 			IQueryable<T> query = _context.Set<T>();
 
