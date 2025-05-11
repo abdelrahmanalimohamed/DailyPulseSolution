@@ -23,6 +23,7 @@ namespace DailyPulse.Application.CQRS.QueriesHandler.TaskHandlers
                                !x.IsRejectedByAdmin &&
                                (x.Status == Status.InProgress ||
                                 x.Status == Status.Completed || 
+                                x.Status == Status.Canceled ||
                                 x.Status == Status.Pending_Approval),
                           cancellationToken);
 
