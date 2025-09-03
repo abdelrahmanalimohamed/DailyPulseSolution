@@ -46,7 +46,7 @@ namespace DailyPulse.Application.Test.Commands
                 proj.RegionId == command.RegionId &&
                 proj.LocationId == command.LocationId && 
                 proj.Description == command.Description && 
-                proj.Trade == Treats.TradeOne
+                proj.Trade == Trades.TradeOne
             ), It.IsAny<CancellationToken>()), Times.Once);
         }
     }

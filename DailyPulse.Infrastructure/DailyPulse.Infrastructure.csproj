@@ -21,7 +21,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DailyPulse.Application\DailyPulse.Application.csproj" />
-    <ProjectReference Include="..\DailyPulse.Domain\DailyPulse.Domain.csproj" />
   </ItemGroup>
 
 </Project>

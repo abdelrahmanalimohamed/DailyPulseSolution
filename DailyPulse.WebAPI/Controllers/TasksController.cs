@@ -1,4 +1,5 @@
-﻿using DailyPulse.Application.CQRS.Commands.Tasks;
+﻿using DailyPulse.Application.Common;
+using DailyPulse.Application.CQRS.Commands.Tasks;
 using DailyPulse.Application.CQRS.Queries.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -74,11 +75,14 @@ namespace DailyPluse.WebAPI.Controllers
         }
 
         [HttpGet("getalltasks")]
-        public async Task<IActionResult> GetAllTasks()
+        public async Task<IActionResult> GetAllTasks(
+            [FromQuery]RequestParameters requestParameters,
+            CancellationToken cancellationToken)
         {
             var getTasksQuery = new GetTasksQuery();
             var x = Environment.MachineName;
-			var tasks = await _mediator.Send(getTasksQuery);
+            getTasksQuery.RequestParameters = requestParameters;
+			var tasks = await _mediator.Send(getTasksQuery , cancellationToken);
             return Ok(tasks);
         }
 

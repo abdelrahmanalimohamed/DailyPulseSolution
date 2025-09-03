@@ -17,7 +17,9 @@ namespace DailyPulse.Infrastructure.DependencyInjectionService
 {
     public static class InfrastructureService
     {
-        public static IServiceCollection AddInfrastructure(this IServiceCollection services , IConfiguration Configuration)
+        public static IServiceCollection AddInfrastructure
+            (this IServiceCollection services , 
+            IConfiguration Configuration)
         {
             var defaultConnectionString = Configuration.GetConnectionString("DefaultConnection");
 			var host = Configuration.GetValue<string>("Hosts:host");

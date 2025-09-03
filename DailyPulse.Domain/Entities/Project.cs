@@ -17,7 +17,7 @@ namespace DailyPulse.Domain.Entities
         public Region Region { get; set; }
         public Location Location { get; set; }
         public Employee Employee { get; set; }
-        public Treats Trade { get; set; }
+        public Trades Trade { get; set; }
        // public Employee TeamLead { get; set; }
         public ICollection<Task> Tasks { get; set; } = new List<Task>();
        // public ICollection<ProjectsScopes> ProjectsScopes { get; set; }

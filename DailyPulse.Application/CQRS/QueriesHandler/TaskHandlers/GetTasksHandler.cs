@@ -1,6 +1,7 @@
 ﻿using DailyPulse.Application.Abstraction;
 using DailyPulse.Application.CQRS.Queries.Tasks;
 using DailyPulse.Application.ViewModel;
+using DailyPulse.Domain.Common;
 using DailyPulse.Domain.Enums;
 using MediatR;
 using System.Linq.Expressions;
@@ -8,14 +9,14 @@ using Task = DailyPulse.Domain.Entities.Task;
 
 namespace DailyPulse.Application.CQRS.QueriesHandler.TaskHandlers;
 
-internal sealed class GetTasksHandler : IRequestHandler<GetTasksQuery, IEnumerable<TaskHeaderViewModel>>
+internal sealed class GetTasksHandler : IRequestHandler<GetTasksQuery, PagedResponse<TaskHeaderViewModel>>
 {
     private readonly IGenericRepository<Task> _repository;
     public GetTasksHandler(IGenericRepository<Task> _repository)
     {
         this._repository = _repository;
     }
-    public async Task<IEnumerable<TaskHeaderViewModel>> Handle(GetTasksQuery request, CancellationToken cancellationToken)
+    public async Task<PagedResponse<TaskHeaderViewModel>> Handle(GetTasksQuery request, CancellationToken cancellationToken)
     {
         var includes = new List<Expression<Func<Task, object>>>
              {
@@ -24,16 +25,17 @@ internal sealed class GetTasksHandler : IRequestHandler<GetTasksQuery, IEnumerab
                  task => task.CreatedByEmployee
              };
 
-		var tasks = await _repository.FindWithIncludeAsync(
+		var tasks = await _repository.FindWithIncludePaginated(
 			predicate: null,
 			includes: includes,
+            requestParameters: request.RequestParameters,
 			cancellationToken: cancellationToken
 		);
 
 
 		var todayDate = DateTime.Now;
 
-        var taskHeaderViewModel = tasks.Select(task => new TaskHeaderViewModel
+        var mappedTasks = tasks.Select(task => new TaskHeaderViewModel
         {
             Id = task.Id,
             Name = task.Name,
@@ -49,7 +51,16 @@ internal sealed class GetTasksHandler : IRequestHandler<GetTasksQuery, IEnumerab
               ? $"{(todayDate - task.DateTo).Days} Days"
               : ""
         });
-
-        return taskHeaderViewModel;
+		var metaData = new MetaData
+		{
+			CurrentPage = tasks.MetaData.CurrentPage,
+			TotalPages = tasks.MetaData.TotalPages,
+			PageSize = tasks.MetaData.PageSize,
+			TotalCount = tasks.MetaData.TotalCount
+		};
+        var x = new PagedResponse<TaskHeaderViewModel> { Items = mappedTasks.ToList(), MetaData = metaData };
+	    
+        return x;
+		//return taskHeaderViewModel;
     }
 }

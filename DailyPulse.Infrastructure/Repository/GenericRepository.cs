@@ -20,7 +20,7 @@ namespace DailyPulse.Infrastructure.Repository
         public async Task<T> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
 			var entity = await _context.Set<T>().FindAsync(new object[] { id }, cancellationToken);
-			return entity ?? throw new KeyNotFoundException($"Entity of type {typeof(T).Name} with id {id} not found");
+			return entity ?? throw new Exception($"Entity of type {typeof(T).Name} with id {id} not found");
 		}
         public async Task<IEnumerable<T>> GetAllAsync(CancellationToken cancellationToken = default)
         {
@@ -131,8 +131,7 @@ namespace DailyPulse.Infrastructure.Repository
 			return await query.ToPagedListAsync(
 			requestParameters.PageNumber,
 			requestParameters.PageSize,
-			cancellationToken
-		);
+			cancellationToken);
 		}
 		public async Task<T> FindWithIncludeSingleOrDefault(Expression<Func<T, bool>> predicate, List<Expression<Func<T, object>>> includes, CancellationToken cancellationToken = default)
 		{

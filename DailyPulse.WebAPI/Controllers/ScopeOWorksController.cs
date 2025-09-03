@@ -1,4 +1,5 @@
-﻿using DailyPulse.Application.CQRS.Queries.ScopeOfWorks;
+﻿using DailyPulse.Application.Common;
+using DailyPulse.Application.CQRS.Queries.ScopeOfWorks;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,7 +19,7 @@ namespace DailyPluse.WebAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetScopeOfWorks()
+        public async Task<IActionResult> GetScopeOfWorks(RequestParameters requestParameters)
         {
             var query = new GetScopeOfWorksQuery();
             var scopes = await _mediator.Send(query);
