@@ -24,10 +24,6 @@ namespace DailyPulse.Infrastructure.Configurations
 				.IsRequired()
 			.HasMaxLength(500);
 
-			builder.Property(p => p.BuildingNo)
-					.IsRequired()
-				    .HasMaxLength(100);
-
 			builder.Property(p => p.ProjectNo)
 					.IsRequired()
 					.HasMaxLength(100);
@@ -47,6 +43,11 @@ namespace DailyPulse.Infrastructure.Configurations
 					.HasForeignKey(p => p.EmployeeId)
 					.IsRequired()
 					.OnDelete(DeleteBehavior.Restrict);
+
+			builder.HasOne(p => p.ProfitCenter)
+				.WithMany(s => s.Projects)
+				.HasForeignKey(p => p.ProfitCenterId)
+				.OnDelete(DeleteBehavior.Restrict);
 
 			builder.HasIndex(p => p.Name)
 					  .IsUnique();

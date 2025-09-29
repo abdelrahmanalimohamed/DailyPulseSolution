@@ -15,7 +15,7 @@ namespace DailyPulse.Infrastructure.Repository
         private readonly ApplicationDbContext _context;
         public GenericRepository(ApplicationDbContext _context)
         {
-            this._context = _context;   
+            this._context = _context;  
         }
         public async Task<T> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
@@ -82,7 +82,12 @@ namespace DailyPulse.Infrastructure.Repository
             await _context.SaveChangesAsync(cancellationToken);
             return entity;
         }
-        public async Task UpdateAsync(T entity, CancellationToken cancellationToken = default)
+		public async Task AddRange(IEnumerable<T> entities, CancellationToken cancellationToken = default)
+		{
+            await _context.Set<T>().AddRangeAsync(entities);
+            await _context.SaveChangesAsync(cancellationToken);
+		}
+		public async Task UpdateAsync(T entity, CancellationToken cancellationToken = default)
         {
 			// Attach the entity to the context (if not already tracked)
 			_context.Attach(entity);
@@ -107,7 +112,6 @@ namespace DailyPulse.Infrastructure.Repository
             _context.Set<T>().Remove(entity);
             await _context.SaveChangesAsync(cancellationToken);
         }
-
 		public async Task<PagedList<T>> FindWithIncludePaginated(
 			Expression<Func<T, bool>> predicate,
 			List<Expression<Func<T, object>>> includes,
@@ -153,7 +157,6 @@ namespace DailyPulse.Infrastructure.Repository
 					query = query.Include(include);
 				}
 			}
-
 			return await query.SingleOrDefaultAsync(cancellationToken);
 		}
 	}

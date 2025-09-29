@@ -26,7 +26,6 @@ namespace DailyPulse.Application.CQRS.CommandHandler.ProjectsHandlers
             project.RegionId = request.RegionId;
             project.Description = request.description;
             project.LocationId = request.LocationId;
-            project.BuildingNo = request.buildingNo;
             project.ProjectNo = request.projectNo;
 
             await _repository.UpdateAsync(project, cancellationToken);

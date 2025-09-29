@@ -9,7 +9,6 @@ namespace DailyPulse.Application.CQRS.CommandHandler.ProjectsHandlers
     public class DeleteProjectHandler : IRequestHandler<DeleteProjectCommand>
     {
         private readonly IGenericRepository<Project> _repository;
-
         public DeleteProjectHandler(IGenericRepository<Project> _repository)
         {
             this._repository = _repository;

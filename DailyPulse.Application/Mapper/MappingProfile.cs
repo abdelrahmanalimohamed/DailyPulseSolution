@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using DailyPulse.Application.CQRS.Commands.Projects;
 using DailyPulse.Application.DTO;
 using DailyPulse.Application.ViewModel;
 using DailyPulse.Domain.Entities;
@@ -61,5 +62,13 @@ public class MappingProfile : Profile
 			.ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.TaskDescription))
 			.ForMember(dest => dest.DrawingNo, opt => opt.MapFrom(src => src.DrawingId))
 			.ForMember(dest => dest.DrawingTitle, opt => opt.MapFrom(src => src.DrawingTitle));
+
+		CreateMap<CreateProjectCommand , Project>()
+				.ForMember(dest => dest.Trade, opt => opt.Ignore())
+				.ForMember(dest => dest.Status, opt => opt.Ignore())
+				.ForMember(dest => dest.ProjectType, opt => opt.Ignore());
+
+		CreateMap<ProfitCenter, ProfitCenterDTO>()
+			.ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.ProfitCenterDescription));
 	}
 }

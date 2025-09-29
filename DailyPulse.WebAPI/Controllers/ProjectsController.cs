@@ -1,4 +1,5 @@
 ﻿using DailyPulse.Application.CQRS.Commands.Projects;
+using DailyPulse.Application.CQRS.Queries.ProfitCenter;
 using DailyPulse.Application.CQRS.Queries.Projects;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -57,7 +58,15 @@ namespace DailyPluse.WebAPI.Controllers
 			return Ok(projectsDetails);
 		}
 
-        [HttpPost]
+        [HttpGet("getprofitcenters")]
+        public async Task<IActionResult> GetProfitCenters()
+        {
+            var query = new GetProfitCentersQuery();
+            var profitCenters = await _mediator.Send(query);
+            return Ok(profitCenters);
+		}
+
+		[HttpPost]
         public async Task<IActionResult> AddProject([FromBody] CreateProjectCommand createProjectCommand)
         {
             await _mediator.Send(createProjectCommand);

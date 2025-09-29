@@ -41,10 +41,10 @@ namespace DailyPulse.Application.CQRS.CommandHandler.TasksHandlers
             string machineName ,
             CancellationToken cancellationToken)
         {
-            if (task.Status == Status.RequestToReAssign)
+            if (task.Status == TasksStatus.RequestToReAssign)
             {
                 var oldStatus = task.Status;
-                task.Status = Status.New;
+                task.Status = TasksStatus.New;
 				SaveTaskStatusDTO saveTaskStatusDTO = new SaveTaskStatusDTO(
 			   task.Id, oldStatus, task.Status, machineName);
 

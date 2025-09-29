@@ -8,7 +8,7 @@ namespace DailyPulse.Domain.Entities
         public Guid TaskId { get; set; }
 		public string MachineName { get; set; }
 		public Task Task { get; set; }
-        public Status OldStatus { get; set; }
-        public Status NewStatus { get; set; }
+        public TasksStatus OldStatus { get; set; }
+        public TasksStatus NewStatus { get; set; }
     }
 }

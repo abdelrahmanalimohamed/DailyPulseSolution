@@ -3,6 +3,7 @@ using System;
 using DailyPulse.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DailyPulse.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250907091536_AddProjectTypeColumnInProjectTable")]
+    partial class AddProjectTypeColumnInProjectTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -43,7 +45,7 @@ namespace DailyPulse.Infrastructure.Migrations
 
                     b.HasIndex("TaskId");
 
-                    b.ToTable("AdminRejectedTasks", (string)null);
+                    b.ToTable("AdminRejectedTasks");
                 });
 
             modelBuilder.Entity("DailyPulse.Domain.Entities.Employee", b =>
@@ -99,7 +101,7 @@ namespace DailyPulse.Infrastructure.Migrations
 
                     b.HasIndex("ReportToId");
 
-                    b.ToTable("Employees", (string)null);
+                    b.ToTable("Employees");
                 });
 
             modelBuilder.Entity("DailyPulse.Domain.Entities.EmployeeRejectedTasks", b =>
@@ -129,7 +131,7 @@ namespace DailyPulse.Infrastructure.Migrations
 
                     b.HasIndex("TaskId");
 
-                    b.ToTable("EmployeeRejectedTasks", (string)null);
+                    b.ToTable("EmployeeRejectedTasks");
                 });
 
             modelBuilder.Entity("DailyPulse.Domain.Entities.Location", b =>
@@ -158,7 +160,7 @@ namespace DailyPulse.Infrastructure.Migrations
 
                     b.HasIndex("RegionId");
 
-                    b.ToTable("Locations", (string)null);
+                    b.ToTable("Locations");
                 });
 
             modelBuilder.Entity("DailyPulse.Domain.Entities.ProfitCenter", b =>
@@ -186,7 +188,7 @@ namespace DailyPulse.Infrastructure.Migrations
                     b.HasIndex("ProfitCenterNumber")
                         .IsUnique();
 
-                    b.ToTable("ProfitCenters", (string)null);
+                    b.ToTable("ProfitCenters");
                 });
 
             modelBuilder.Entity("DailyPulse.Domain.Entities.Project", b =>
@@ -249,31 +251,7 @@ namespace DailyPulse.Infrastructure.Migrations
 
                     b.HasIndex("RegionId");
 
-                    b.ToTable("Projects", (string)null);
-                });
-
-            modelBuilder.Entity("DailyPulse.Domain.Entities.ProjectTrades", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime(6)")
-                        .HasDefaultValueSql("current_timestamp()");
-
-                    b.Property<Guid>("ProjectId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<int>("Trades")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProjectId");
-
-                    b.ToTable("ProjectTrades", (string)null);
+                    b.ToTable("Projects");
                 });
 
             modelBuilder.Entity("DailyPulse.Domain.Entities.ReAssign", b =>
@@ -304,7 +282,7 @@ namespace DailyPulse.Infrastructure.Migrations
 
                     b.HasIndex("TeamLeadId");
 
-                    b.ToTable("ReAssigns", (string)null);
+                    b.ToTable("ReAssigns");
                 });
 
             modelBuilder.Entity("DailyPulse.Domain.Entities.Region", b =>
@@ -325,7 +303,7 @@ namespace DailyPulse.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Regions", (string)null);
+                    b.ToTable("Regions");
                 });
 
             modelBuilder.Entity("DailyPulse.Domain.Entities.ScopeOfWork", b =>
@@ -346,7 +324,7 @@ namespace DailyPulse.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ScopeOfWorks", (string)null);
+                    b.ToTable("ScopeOfWorks");
                 });
 
             modelBuilder.Entity("DailyPulse.Domain.Entities.Task", b =>
@@ -448,7 +426,7 @@ namespace DailyPulse.Infrastructure.Migrations
 
                     b.HasIndex("TaskTypeDetailsId");
 
-                    b.ToTable("Tasks", (string)null);
+                    b.ToTable("Tasks");
                 });
 
             modelBuilder.Entity("DailyPulse.Domain.Entities.TaskNewRequirements", b =>
@@ -481,7 +459,7 @@ namespace DailyPulse.Infrastructure.Migrations
 
                     b.HasIndex("TaskId");
 
-                    b.ToTable("TaskNewRequirements", (string)null);
+                    b.ToTable("TaskNewRequirements");
                 });
 
             modelBuilder.Entity("DailyPulse.Domain.Entities.TaskStatusLogs", b =>
@@ -513,7 +491,7 @@ namespace DailyPulse.Infrastructure.Migrations
 
                     b.HasIndex("TaskId");
 
-                    b.ToTable("TaskStatusLogs", (string)null);
+                    b.ToTable("TaskStatusLogs");
                 });
 
             modelBuilder.Entity("DailyPulse.Domain.Entities.TaskType", b =>
@@ -534,7 +512,7 @@ namespace DailyPulse.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TaskType", (string)null);
+                    b.ToTable("TaskType");
                 });
 
             modelBuilder.Entity("DailyPulse.Domain.Entities.TaskTypeDetails", b =>
@@ -557,7 +535,7 @@ namespace DailyPulse.Infrastructure.Migrations
 
                     b.HasIndex("TaskTypeId");
 
-                    b.ToTable("TaskTypeDetails", (string)null);
+                    b.ToTable("TaskTypeDetails");
                 });
 
             modelBuilder.Entity("DailyPulse.Domain.Entities.TaskWorkLog", b =>
@@ -591,7 +569,7 @@ namespace DailyPulse.Infrastructure.Migrations
 
                     b.HasIndex("TaskId");
 
-                    b.ToTable("TaskWorkLogs", (string)null);
+                    b.ToTable("TaskWorkLogs");
                 });
 
             modelBuilder.Entity("DailyPulse.Domain.Entities.AdminRejectedTask", b =>
@@ -678,17 +656,6 @@ namespace DailyPulse.Infrastructure.Migrations
                     b.Navigation("ProfitCenter");
 
                     b.Navigation("Region");
-                });
-
-            modelBuilder.Entity("DailyPulse.Domain.Entities.ProjectTrades", b =>
-                {
-                    b.HasOne("DailyPulse.Domain.Entities.Project", "Project")
-                        .WithMany("ProjectTrades")
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Project");
                 });
 
             modelBuilder.Entity("DailyPulse.Domain.Entities.ReAssign", b =>
@@ -832,8 +799,6 @@ namespace DailyPulse.Infrastructure.Migrations
 
             modelBuilder.Entity("DailyPulse.Domain.Entities.Project", b =>
                 {
-                    b.Navigation("ProjectTrades");
-
                     b.Navigation("Tasks");
                 });
 

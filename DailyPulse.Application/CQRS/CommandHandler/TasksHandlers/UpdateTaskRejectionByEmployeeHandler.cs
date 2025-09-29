@@ -31,7 +31,7 @@ namespace DailyPulse.Application.CQRS.CommandHandler.TasksHandlers
 
             var oldStatus = task.Status;
 
-            task.Status =  Status.RequestToReAssign;
+            task.Status =  TasksStatus.RequestToReAssign;
 
             task.IsRejectedByEmployee = true;
 
@@ -44,7 +44,6 @@ namespace DailyPulse.Application.CQRS.CommandHandler.TasksHandlers
 
 			await SaveTaskStatusLog(saveTaskStatusDTO, cancellationToken);
         }
-
         private async Task AddRejectionReasons(Guid TaskId, Guid EmpId, string RejectionReasons, CancellationToken cancellationToken)
         {
             var rejectedTask = new EmployeeRejectedTasks

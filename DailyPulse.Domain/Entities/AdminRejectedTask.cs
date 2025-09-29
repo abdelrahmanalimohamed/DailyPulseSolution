@@ -7,7 +7,7 @@ namespace DailyPulse.Domain.Entities
     {
         public Guid TaskId { get; set; }
         public Task Task { get; set; }
-        public Status Status { get; set; }
+        public TasksStatus Status { get; set; }
         public string? ClosedComments { get; set; }
     }
 }

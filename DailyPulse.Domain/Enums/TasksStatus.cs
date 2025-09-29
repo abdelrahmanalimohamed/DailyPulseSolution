@@ -1,6 +1,6 @@
 ﻿namespace DailyPulse.Domain.Enums
 {
-    public enum Status
+    public enum TasksStatus
     {
         New = 1,
         InProgress = 2,
@@ -8,6 +8,7 @@
         Pending_Approval = 4 ,
         Canceled = 5 , 
         RequestToReAssign = 6 , 
-        Closed = 7
-    }
+        Closed = 7 , 
+        Hold = 8
+	}
 }

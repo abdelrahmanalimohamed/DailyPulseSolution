@@ -31,9 +31,9 @@ namespace DailyPulse.Application.CQRS.CommandHandler.TasksHandlers
 
             var oldStatus = task.Status;
 
-            task.Status = request.Action == "Accepted" ? Status.InProgress : Status.RequestToReAssign;
+            task.Status = request.Action == "Accepted" ? TasksStatus.InProgress : TasksStatus.RequestToReAssign;
 
-            task.IsRejectedByEmployee = task.Status == Status.RequestToReAssign;
+            task.IsRejectedByEmployee = task.Status == TasksStatus.RequestToReAssign;
 
             await _repository.UpdateAsync(task, cancellationToken);
 

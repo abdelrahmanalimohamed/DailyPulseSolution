@@ -30,9 +30,9 @@ namespace DailyPulse.Application.CQRS.CommandHandler.TaskNewRequirementsHandlers
 
             var oldStatus = task.Status;
 
-            if (task.Status == Status.Pending_Approval)
+            if (task.Status == TasksStatus.Pending_Approval)
             {
-                task.Status = Status.InProgress;
+                task.Status = TasksStatus.InProgress;
                 await _taskRepository.UpdateAsync(task , cancellationToken);
                 await SaveTaskStatusLog(task.Id , oldStatus , task.Status , cancellationToken);
             }
@@ -50,8 +50,8 @@ namespace DailyPulse.Application.CQRS.CommandHandler.TaskNewRequirementsHandlers
 
         private async Task SaveTaskStatusLog(
             Guid taskId,
-            Status OldStatus,
-            Status NewStatus, CancellationToken cancellationToken)
+            TasksStatus OldStatus,
+            TasksStatus NewStatus, CancellationToken cancellationToken)
         {
             var taskStatusLogs = new TaskStatusLogs
             {

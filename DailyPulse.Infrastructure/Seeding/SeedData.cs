@@ -156,6 +156,18 @@ namespace DailyPulse.Infrastructure.Seeding
 
 				await context.SaveChangesAsync();
 			}
+
+            if (!context.ProfitCenters.Any())
+            {
+				await context.ProfitCenters.AddAsync(
+				   new ProfitCenter 
+                   { 
+                       ProfitCenterNumber = "20045" , 
+                       ProfitCenterDescription = "ZED East Multifamily Cluster C5" 
+                   }
+			   );
+				await context.SaveChangesAsync();
+			}
 		}
     }
 }

@@ -1,11 +1,12 @@
-﻿using System.Data;
-using System.Text.RegularExpressions;
+﻿using AutoMapper;
 using DailyPulse.Application.Abstraction;
 using DailyPulse.Application.CQRS.Commands.Projects;
 using DailyPulse.Application.Extensions;
 using DailyPulse.Domain.Entities;
 using DailyPulse.Domain.Enums;
 using MediatR;
+using System.Data;
+using System.Text.RegularExpressions;
 using Task = System.Threading.Tasks.Task;
 
 namespace DailyPulse.Application.CQRS.CommandHandler.ProjectsHandlers
@@ -13,15 +14,14 @@ namespace DailyPulse.Application.CQRS.CommandHandler.ProjectsHandlers
     public class CreateProjectHandler : IRequestHandler<CreateProjectCommand>
     {
         private readonly IGenericRepository<Project> _repository;
-
-       // private readonly IGenericRepository<ProjectsScopes> _projectScopeAssignmentsRepository;
-
-        public CreateProjectHandler(IGenericRepository<Project> _repository )
+		private readonly IMapper _mapper;
+		public CreateProjectHandler(
+			IGenericRepository<Project> repository , 
+			IMapper mapper)
         {
-            this._repository = _repository;
-           // this._projectScopeAssignmentsRepository = _projectScopeAssignmentsRepository;
-        }
-
+            _repository = repository;
+			_mapper = mapper;
+		}
         public async Task Handle(CreateProjectCommand request, CancellationToken cancellationToken)
         {
 			var normalizedName = request.Name.RemoveWhitespace();
@@ -35,26 +35,53 @@ namespace DailyPulse.Application.CQRS.CommandHandler.ProjectsHandlers
 				throw new DuplicateNameException("A Project with the same name already exists.");
 			}
 
+			//var trade = ParseTrade(request.TradeId);
 
-			string trade = Regex.Replace(request.TradeId, @"\s+", "");
+			
+			var status = ParseStatus(request.StatusId);
+			var type = ParseProjectType(request.TypeId);
 
-            var project = new Project
-            {
-                Description = request.Description,
-                LocationId = request.LocationId,
-                Trade = Enum.TryParse(trade, true, out Treats role)
-                     ? role : throw new ArgumentException($"Invalid trade: {request.TradeId}"),
-                Name = request.Name,
-                RegionId = request.RegionId ,
-                EmployeeId = request.EmployeeId , 
-                BuildingNo = request.BuildingNo,
-                ProjectNo = request.ProjectNo
-            };
+			var project = _mapper.Map<Project>(request);
 
-             await _repository.AddAsync(project, cancellationToken);
+			//project.Trade = trade;
+			project.Status = status;
+			project.ProjectType = type;
 
-          //  await InsertProjectScopes(insertedProject, request.ScopeOfWorksSelections , cancellationToken);
-
+			foreach (var trade in request.TradeId)
+			{
+				project.AddTrades(trade);
+			}
+			await _repository.AddAsync(project, cancellationToken);
         }
-    }
+		private static Trades ParseTrade(string tradeId)
+		{
+			var cleanedTrade = Regex.Replace(tradeId, @"\s+", "");
+
+			if (Enum.TryParse(cleanedTrade, true, out Trades trade))
+			{
+				return trade;
+			}
+			throw new Exception($"Invalid trade: {tradeId}");
+		}
+		private static ProjectStatus ParseStatus(string statusId)
+		{
+			var cleanedStatus = Regex.Replace(statusId, @"\s+", "");
+
+			if (Enum.TryParse(cleanedStatus, true, out ProjectStatus status))
+			{
+				return status;
+			}
+			throw new Exception($"Invalid status: {statusId}");
+		}
+		private static ProjectType ParseProjectType(string typeId)
+		{
+			var cleanedType = Regex.Replace(typeId, @"\s+", "");
+
+			if (Enum.TryParse(cleanedType, true, out ProjectType status))
+			{
+				return status;
+			}
+			throw new Exception($"Invalid type: {typeId}");
+		}
+	}
 }

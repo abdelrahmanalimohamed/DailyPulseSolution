@@ -45,7 +45,7 @@ internal sealed class GetTasksHandler : IRequestHandler<GetTasksQuery, IEnumerab
             Priority = task.Priority.ToString(),
             ProjectName = task.Project.Name,
             CreatedBy  = task.CreatedByEmployee?.Name,
-            Overdue = todayDate > task.DateTo && task.Status.ToString() == Status.InProgress.ToString()
+            Overdue = todayDate > task.DateTo && task.Status.ToString() == TasksStatus.InProgress.ToString()
               ? $"{(todayDate - task.DateTo).Days} Days"
               : ""
         });

@@ -31,7 +31,7 @@ namespace DailyPulse.Application.CQRS.CommandHandler.TasksHandlers
 
             var oldStaus = task.Status;
 
-			task.Status = Enum.Parse<Status>(request.Status);
+			task.Status = Enum.Parse<TasksStatus>(request.Status);
 
 			await _taskrepository.UpdateAsync(task , cancellationToken);
 
@@ -44,12 +44,11 @@ namespace DailyPulse.Application.CQRS.CommandHandler.TasksHandlers
 
             return Unit.Value;
         }
-
         private async Task SaveToLogs(CloseTaskCommand request, CancellationToken cancellationToken)
         {
             var tasklog = new AdminRejectedTask
             {
-                Status = (Status)Enum.Parse(typeof(Status), request.Status),
+                Status = (TasksStatus)Enum.Parse(typeof(TasksStatus), request.Status),
                 TaskId = request.TaskId,
                 ClosedComments = request.log
             };

@@ -11,7 +11,7 @@ namespace DailyPulse.Application.CQRS.QueriesHandler.TaskHandlers
 {
     public class GetTaskWorkLogHandler : IRequestHandler<GetTaskWorkLogQuery, IEnumerable<TaskWorkLogViewModel>>
     {
-        public readonly IGenericRepository<Task> _repository;
+        private readonly IGenericRepository<Task> _repository;
 
         private readonly IMapper _mapper;
         public GetTaskWorkLogHandler(

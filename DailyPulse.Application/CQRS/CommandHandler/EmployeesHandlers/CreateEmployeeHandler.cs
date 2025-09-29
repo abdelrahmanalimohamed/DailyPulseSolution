@@ -30,7 +30,7 @@ namespace DailyPulse.Application.CQRS.CommandHandler.EmployeesHandlers
         }
         public async Task<CreateEmployeeResponseDTO> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
         {
-            var existingEmployee = await CheckEmployeeByName(request.Name , request.Email , cancellationToken);
+            var existingEmployee = await CheckEmployeeByNameOrEmail(request.Name , request.Email , cancellationToken);
 
 			if (existingEmployee != null)
 			{
@@ -68,7 +68,10 @@ namespace DailyPulse.Application.CQRS.CommandHandler.EmployeesHandlers
 				Email = employee.Email
 			};
 		}
-        private async Task<Employee> CheckEmployeeByName(string requestName , string email , CancellationToken cancellationToken)
+        private async Task<Employee> CheckEmployeeByNameOrEmail(
+			string requestName , 
+			string email , 
+			CancellationToken cancellationToken)
         {
 			var normalizedName = requestName.RemoveWhitespace();
 			var normalizedEmail = email.RemoveWhitespace();

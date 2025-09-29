@@ -44,7 +44,7 @@ namespace DailyPulse.Application.CQRS.CommandHandler.ReassignHandlers
 
             var oldStatus = task.Status;
             task.EmpId = empId;
-            task.Status = Status.New;
+            task.Status = TasksStatus.New;
 
             await _taskRepository.UpdateAsync(task, cancellationToken);
 

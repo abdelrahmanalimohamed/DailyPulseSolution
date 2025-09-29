@@ -17,7 +17,7 @@ internal sealed class GetSelectedEmployeeHandler : IRequestHandler<GetSelectedEm
 		_empRepository = empRepository;
 		_mapper = mapper;
 	}
-	public async Task<SelectedEmployeeDTO> Handle(GetSelectedEmployeeQuery request, CancellationToken cancellationToken)
+	public async Task<SelectedEmployeeDTO> Handle(	GetSelectedEmployeeQuery request, CancellationToken cancellationToken)
 	{
 		var employee = await _empRepository.GetFirstOrDefault
 			(predicate: x => x.Id == request.EmployeeId,

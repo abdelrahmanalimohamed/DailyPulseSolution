@@ -33,7 +33,7 @@ internal sealed class GetTasksClosedOrCompletedByEmployeeIdHandler :
 
 		var closedORCompletedTasks = await _taskRepository.FindWithIncludeAsync(
 				 predicate: x => x.EmpId == request.EmployeeID 
-				 && (x.Status == Status.Closed || x.Status == Status.Completed) ,
+				 && (x.Status == TasksStatus.Closed || x.Status == TasksStatus.Completed) ,
 				  includes: includes , 
 				  cancellationToken
 			  );

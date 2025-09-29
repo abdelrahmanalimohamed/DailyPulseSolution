@@ -13,7 +13,6 @@ namespace DailyPulse.Application.CQRS.CommandHandler.TasksHandlers
     public class CreateTaskHandler : IRequestHandler<CreateTaskCommand>
     {
         private readonly IGenericRepository<DailyPulse.Domain.Entities.Task> _repository;
-
         public CreateTaskHandler(IGenericRepository<DailyPulse.Domain.Entities.Task> _repository)
         {
             this._repository = _repository;
@@ -43,7 +42,7 @@ namespace DailyPulse.Application.CQRS.CommandHandler.TasksHandlers
                 FilePath = request.file,
                 ProjectId = request.ProjectId,
                 CreatedByMachine = request.MachineName,
-                Status = Status.New,
+                Status = TasksStatus.New,
                 //ScopeId = request.ScopeId,
                 Priority = Enum.TryParse(request.Priority, true, out Priority role)
                      ? role : throw new ArgumentException($"Invalid priority: {request.Priority}"),
